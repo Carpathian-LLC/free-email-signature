@@ -1,0 +1,30 @@
+name: Deploy to Carpathian
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Trigger Carpathian Deployment
+        env:
+          CARPATHIAN_API_KEY: ${{ secrets.CARPATHIAN_API_KEY }}
+        run: |
+          curl -X POST https://carpathian.ai/api/v1/deployment/trigger \
+            -H "Authorization: Bearer $CARPATHIAN_API_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{
+              "repository": "${{ github.repository }}",
+              "commit": "${{ github.sha }}",
+              "branch": "${{ github.ref_name }}",
+              "commit_message": "${{ github.event.head_commit.message }}",
+              "author_name": "${{ github.event.head_commit.author.name }}",
+              "author_email": "${{ github.event.head_commit.author.email }}",
+              "webhook_url": "${{ github.server_url }}/${{ github.repository }}/commit/${{ github.sha }}"
+            }'
