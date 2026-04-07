@@ -16,7 +16,7 @@ jobs:
         env:
           CARPATHIAN_API_KEY: ${{ secrets.CARPATHIAN_API_KEY }}
         run: |
-          curl -X POST https://carpathian.ai/api/v1/deployment/trigger \
+          curl -X POST https://api.carpathian.ai/api/v1/deployment/trigger \
             -H "Authorization: Bearer $CARPATHIAN_API_KEY" \
             -H "Content-Type: application/json" \
             -d '{
