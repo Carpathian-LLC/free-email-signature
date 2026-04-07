@@ -52,5 +52,9 @@ export default defineConfig(() => {
     server: {
       port: parseInt(env.FRONTEND_PORT || '5000', 10),
     },
+    preview: {
+      port: parseInt(env.FRONTEND_PORT || '5000', 10),
+      allowedHosts: [new URL(siteUrl).hostname],
+    },
   }
 })
