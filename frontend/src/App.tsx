@@ -65,9 +65,7 @@ function Layout() {
       <nav className="bg-white/80 backdrop-blur-xl border-b border-gray-200 sticky top-0 z-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-gray-900 font-bold text-base sm:text-lg hover:text-brand-blue transition-colors min-w-0">
-            <svg className="w-5 h-5 text-brand-blue flex-shrink-0 hidden sm:block" viewBox="0 0 24 24" fill="currentColor">
-              <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-            </svg>
+            <img src="/MyFreeEmailSignature_logo.png" alt="My Free Email Signature" className="h-6 w-auto flex-shrink-0 hidden sm:block" />
             <span className="truncate">My Free Email Signature</span>
           </Link>
           <div className="flex items-center gap-3 sm:gap-6">
@@ -111,9 +109,7 @@ function Layout() {
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pb-8 border-b border-gray-100">
             <div>
               <div className="flex items-center gap-2 text-gray-900 font-bold text-base mb-3">
-                <svg className="w-5 h-5 text-brand-blue flex-shrink-0" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
-                </svg>
+                <img src="/MyFreeEmailSignature_logo.png" alt="My Free Email Signature" className="h-6 w-auto flex-shrink-0" />
                 My Free Email Signature
               </div>
               <p className="text-sm text-gray-500 leading-relaxed">

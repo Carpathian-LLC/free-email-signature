@@ -11,16 +11,6 @@ export default function Home() {
     document.title = 'My Free Email Signature Generator. No Login, No Paywall.';
   }, []);
 
-  // Popunder ad (from env, not hardcoded)
-  useEffect(() => {
-    const url = import.meta.env.VITE_AD_POPUNDER_URL;
-    if (!url || !url.startsWith('https://')) return;
-    const script = document.createElement('script');
-    script.src = url;
-    script.async = true;
-    document.body.appendChild(script);
-    return () => { script.remove(); };
-  }, []);
 
   return (
     <>

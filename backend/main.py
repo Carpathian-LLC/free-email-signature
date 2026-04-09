@@ -157,38 +157,57 @@ db_pool = None
 
 
 def _init_db():
-    """Connect to MySQL using credentials from keys.env. TLS enabled when certs provided."""
+    """Connect to MySQL using credentials from keys.env. TLS enabled when certs provided.
+    Retries on failure every DB_RETRY_INTERVAL seconds for up to DB_RETRY_DURATION seconds."""
     global db_pool
-    try:
-        import mysql.connector.pooling
+    import mysql.connector.pooling
 
-        ssl_config = {}
-        ssl_ca = os.environ.get("DB_SSL_CA")
-        ssl_cert = os.environ.get("DB_SSL_CERT")
-        ssl_key = os.environ.get("DB_SSL_KEY")
+    ssl_config = {}
+    ssl_ca = os.environ.get("DB_SSL_CA")
+    ssl_cert = os.environ.get("DB_SSL_CERT")
+    ssl_key = os.environ.get("DB_SSL_KEY")
 
-        if ssl_ca:
-            ssl_config["ssl_ca"] = ssl_ca
-        if ssl_cert:
-            ssl_config["ssl_cert"] = ssl_cert
-        if ssl_key:
-            ssl_config["ssl_key"] = ssl_key
-        if not ssl_config and os.environ.get("DB_SSL", "true").lower() == "true":
-            ssl_config["ssl_disabled"] = False
+    if ssl_ca:
+        ssl_config["ssl_ca"] = ssl_ca
+    if ssl_cert:
+        ssl_config["ssl_cert"] = ssl_cert
+    if ssl_key:
+        ssl_config["ssl_key"] = ssl_key
+    if not ssl_config and os.environ.get("DB_SSL", "true").lower() == "true":
+        ssl_config["ssl_disabled"] = False
 
-        db_pool = mysql.connector.pooling.MySQLConnectionPool(
-            pool_name="cos_pool",
-            pool_size=int(os.environ.get("DB_POOL_SIZE", "5")),
-            host=os.environ.get("DB_HOST"),
-            port=int(os.environ.get("DB_PORT", "3306")),
-            user=os.environ.get("DB_USER"),
-            password=os.environ.get("DB_PASS"),
-            database=os.environ.get("DB_NAME"),
-            **ssl_config,
-        )
-        app_logger.info("MySQL pool ready (TLS: %s)", bool(ssl_config))
-    except Exception as e:
-        app_logger.warning("MySQL unavailable: %s. Photo upload disabled.", e)
+    retry_interval = int(os.environ.get("DB_RETRY_INTERVAL", "10"))
+    retry_duration = int(os.environ.get("DB_RETRY_DURATION", "600"))
+    deadline = time.time() + retry_duration
+    attempt = 0
+
+    while True:
+        attempt += 1
+        try:
+            db_pool = mysql.connector.pooling.MySQLConnectionPool(
+                pool_name="cos_pool",
+                pool_size=int(os.environ.get("DB_POOL_SIZE", "5")),
+                host=os.environ.get("DB_HOST"),
+                port=int(os.environ.get("DB_PORT", "3306")),
+                user=os.environ.get("DB_USER"),
+                password=os.environ.get("DB_PASS"),
+                database=os.environ.get("DB_NAME"),
+                **ssl_config,
+            )
+            app_logger.info("MySQL pool ready (TLS: %s)", bool(ssl_config))
+            return
+        except Exception as e:
+            if time.time() >= deadline:
+                app_logger.warning(
+                    "MySQL unavailable after %d attempts over %ds: %s. Photo upload disabled.",
+                    attempt, retry_duration, e,
+                )
+                return
+            app_logger.info(
+                "MySQL not ready (attempt %d): %s. Retrying in %ds...",
+                attempt, e, retry_interval,
+            )
+            time.sleep(retry_interval)
 
 
 _init_db()
