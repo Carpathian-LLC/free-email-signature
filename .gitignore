@@ -9,3 +9,4 @@ uploads/
 logs/
 *.tsbuildinfo
 preflight.txt
+frontend/.DS_Store
