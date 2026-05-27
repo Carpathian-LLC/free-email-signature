@@ -156,6 +156,37 @@ def _cache_image(key: str, data: bytes, content_type: str) -> None:
 db_pool = None
 
 
+def _ensure_schema():
+    """Apply schema.sql against the configured DB. Filters out CREATE DATABASE
+    and USE statements so the schema applies to whatever database the pool is
+    connected to (DB_NAME), regardless of what's hardcoded in schema.sql."""
+    schema_path = Path(__file__).parent / "schema.sql"
+    if not schema_path.exists():
+        app_logger.warning("schema.sql not found at %s, skipping schema bootstrap", schema_path)
+        return
+    raw_lines = [ln for ln in schema_path.read_text().splitlines() if not ln.strip().startswith("--")]
+    sql = "\n".join(raw_lines)
+    statements = []
+    for s in sql.split(";"):
+        s = s.strip()
+        if not s:
+            continue
+        head = s.lstrip().upper()
+        if head.startswith("CREATE DATABASE") or head.startswith("USE "):
+            continue
+        statements.append(s)
+    conn = db_pool.get_connection()
+    try:
+        cursor = conn.cursor()
+        for stmt in statements:
+            cursor.execute(stmt)
+        conn.commit()
+        cursor.close()
+        app_logger.info("Schema ensured (%d statements)", len(statements))
+    finally:
+        conn.close()
+
+
 def _init_db():
     """Connect to MySQL using credentials from keys.env. TLS enabled when certs provided.
     Retries on failure every DB_RETRY_INTERVAL seconds for up to DB_RETRY_DURATION seconds."""
@@ -195,6 +226,7 @@ def _init_db():
                 **ssl_config,
             )
             app_logger.info("MySQL pool ready (TLS: %s)", bool(ssl_config))
+            _ensure_schema()
             return
         except Exception as e:
             if time.time() >= deadline:
