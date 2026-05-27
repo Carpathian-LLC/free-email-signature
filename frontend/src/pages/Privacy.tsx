@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
 import { AdBanner } from '../components';
+import { useSeo } from '../seo';
 
 export default function Privacy() {
-  useEffect(() => {
-    document.title = 'Privacy Policy. My Free Email Signature Generator.';
-  }, []);
+  useSeo({
+    title: 'Privacy Policy | Free Signature Co',
+    description: 'How Free Signature Co handles your data. No accounts, no tracking, your signature data stays in your browser. Full transparency on uploads, analytics, ads, and logs.',
+    path: '/privacy',
+  });
 
   return (
     <>

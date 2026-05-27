@@ -1,11 +1,47 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { AdBanner } from '../components';
+import { useSeo } from '../seo';
+import { SOCIAL_PLATFORMS } from '../socialIcons';
+
+const SAMUEL_SOCIALS: { id: string; url: string }[] = [
+  { id: 'linkedin', url: 'https://linkedin.com/in/samuel-malkasian' },
+  { id: 'x', url: 'https://x.com/samuelmalkasian' },
+];
+
+const CARPATHIAN_SOCIALS: { id: string; url: string }[] = [
+  { id: 'linkedin', url: 'https://www.linkedin.com/company/carpathianai/' },
+  { id: 'x', url: 'https://x.com/carpathianai' },
+  { id: 'instagram', url: 'https://instagram.com/carpathianai' },
+  { id: 'youtube', url: 'https://www.youtube.com/@Carpathianai' },
+  { id: 'github', url: 'https://github.com/Carpathian-LLC' },
+];
+
+
+function SocialIcon({ id, url, label }: { id: string; url: string; label: string }) {
+  const platform = SOCIAL_PLATFORMS.find(p => p.id === id);
+  if (!platform) return null;
+  const isPlaceholder = url === '#';
+  return (
+    <a
+      href={url}
+      target={isPlaceholder ? undefined : '_blank'}
+      rel={isPlaceholder ? undefined : 'noopener noreferrer'}
+      aria-label={`${label} on ${platform.name}`}
+      className="text-gray-400 hover:text-brand-blue transition-colors"
+    >
+      <svg className="w-5 h-5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d={platform.path} />
+      </svg>
+    </a>
+  );
+}
 
 export default function About() {
-  useEffect(() => {
-    document.title = 'About. My Free Email Signature Generator by Carpathian.';
-  }, []);
+  useSeo({
+    title: 'About Free Signature Co | Why We Built a Free Email Signature Generator',
+    description: 'Why Carpathian built a free, open source email signature generator with no accounts, no paywall, and no watermark. Our take on subscription fatigue and the enshittification of the web.',
+    path: '/about',
+  });
 
   return (
     <>
@@ -134,6 +170,39 @@ export default function About() {
               Challenge yourself to make the world a little better by sharing software that betters humanity and makes
               people's lives easier. That's all any of us can do.
             </p>
+          </section>
+
+          {/* ── Author bio ──────────────────────────────────────── */}
+          <section aria-labelledby="author-bio" className="pt-10 border-t border-gray-200">
+            <h2 id="author-bio" className="sr-only">About the author</h2>
+            <div className="bg-white rounded-2xl border border-gray-200 p-6 sm:p-8">
+              <div className="flex items-center gap-4">
+                <img
+                  src="https://carpathian.ai/profile-images/samuel-malkasian.jpeg"
+                  alt="Samuel Malkasian"
+                  loading="lazy"
+                  className="w-12 h-12 rounded-full object-cover flex-shrink-0"
+                />
+                <div className="flex-1 min-w-0">
+                  <h3 className="text-base font-semibold text-gray-900">Samuel Malkasian</h3>
+                  <p className="text-sm text-gray-500">Founder, Carpathian AI</p>
+                </div>
+                <div className="flex gap-3 items-center flex-shrink-0">
+                  {SAMUEL_SOCIALS.map(s => (
+                    <SocialIcon key={s.id} id={s.id} url={s.url} label="Samuel Malkasian" />
+                  ))}
+                </div>
+              </div>
+
+              <div className="mt-6 pt-6 border-t border-gray-100 flex items-center gap-4">
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wide">Follow Carpathian</span>
+                <div className="flex gap-4 items-center">
+                  {CARPATHIAN_SOCIALS.map(s => (
+                    <SocialIcon key={s.id} id={s.id} url={s.url} label="Carpathian" />
+                  ))}
+                </div>
+              </div>
+            </div>
           </section>
 
           <div className="pt-6 border-t border-gray-200">

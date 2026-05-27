@@ -39,6 +39,14 @@ export default defineConfig(() => {
     throw new Error('VITE_SITE_URL must be set in keys.env');
   }
 
+  if (!env.FRONTEND_PORT) {
+    throw new Error('FRONTEND_PORT must be set in keys.env');
+  }
+  const frontendPort = parseInt(env.FRONTEND_PORT, 10);
+  if (!Number.isInteger(frontendPort) || frontendPort <= 0 || frontendPort > 65535) {
+    throw new Error(`FRONTEND_PORT in keys.env is not a valid port: ${env.FRONTEND_PORT}`);
+  }
+
   const define: Record<string, string> = {};
   for (const [key, value] of Object.entries(env)) {
     if (key.startsWith('VITE_')) {
@@ -50,10 +58,10 @@ export default defineConfig(() => {
     plugins: [react(), siteUrlPlugin(siteUrl)],
     define,
     server: {
-      port: parseInt(env.FRONTEND_PORT || '5000', 10),
+      port: frontendPort,
     },
     preview: {
-      port: parseInt(env.FRONTEND_PORT || '5000', 10),
+      port: frontendPort,
       allowedHosts: [new URL(siteUrl).hostname],
     },
   }

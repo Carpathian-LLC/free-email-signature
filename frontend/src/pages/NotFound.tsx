@@ -1,10 +1,13 @@
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useSeo } from '../seo';
 
 export default function NotFound() {
-  useEffect(() => {
-    document.title = 'Page Not Found. My Free Email Signature Generator.';
-  }, []);
+  useSeo({
+    title: 'Page Not Found | Free Signature Co',
+    description: 'The page you were looking for does not exist. Head back home or create a free email signature instead.',
+    path: '/404',
+    noindex: true,
+  });
 
   return (
     <section className="py-20 sm:py-28 bg-page-bg">

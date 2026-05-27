@@ -1,0 +1,50 @@
+import { useEffect } from 'react';
+
+interface SeoOptions {
+  title: string;
+  description: string;
+  path: string;
+  noindex?: boolean;
+}
+
+function upsertMeta(attr: 'name' | 'property', key: string, content: string) {
+  let el = document.head.querySelector<HTMLMetaElement>(`meta[${attr}="${key}"]`);
+  if (!el) {
+    el = document.createElement('meta');
+    el.setAttribute(attr, key);
+    document.head.appendChild(el);
+  }
+  el.setAttribute('content', content);
+}
+
+function upsertCanonical(href: string) {
+  let el = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
+  if (!el) {
+    el = document.createElement('link');
+    el.setAttribute('rel', 'canonical');
+    document.head.appendChild(el);
+  }
+  el.setAttribute('href', href);
+}
+
+export function useSeo({ title, description, path, noindex = false }: SeoOptions) {
+  useEffect(() => {
+    document.title = title;
+    upsertMeta('name', 'description', description);
+    upsertMeta('property', 'og:title', title);
+    upsertMeta('property', 'og:description', description);
+    upsertMeta('name', 'twitter:title', title);
+    upsertMeta('name', 'twitter:description', description);
+
+    const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined) || window.location.origin;
+    const fullUrl = siteUrl.replace(/\/$/, '') + path;
+    upsertCanonical(fullUrl);
+    upsertMeta('property', 'og:url', fullUrl);
+
+    upsertMeta(
+      'name',
+      'robots',
+      noindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large'
+    );
+  }, [title, description, path, noindex]);
+}

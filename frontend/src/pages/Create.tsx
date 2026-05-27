@@ -6,6 +6,7 @@ import { SignatureFields, SocialLink, TemplateId, StyleOptions } from '../types'
 import { templates, SAMPLE_DATA } from '../templates';
 import { Section, Field, AdBanner, ColorPicker } from '../components';
 import { SOCIAL_PLATFORMS } from '../socialIcons';
+import { useSeo } from '../seo';
 
 // ── Constants ───────────────────────────────────────────────────────
 
@@ -157,8 +158,13 @@ export default function Create() {
 
   // ── Lifecycle ───────────────────────────────────────────────────
 
+  useSeo({
+    title: 'Create Your Free Email Signature | Gmail, Outlook, Apple Mail',
+    description: 'Build a free professional HTML email signature in your browser. Add your photo, social links, and brand color. Copy and paste into Gmail, Outlook, Apple Mail, or Thunderbird. No account required.',
+    path: '/create',
+  });
+
   useEffect(() => {
-    document.title = 'Create Your Email Signature. Free Generator.';
     if (API_URL) {
       fetch(`${API_URL}/api/upload-token`).then(r => r.json()).then(d => {
         if (d.token) setUploadToken(d.token);

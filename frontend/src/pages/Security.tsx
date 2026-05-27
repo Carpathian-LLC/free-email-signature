@@ -1,10 +1,12 @@
-import { useEffect } from 'react';
 import { AdBanner } from '../components';
+import { useSeo } from '../seo';
 
 export default function Security() {
-  useEffect(() => {
-    document.title = 'Security Policy. My Free Email Signature Generator.';
-  }, []);
+  useSeo({
+    title: 'Security Policy | Free Signature Co',
+    description: 'TLS in transit, AES-256 at rest, magic-byte upload validation, path-traversal protection, and parameterized SQL. Full security details for Free Signature Co.',
+    path: '/security',
+  });
 
   return (
     <>
