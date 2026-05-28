@@ -12,7 +12,7 @@ if (gtagId && /^[A-Z0-9-]+$/.test(gtagId) && getConsentFor('analytics')) {
   s.src = `https://www.googletagmanager.com/gtag/js?id=${gtagId}`;
   document.head.appendChild(s);
   (window as any).dataLayer = (window as any).dataLayer || [];
-  function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
+  function gtag(..._args: any[]) { (window as any).dataLayer.push(arguments); }
   gtag('js', new Date());
   gtag('config', gtagId);
 }
