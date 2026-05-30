@@ -4,7 +4,7 @@ import { StyleOptions } from '../types';
 import { useSeo } from '../seo';
 
 const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280' };
-import { AdBanner, NativeBanner } from '../components';
+import { AdBanner, NativeBanner, AdSenseBanner } from '../components';
 
 export default function Home() {
   useSeo({
@@ -83,6 +83,11 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* ═══ Ad ═══ */}
+      <div className="bg-page-bg-alt">
+        <AdSenseBanner />
+      </div>
 
       {/* ═══ How It Works ═══ */}
       <section className="py-20 sm:py-24 bg-page-bg" aria-labelledby="how-it-works">
@@ -190,6 +195,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ Ad ═══ */}
+      <div className="bg-page-bg-alt">
+        <AdBanner />
+      </div>
+
       {/* ═══ Features ═══ */}
       <section className="py-20 sm:py-24 bg-page-bg" aria-labelledby="features">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -265,6 +275,11 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ Ad ═══ */}
+      <div className="bg-page-bg">
+        <AdSenseBanner />
+      </div>
+
       {/* ═══ Anatomy of a Good Signature ═══ */}
       <section className="py-20 sm:py-24 bg-page-bg-alt" aria-labelledby="good-signature">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
@@ -301,6 +316,11 @@ export default function Home() {
           </p>
         </div>
       </section>
+
+      {/* ═══ Ad ═══ */}
+      <div className="bg-page-bg-alt">
+        <AdBanner />
+      </div>
 
       {/* ═══ FAQ ═══ */}
       <section className="py-20 sm:py-24 bg-page-bg" aria-labelledby="faq">

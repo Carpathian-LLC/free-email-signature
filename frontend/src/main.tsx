@@ -26,17 +26,6 @@ if (clarityId && /^[a-z0-9]+$/i.test(clarityId) && getConsentFor('clarity')) {
   })(window, document, "clarity", "script", clarityId);
 }
 
-// Google AdSense. Loads for every visitor by design (not gated by the consent
-// banner). Env-driven so the publisher ID is never hardcoded.
-const adsenseClient = import.meta.env.VITE_ADSENSE_CLIENT;
-if (adsenseClient && /^ca-pub-[0-9]+$/.test(adsenseClient)) {
-  const s = document.createElement('script');
-  s.async = true;
-  s.src = `https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=${adsenseClient}`;
-  s.crossOrigin = 'anonymous';
-  document.head.appendChild(s);
-}
-
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
