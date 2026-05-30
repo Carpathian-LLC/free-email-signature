@@ -13,6 +13,7 @@ import hashlib
 import io
 import logging
 import os
+import re
 import secrets
 import struct
 import time
@@ -76,6 +77,20 @@ security_logger.addHandler(_make_handler("security.log"))
 error_handler = _make_handler("error.log", logging.ERROR)
 app_logger.addHandler(error_handler)
 security_logger.addHandler(error_handler)
+
+# Dedicated, single-purpose log: one line per successfully stored image and
+# nothing else, so uploaded images can be reviewed for TOS violations without
+# wading through the rest of the application noise. Its own clean format (no
+# level/logger-name columns) and it does NOT feed the shared error handler.
+images_logger = logging.getLogger("images")
+images_logger.setLevel(logging.INFO)
+images_logger.propagate = False
+_images_handler = RotatingFileHandler(
+    LOG_DIR / "images.log", maxBytes=LOG_MAX_BYTES, backupCount=LOG_BACKUP_COUNT,
+)
+_images_handler.setLevel(logging.INFO)
+_images_handler.setFormatter(logging.Formatter("%(asctime)s  %(message)s", datefmt=LOG_DATE))
+images_logger.addHandler(_images_handler)
 
 # Route uvicorn's logs into app.log too so startup messages are captured
 uv_app_handler = _make_handler("app.log")
@@ -156,10 +171,60 @@ def _cache_image(key: str, data: bytes, content_type: str) -> None:
 db_pool = None
 
 
+def _parse_create_table(stmt: str):
+    """Pull (table_name, [(column_name, column_definition), ...]) out of a
+    CREATE TABLE statement so columns can be reconciled on an existing table.
+    Returns None if the statement is not a parseable CREATE TABLE. Table/column
+    names come from our own schema.sql (trusted), never from user input."""
+    m = re.match(
+        r"CREATE\s+TABLE\s+(?:IF\s+NOT\s+EXISTS\s+)?`?(\w+)`?\s*\(",
+        stmt, re.IGNORECASE | re.DOTALL,
+    )
+    if not m:
+        return None
+    table_name = m.group(1)
+    body = stmt[m.end():stmt.rfind(")")]
+    # Split on top-level commas only, so commas inside DECIMAL(10,2) / ENUM(...) don't split a definition.
+    parts, depth, buf = [], 0, []
+    for ch in body:
+        if ch == "(":
+            depth += 1
+        elif ch == ")":
+            depth -= 1
+        if ch == "," and depth == 0:
+            parts.append("".join(buf))
+            buf = []
+        else:
+            buf.append(ch)
+    parts.append("".join(buf))
+
+    # Lines that define table constraints/indexes rather than a column.
+    non_columns = ("PRIMARY", "UNIQUE", "KEY", "INDEX", "CONSTRAINT",
+                   "FOREIGN", "FULLTEXT", "SPATIAL", "CHECK")
+    columns = []
+    for part in parts:
+        part = part.strip()
+        if not part:
+            continue
+        first = part.split(None, 1)[0]
+        if first.upper() in non_columns:
+            continue
+        col_def = part[len(first):].strip()
+        if col_def:
+            columns.append((first.strip("`"), col_def))
+    return table_name, columns
+
+
 def _ensure_schema():
     """Apply schema.sql against the configured DB. Filters out CREATE DATABASE
     and USE statements so the schema applies to whatever database the pool is
-    connected to (DB_NAME), regardless of what's hardcoded in schema.sql."""
+    connected to (DB_NAME), regardless of what's hardcoded in schema.sql.
+
+    schema.sql is the single source of truth. On restart this both creates new
+    tables (CREATE TABLE IF NOT EXISTS) and adds any columns present in schema.sql
+    but missing from an already-existing table, so a schema edit + restart is all
+    it takes to migrate. It intentionally does NOT rename, retype, drop, or index
+    existing columns; those remain a deliberate manual migration."""
     schema_path = Path(__file__).parent / "schema.sql"
     if not schema_path.exists():
         app_logger.warning("schema.sql not found at %s, skipping schema bootstrap", schema_path)
@@ -181,10 +246,39 @@ def _ensure_schema():
         for stmt in statements:
             cursor.execute(stmt)
         conn.commit()
-        cursor.close()
         app_logger.info("Schema ensured (%d statements)", len(statements))
+        _sync_columns(cursor, statements)
+        cursor.close()
     finally:
         conn.close()
+
+
+def _sync_columns(cursor, statements):
+    """Idempotently add columns that exist in schema.sql but are missing from an
+    already-created table. Each ALTER is isolated so one failure (or a race
+    between workers, which surfaces as a duplicate-column error) does not block
+    the rest. DDL auto-commits in MySQL, so no explicit commit is needed."""
+    for stmt in statements:
+        parsed = _parse_create_table(stmt)
+        if not parsed:
+            continue
+        table_name, columns = parsed
+        cursor.execute(
+            "SELECT COLUMN_NAME FROM information_schema.COLUMNS "
+            "WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = %s",
+            (table_name,),
+        )
+        existing = {row[0].lower() for row in cursor.fetchall()}
+        if not existing:
+            continue  # table was not created; nothing to reconcile
+        for col_name, col_def in columns:
+            if col_name.lower() in existing:
+                continue
+            try:
+                cursor.execute(f"ALTER TABLE `{table_name}` ADD COLUMN `{col_name}` {col_def}")
+                app_logger.info("Schema migrate: added column %s.%s", table_name, col_name)
+            except Exception as e:
+                app_logger.error("Schema migrate failed for %s.%s: %s", table_name, col_name, e)
 
 
 def _init_db():
@@ -282,12 +376,12 @@ async def request_pipeline(request: Request, call_next):
     response.headers["Strict-Transport-Security"] = "max-age=31536000; includeSubDomains"
     response.headers["Content-Security-Policy"] = (
         "default-src 'self'; "
-        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://*.highperformanceformat.com; "
+        "script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://www.clarity.ms https://*.highperformanceformat.com https://pagead2.googlesyndication.com https://*.googlesyndication.com; "
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; "
         "font-src 'self' https://fonts.gstatic.com; "
         "img-src 'self' data: https:; "
-        "connect-src 'self' https://www.google-analytics.com https://www.clarity.ms; "
-        "frame-src 'self' https://*.highperformanceformat.com"
+        "connect-src 'self' https://www.google-analytics.com https://www.clarity.ms https://pagead2.googlesyndication.com; "
+        "frame-src 'self' https://*.highperformanceformat.com https://googleads.g.doubleclick.net https://tpc.googlesyndication.com https://*.googlesyndication.com"
     )
 
     return response
@@ -470,6 +564,64 @@ def health():
     return {"status": "ok"}
 
 
+@app.post("/api/signature-created")
+def signature_created(request: Request):
+    """Atomically increment the public 'signatures created' counter."""
+    if not db_pool:
+        return JSONResponse(status_code=503, content={"error": "Counter is temporarily unavailable."})
+
+    client_ip = _get_client_ip(request)
+    if not _check_rate_limit(client_ip):
+        security_logger.warning("Rate limit exceeded on signature-created: %s", client_ip)
+        return JSONResponse(status_code=429, content={"error": "Too many requests. Please try again later."})
+
+    conn = None
+    try:
+        conn = db_pool.get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO counters (name, value) VALUES ('signatures_created', 1) "
+            "ON DUPLICATE KEY UPDATE value = value + 1"
+        )
+        conn.commit()
+        cursor.close()
+    except Exception as e:
+        security_logger.error("DB write failed for signature-created counter: %s", e)
+        return JSONResponse(status_code=500, content={"error": "Counter update failed. Please try again later."})
+    finally:
+        if conn:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+    return {"success": True}
+
+
+@app.get("/api/signature-count")
+def signature_count():
+    """Return the current 'signatures created' count. Never errors the footer."""
+    if not db_pool:
+        return {"count": 0}
+
+    conn = None
+    try:
+        conn = db_pool.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT value FROM counters WHERE name = 'signatures_created'")
+        row = cursor.fetchone()
+        cursor.close()
+        return {"count": int(row[0]) if row else 0}
+    except Exception:
+        return {"count": 0}
+    finally:
+        if conn:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+
 @app.get("/api/upload-token")
 def upload_token(request: Request):
     """Issue a short-lived token so the upload endpoint can check timing."""
@@ -602,7 +754,8 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
             except Exception:
                 pass
 
-    app_logger.info("Upload %s %d bytes %s from %s", key, len(content), detected_type, client_ip)
+    app_logger.info("Upload %s %d bytes %s", key, len(content), detected_type)
+    images_logger.info("/cos/%s", key)
     return {"success": True, "url": f"/cos/{random_hash}/{asset_hash}"}
 
 

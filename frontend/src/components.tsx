@@ -215,3 +215,36 @@ export function NativeBanner() {
     </div>
   );
 }
+
+// Google AdSense responsive display unit. Renders only when both the publisher
+// ID and a slot ID are set (env-driven, nothing hardcoded). The loader script
+// is injected once in main.tsx. Runs independently of the Adsterra units above,
+// so both networks can earn at once.
+export function AdSenseBanner() {
+  const client = import.meta.env.VITE_ADSENSE_CLIENT;
+  const slot = import.meta.env.VITE_ADSENSE_BANNER_SLOT;
+  const pushed = useRef(false);
+
+  useEffect(() => {
+    if (!client || !slot || pushed.current) return;
+    try {
+      ((window as any).adsbygoogle = (window as any).adsbygoogle || []).push({});
+      pushed.current = true;
+    } catch { /* noop */ }
+  }, [client, slot]);
+
+  if (!client || !slot) return null;
+
+  return (
+    <div className="flex justify-center py-4 overflow-hidden">
+      <ins
+        className="adsbygoogle"
+        style={{ display: 'block', width: '100%' }}
+        data-ad-client={client}
+        data-ad-slot={slot}
+        data-ad-format="auto"
+        data-full-width-responsive="true"
+      />
+    </div>
+  );
+}

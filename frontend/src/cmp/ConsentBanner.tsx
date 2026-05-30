@@ -36,6 +36,7 @@ function loadPrefs(): Record<string, boolean> {
 export default function ConsentBanner() {
   const [visible, setVisible] = useState(false);
   const [showPrefs, setShowPrefs] = useState(false);
+  const [confirmDecline, setConfirmDecline] = useState(false);
   const [prefs, setPrefs] = useState<Record<string, boolean>>(loadPrefs);
 
   useEffect(() => {
@@ -64,6 +65,7 @@ export default function ConsentBanner() {
     SERVICES.forEach(s => { none[s.id] = false; });
     localStorage.setItem(CONSENT_KEY, 'declined');
     localStorage.setItem(PREFS_KEY, JSON.stringify(none));
+    setConfirmDecline(false);
     setVisible(false);
   }
 
@@ -106,21 +108,43 @@ export default function ConsentBanner() {
         </div>
       )}
 
+      {confirmDecline && (
+        <div className="fixed inset-0 bg-black/50 z-[95] flex items-center justify-center p-4" onClick={() => setConfirmDecline(false)}>
+          <div className="bg-white rounded-xl max-w-md w-full p-6 space-y-4" onClick={e => e.stopPropagation()}>
+            <h3 className="text-lg font-bold text-gray-900">Want to help us out first?</h3>
+            <p className="text-sm text-gray-600">
+              Cookies don't capture any of your personal data. We have no accounts, so there's no name or profile tied to you, your signature never leaves your browser, and we will never sell your data. Cookies just help us see what's working so we can keep making the tool better for you.
+            </p>
+            <p className="text-sm text-gray-600">
+              Full transparency: analytics and ads run through trusted third-party providers, who process usage data under their own privacy policies that we don't fully control. Either choice is completely fine, and you can change your mind anytime.
+            </p>
+            <div className="flex gap-2 pt-2">
+              <button onClick={() => setConfirmDecline(false)} className="flex-1 bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-4 py-2 text-sm font-semibold transition-colors">
+                Keep cookies on
+              </button>
+              <button onClick={decline} className="border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md px-4 py-2 text-sm font-semibold transition-colors">
+                Decline anyway
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="fixed bottom-0 left-0 right-0 z-[80] bg-white border-t border-gray-200 shadow-lg">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4 flex flex-col sm:flex-row items-start sm:items-center gap-4">
           <p className="text-sm text-gray-600 flex-1">
-            We use cookies for analytics to improve the site. No personal data is collected. Read our{' '}
+            Help us make this free tool better for you. We use cookies to see what's working so we can keep improving it. We keep what we collect to a minimum, and analytics and ads run through trusted third-party providers under their own privacy policies. Read our{' '}
             <a href="/privacy" className="text-brand-blue hover:text-brand-blue-hover font-medium">Privacy Policy</a>.
           </p>
-          <div className="flex gap-2 flex-shrink-0">
-            <button onClick={accept} className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-4 py-2 text-sm font-semibold transition-colors">
-              Accept
+          <div className="flex items-center gap-2 flex-shrink-0">
+            <button onClick={() => setConfirmDecline(true)} className="border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md px-4 py-2 text-sm font-semibold transition-colors">
+              Decline
             </button>
-            <button onClick={() => setShowPrefs(true)} className="bg-gray-100 hover:bg-gray-200 text-gray-700 rounded-md px-4 py-2 text-sm font-semibold transition-colors">
+            <button onClick={() => setShowPrefs(true)} className="border border-gray-300 text-gray-700 hover:bg-gray-50 rounded-md px-4 py-2 text-sm font-semibold transition-colors">
               Customize
             </button>
-            <button onClick={decline} className="text-sm text-gray-400 hover:text-gray-600 px-2 transition-colors">
-              Decline
+            <button onClick={accept} className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-8 py-2 text-sm font-semibold shadow-sm transition-colors">
+              Allow all
             </button>
           </div>
         </div>

@@ -28,3 +28,8 @@ CREATE TABLE IF NOT EXISTS images (
     UNIQUE KEY idx_cos (random_hash, asset_hash),
     INDEX idx_created (created_at)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+CREATE TABLE IF NOT EXISTS counters (
+    name VARCHAR(64) PRIMARY KEY,
+    value BIGINT NOT NULL DEFAULT 0
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

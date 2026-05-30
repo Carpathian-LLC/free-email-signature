@@ -15,6 +15,8 @@ const PLACEHOLDER_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/20
 const STORAGE_KEY = 'sig-gen-fields';
 const TEMPLATE_KEY = 'sig-gen-template';
 const STYLE_KEY = 'sig-gen-style';
+const HISTORY_KEY = 'cos_saved_signatures';
+const HISTORY_CAP = 25;
 const API_URL = import.meta.env.VITE_API_URL || '';
 
 const EMPTY: SignatureFields = {
@@ -360,6 +362,33 @@ export default function Create() {
 
   // ── Copy ──────────────────────────────────────────────────────
 
+  // Fire-and-forget ping to tick the public signatures-created counter.
+  const pingSignatureCreated = () => {
+    if (API_URL) { fetch(`${API_URL}/api/signature-created`, { method: 'POST' }).catch(() => {}); }
+  };
+
+  // Append the current signature to the local "My Signatures" history.
+  // Stored only in this browser. Capped, newest first, skips exact dupes.
+  const saveToHistory = () => {
+    try {
+      const raw = localStorage.getItem(HISTORY_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      const history = Array.isArray(list) ? list : [];
+      if (history[0] && history[0].html === signatureHtml) return;
+      const label = fields.fullName.trim() || fields.email.trim() || 'Untitled signature';
+      const entry = {
+        id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`,
+        label,
+        savedAt: Date.now(),
+        data: fields,
+        html: signatureHtml,
+        photoUrl: fields.photoUrl ? fields.photoUrl : null,
+      };
+      const next = [entry, ...history].slice(0, HISTORY_CAP);
+      localStorage.setItem(HISTORY_KEY, JSON.stringify(next));
+    } catch { /* noop */ }
+  };
+
   async function copyAsRichText() {
     try {
       const blob = new Blob([signatureHtml], { type: 'text/html' });
@@ -370,6 +399,8 @@ export default function Create() {
         }),
       ]);
       setCopied('rich');
+      pingSignatureCreated();
+      saveToHistory();
       setTimeout(() => setCopied(null), 2000);
     } catch { copyRawHtml(); }
   }
@@ -378,6 +409,8 @@ export default function Create() {
     try {
       await navigator.clipboard.writeText(signatureHtml);
       setCopied('html');
+      pingSignatureCreated();
+      saveToHistory();
       setTimeout(() => setCopied(null), 2000);
     } catch { /* noop */ }
   }

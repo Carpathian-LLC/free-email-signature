@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { Routes, Route, Link, Outlet, useLocation } from 'react-router-dom';
 import Home from './pages/Home';
 import Create from './pages/Create';
@@ -7,12 +7,43 @@ import About from './pages/About';
 import Privacy from './pages/Privacy';
 import Security from './pages/Security';
 import NotFound from './pages/NotFound';
+import MySignatures from './pages/MySignatures';
+import GmailSignature from './pages/GmailSignature';
+import OutlookSignature from './pages/OutlookSignature';
+import AppleMailSignature from './pages/AppleMailSignature';
+import SignatureBestPractices from './pages/SignatureBestPractices';
 import ConsentBanner from './cmp/ConsentBanner';
+import { AdSenseBanner } from './components';
+
+const API_URL = import.meta.env.VITE_API_URL || '';
 
 function Layout() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
   const [showDonate, setShowDonate] = useState(false);
+  const [sigCount, setSigCount] = useState<number | null>(null);
+  const [hasSaved, setHasSaved] = useState(false);
+
+  useEffect(() => {
+    if (API_URL) {
+      fetch(`${API_URL}/api/signature-count`)
+        .then(r => r.json())
+        .then(d => { if (typeof d.count === 'number') setSigCount(d.count); })
+        .catch(() => {});
+    }
+  }, []);
+
+  // Show the My Signatures tab only once something is saved locally. Re-checked
+  // on navigation so it appears right after a signature is first copied.
+  useEffect(() => {
+    try {
+      const raw = localStorage.getItem('cos_saved_signatures');
+      const list = raw ? JSON.parse(raw) : [];
+      setHasSaved(Array.isArray(list) && list.length > 0);
+    } catch {
+      setHasSaved(false);
+    }
+  }, [location.pathname]);
 
   const fireConfetti = useCallback(() => {
     const canvas = document.createElement('canvas');
@@ -81,6 +112,14 @@ function Layout() {
             >
               About
             </Link>
+            {hasSaved && (
+              <Link
+                to="/my-signatures"
+                className={`hidden sm:inline text-sm font-medium transition-colors ${isActive('/my-signatures') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
+              >
+                My Signatures
+              </Link>
+            )}
             <Link
               to="/create"
               className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-4 py-1.5 text-sm font-semibold transition-colors"
@@ -102,11 +141,12 @@ function Layout() {
       </nav>
 
       <Outlet />
+      <AdSenseBanner />
       <ConsentBanner />
 
       <footer className="bg-page-bg-alt border-t border-gray-200 pt-12 pb-8">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 pb-8 border-b border-gray-100">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-8 border-b border-gray-100">
             <div>
               <div className="flex items-center gap-2 text-gray-900 font-bold text-base mb-3">
                 <img src="/MyFreeEmailSignature_logo.png" alt="Free Signature Co" className="h-6 w-auto flex-shrink-0" />
@@ -132,6 +172,15 @@ function Layout() {
               </ul>
             </div>
             <div>
+              <h4 className="text-gray-900 text-sm font-semibold mb-3">Guides</h4>
+              <ul className="space-y-2 text-sm text-gray-500">
+                <li><Link to="/how-to-add-email-signature-gmail" className="hover:text-gray-900 transition-colors">Gmail Signature Guide</Link></li>
+                <li><Link to="/how-to-add-email-signature-outlook" className="hover:text-gray-900 transition-colors">Outlook Signature Guide</Link></li>
+                <li><Link to="/how-to-add-email-signature-apple-mail" className="hover:text-gray-900 transition-colors">Apple Mail Signature Guide</Link></li>
+                <li><Link to="/email-signature-best-practices" className="hover:text-gray-900 transition-colors">Signature Best Practices</Link></li>
+              </ul>
+            </div>
+            <div>
               <h4 className="text-gray-900 text-sm font-semibold mb-3">Resources</h4>
               <ul className="space-y-2 text-sm text-gray-500">
                 <li><a href="https://github.com/Carpathian-LLC/free-email-signature" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">GitHub</a></li>
@@ -141,6 +190,9 @@ function Layout() {
             </div>
           </div>
           <div className="pt-6 text-center text-xs text-gray-400">
+            {sigCount !== null && sigCount > 0 && (
+              <p className="mb-1">{sigCount.toLocaleString()} email signatures created and counting</p>
+            )}
             &copy; {new Date().getFullYear()} Carpathian LLC. All rights reserved.
           </div>
         </div>
@@ -186,6 +238,11 @@ export default function App() {
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/security" element={<Security />} />
+        <Route path="/my-signatures" element={<MySignatures />} />
+        <Route path="/how-to-add-email-signature-gmail" element={<GmailSignature />} />
+        <Route path="/how-to-add-email-signature-outlook" element={<OutlookSignature />} />
+        <Route path="/how-to-add-email-signature-apple-mail" element={<AppleMailSignature />} />
+        <Route path="/email-signature-best-practices" element={<SignatureBestPractices />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
