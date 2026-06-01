@@ -1,11 +1,9 @@
 import { Link } from 'react-router-dom';
-import { AdBanner } from '../components';
+import { AdBanner, AdSenseBanner } from '../components';
 import { useSeo } from '../seo';
 
 export default function AppleMailSignature() {
   useSeo({
-    title: 'How to Add an Email Signature in Apple Mail (macOS and iPhone) | Free Signature Co',
-    description: 'Step-by-step guide to adding an HTML email signature in Apple Mail on macOS, plus the plain-text signature setting on iPhone and iPad. Free, no account required.',
     path: '/how-to-add-email-signature-apple-mail',
   });
 
@@ -46,6 +44,8 @@ export default function AppleMailSignature() {
                 <li>Use the <strong>Choose Signature</strong> menu at the bottom to assign it to the account, then close the window.</li>
               </ol>
             </div>
+
+            <AdSenseBanner />
 
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">Mail on iPhone and iPad</h2>

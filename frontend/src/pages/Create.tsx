@@ -4,7 +4,7 @@ import Cropper from 'react-easy-crop';
 import type { Area } from 'react-easy-crop';
 import { SignatureFields, SocialLink, TemplateId, StyleOptions } from '../types';
 import { templates, SAMPLE_DATA } from '../templates';
-import { Section, Field, AdBanner, ColorPicker } from '../components';
+import { Section, Field, AdBanner, SidebarAd, ColorPicker } from '../components';
 import { SOCIAL_PLATFORMS } from '../socialIcons';
 import { useSeo } from '../seo';
 
@@ -161,8 +161,6 @@ export default function Create() {
   // ── Lifecycle ───────────────────────────────────────────────────
 
   useSeo({
-    title: 'Create Your Free Email Signature | Gmail, Outlook, Apple Mail',
-    description: 'Build a free professional HTML email signature in your browser. Add your photo, social links, and brand color. Copy and paste into Gmail, Outlook, Apple Mail, or Thunderbird. No account required.',
     path: '/create',
   });
 
@@ -749,6 +747,7 @@ export default function Create() {
                 </div>
               )}
               <AdBanner />
+              <SidebarAd />
             </div>
           </div>
         </div>

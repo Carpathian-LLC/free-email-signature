@@ -369,6 +369,8 @@ async def request_pipeline(request: Request, call_next):
     )
 
     response.headers["X-Content-Type-Options"] = "nosniff"
+    # The API host (api.freesignature.co) should never appear in search results.
+    response.headers["X-Robots-Tag"] = "noindex, nofollow"
     response.headers["X-Frame-Options"] = "DENY"
     response.headers["X-XSS-Protection"] = "1; mode=block"
     response.headers["Referrer-Policy"] = "strict-origin-when-cross-origin"
@@ -562,6 +564,13 @@ def _is_safe_hex(segment: str) -> bool:
 @app.get("/health")
 def health():
     return {"status": "ok"}
+
+
+@app.get("/robots.txt")
+def robots():
+    """Keep the entire API host out of search indexes. Paired with the
+    X-Robots-Tag: noindex header set on every response in request_pipeline."""
+    return Response(content="User-agent: *\nDisallow: /\n", media_type="text/plain")
 
 
 @app.post("/api/signature-created")

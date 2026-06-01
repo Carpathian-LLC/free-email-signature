@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react';
 import { Link } from 'react-router-dom';
-import { templates, SAMPLE_DATA } from '../templates';
+import { templates, SAMPLE_DATA, SAMPLE_PHOTOS } from '../templates';
 import { StyleOptions } from '../types';
 import { useSeo } from '../seo';
 
@@ -49,8 +49,6 @@ export default function Templates() {
   const [popupMessage, setPopupMessage] = useState<string | null>(null);
 
   useSeo({
-    title: 'Email Signature Templates for Gmail, Outlook, and Apple Mail | Free Signature Co',
-    description: 'Five free professional email signature templates: professional, minimal, modern, bold, and compact. All work in Gmail, Outlook, Apple Mail, and Thunderbird. No account required.',
     path: '/templates',
   });
 
@@ -78,18 +76,23 @@ export default function Templates() {
       </section>
 
       {/* Template Grid */}
-      <section className="py-16 bg-page-bg-alt">
+      <section className="py-16 bg-gray-200">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 space-y-12">
           {templates.map((t, i) => {
             const detail = TEMPLATE_DETAILS[t.id];
+            const sample = { ...SAMPLE_DATA, photoUrl: SAMPLE_PHOTOS[i % SAMPLE_PHOTOS.length] };
             return (
               <div
                 key={t.id}
                 className={`flex flex-col lg:flex-row gap-8 items-center ${i % 2 === 1 ? 'lg:flex-row-reverse' : ''}`}
               >
-                {/* Preview */}
-                <div className="flex-1 w-full bg-white rounded-2xl border border-gray-200 p-4 sm:p-8 shadow-sm min-h-[200px] overflow-x-auto">
-                  <div dangerouslySetInnerHTML={{ __html: t.build(SAMPLE_DATA, PREVIEW_STYLE) }} />
+                {/* Preview: the white card hugs the signature (w-fit, no forced
+                    height), centered in its column so the empty space is gray page,
+                    not blank card. Strong drop shadow, no border. */}
+                <div className="flex-1 w-full flex justify-center">
+                  <div className="bg-white rounded-2xl p-4 sm:p-8 shadow-2xl shadow-gray-500/30 w-fit max-w-full overflow-x-auto">
+                    <div dangerouslySetInnerHTML={{ __html: t.build(sample, PREVIEW_STYLE) }} />
+                  </div>
                 </div>
 
                 {/* Description */}

@@ -4,8 +4,6 @@ import { useSeo } from '../seo';
 
 export default function OutlookSignature() {
   useSeo({
-    title: 'How to Add an Email Signature in Outlook (Free Guide) | Free Signature Co',
-    description: 'Step-by-step instructions for adding an HTML email signature in new Outlook, Outlook on the web, and classic Outlook desktop for Windows. Free, no account.',
     path: '/how-to-add-email-signature-outlook',
   });
 
@@ -46,6 +44,8 @@ export default function OutlookSignature() {
                 <li>Click <strong>Save</strong>.</li>
               </ol>
             </div>
+
+            <AdBanner />
 
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">Classic Outlook desktop (Windows)</h2>

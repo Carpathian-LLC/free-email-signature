@@ -4,8 +4,6 @@ import { useSeo } from '../seo';
 
 export default function SignatureBestPractices() {
   useSeo({
-    title: 'Email Signature Best Practices and Examples | Free Signature Co',
-    description: 'Email signature best practices: what to include, what to leave out, sizing and format tips, accessibility, and mobile considerations. With a free signature generator.',
     path: '/email-signature-best-practices',
   });
 
@@ -56,6 +54,8 @@ export default function SignatureBestPractices() {
                 <li>Background images. They rarely render the same way twice.</li>
               </ul>
             </div>
+
+            <AdBanner />
 
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">Sizing and format tips</h2>

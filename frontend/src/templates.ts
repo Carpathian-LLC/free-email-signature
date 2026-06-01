@@ -3,7 +3,15 @@ import { SOCIAL_PLATFORMS, buildIconDataUri } from './socialIcons';
 
 // ── Sample data for template previews ───────────────────────────────
 
-const PLACEHOLDER_PHOTO = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200' viewBox='0 0 200 200'%3E%3Crect width='200' height='200' fill='%23e5e7eb'/%3E%3Ccircle cx='100' cy='80' r='35' fill='%239ca3af'/%3E%3Cellipse cx='100' cy='170' rx='55' ry='45' fill='%239ca3af'/%3E%3C/svg%3E";
+// Photos used only for the marketing showcase previews (Home, Templates). The
+// blank-state default on the Create page stays its own neutral gray silhouette.
+export const SAMPLE_PHOTOS = [
+  '/sample-1.jpg',
+  '/sample-2.jpg',
+  '/sample-3.jpg',
+  '/sample-4.jpg',
+  '/sample-5.jpg',
+];
 
 export const SAMPLE_DATA: SignatureFields = {
   fullName: 'Peter Oswald',
@@ -14,8 +22,12 @@ export const SAMPLE_DATA: SignatureFields = {
   website: 'carpathian.ai',
   addressLine1: 'West Des Moines, IA 50265',
   addressLine2: '',
-  photoUrl: PLACEHOLDER_PHOTO,
-  socialLinks: [],
+  photoUrl: SAMPLE_PHOTOS[0],
+  socialLinks: [
+    { id: 's1', platform: 'LinkedIn', platformId: 'linkedin', url: 'https://www.linkedin.com/company/carpathianai/', iconUrl: '' },
+    { id: 's2', platform: 'X', platformId: 'x', url: 'https://x.com/carpathianai', iconUrl: '' },
+    { id: 's3', platform: 'GitHub', platformId: 'github', url: 'https://github.com/Carpathian-LLC', iconUrl: '' },
+  ],
 };
 
 // ── Utilities ───────────────────────────────────────────────────────

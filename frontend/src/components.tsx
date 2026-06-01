@@ -180,6 +180,41 @@ export function SidebarAd() {
   );
 }
 
+export function RectangleAd() {
+  const ref = useRef<HTMLDivElement>(null);
+  const [adLoaded, setAdLoaded] = useState(false);
+  const adKey = import.meta.env.VITE_AD_RECTANGLE_KEY;
+  const adNetwork = import.meta.env.VITE_AD_BANNER_NETWORK;
+
+  useEffect(() => {
+    if (!adKey || !adNetwork || !ref.current || ref.current.children.length > 0) return;
+    if (!/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(adNetwork)) return;
+    if (!/^[a-f0-9]+$/i.test(adKey)) return;
+
+    const config = document.createElement('script');
+    config.textContent = `atOptions = {'key':'${adKey}','format':'iframe','height':250,'width':300,'params':{}};`;
+    ref.current.appendChild(config);
+
+    const invoke = document.createElement('script');
+    invoke.src = `https://${adNetwork}/${adKey}/invoke.js`;
+    ref.current.appendChild(invoke);
+
+    const timer = setTimeout(() => {
+      if (ref.current && ref.current.querySelector('iframe')) setAdLoaded(true);
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [adKey, adNetwork]);
+
+  if (!adKey) return null;
+
+  return (
+    <div className="flex justify-center py-4 overflow-hidden">
+      <div ref={ref} />
+      {isDev && !adLoaded && <AdPlaceholder width={300} height={250} label="Rectangle Ad" />}
+    </div>
+  );
+}
+
 export function NativeBanner() {
   const ref = useRef<HTMLDivElement>(null);
   const [adLoaded, setAdLoaded] = useState(false);

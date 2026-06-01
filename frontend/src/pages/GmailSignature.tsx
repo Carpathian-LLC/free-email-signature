@@ -1,11 +1,9 @@
 import { Link } from 'react-router-dom';
-import { AdBanner } from '../components';
+import { AdBanner, AdSenseBanner } from '../components';
 import { useSeo } from '../seo';
 
 export default function GmailSignature() {
   useSeo({
-    title: 'How to Add an Email Signature in Gmail (Free, 2026 Guide) | Free Signature Co',
-    description: 'Step-by-step guide to adding a professional HTML email signature in Gmail on the web, plus a note on the Gmail mobile app. Free, no account required.',
     path: '/how-to-add-email-signature-gmail',
   });
 
@@ -51,6 +49,8 @@ export default function GmailSignature() {
                 into the editor.
               </p>
             </div>
+
+            <AdSenseBanner />
 
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">A note on the Gmail mobile app</h2>

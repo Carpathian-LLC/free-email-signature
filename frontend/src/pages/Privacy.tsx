@@ -3,8 +3,6 @@ import { useSeo } from '../seo';
 
 export default function Privacy() {
   useSeo({
-    title: 'Privacy Policy | Free Signature Co',
-    description: 'How Free Signature Co handles your data. No accounts, no tracking, your signature data stays in your browser. Full transparency on uploads, analytics, ads, and logs.',
     path: '/privacy',
   });
 

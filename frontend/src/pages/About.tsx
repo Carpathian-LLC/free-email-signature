@@ -38,8 +38,6 @@ function SocialIcon({ id, url, label }: { id: string; url: string; label: string
 
 export default function About() {
   useSeo({
-    title: 'About Free Signature Co | Why We Built a Free Email Signature Generator',
-    description: 'Why Carpathian built a free, open source email signature generator with no accounts, no paywall, and no watermark. Our take on subscription fatigue and the enshittification of the web.',
     path: '/about',
   });
 

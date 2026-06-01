@@ -3,10 +3,7 @@ import { useSeo } from '../seo';
 
 export default function NotFound() {
   useSeo({
-    title: 'Page Not Found | Free Signature Co',
-    description: 'The page you were looking for does not exist. Head back home or create a free email signature instead.',
     path: '/404',
-    noindex: true,
   });
 
   return (

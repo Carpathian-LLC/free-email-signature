@@ -1,9 +1,12 @@
 import { useEffect } from 'react';
+import { SEO_PAGES } from './seo.data';
 
 interface SeoOptions {
-  title: string;
-  description: string;
   path: string;
+  // Optional overrides. When omitted, title/description/noindex are pulled from
+  // SEO_PAGES[path] so the runtime and the build-time prerender stay in sync.
+  title?: string;
+  description?: string;
   noindex?: boolean;
 }
 
@@ -27,14 +30,19 @@ function upsertCanonical(href: string) {
   el.setAttribute('href', href);
 }
 
-export function useSeo({ title, description, path, noindex = false }: SeoOptions) {
+export function useSeo({ path, title, description, noindex }: SeoOptions) {
+  const page = SEO_PAGES[path];
+  const resolvedTitle = title ?? page?.title ?? 'Free Signature Co';
+  const resolvedDescription = description ?? page?.description ?? '';
+  const resolvedNoindex = noindex ?? page?.noindex ?? false;
+
   useEffect(() => {
-    document.title = title;
-    upsertMeta('name', 'description', description);
-    upsertMeta('property', 'og:title', title);
-    upsertMeta('property', 'og:description', description);
-    upsertMeta('name', 'twitter:title', title);
-    upsertMeta('name', 'twitter:description', description);
+    document.title = resolvedTitle;
+    upsertMeta('name', 'description', resolvedDescription);
+    upsertMeta('property', 'og:title', resolvedTitle);
+    upsertMeta('property', 'og:description', resolvedDescription);
+    upsertMeta('name', 'twitter:title', resolvedTitle);
+    upsertMeta('name', 'twitter:description', resolvedDescription);
 
     const siteUrl = (import.meta.env.VITE_SITE_URL as string | undefined) || window.location.origin;
     const fullUrl = siteUrl.replace(/\/$/, '') + path;
@@ -44,7 +52,7 @@ export function useSeo({ title, description, path, noindex = false }: SeoOptions
     upsertMeta(
       'name',
       'robots',
-      noindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large'
+      resolvedNoindex ? 'noindex, nofollow' : 'index, follow, max-snippet:-1, max-image-preview:large'
     );
-  }, [title, description, path, noindex]);
+  }, [resolvedTitle, resolvedDescription, path, resolvedNoindex]);
 }

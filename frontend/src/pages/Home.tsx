@@ -4,12 +4,10 @@ import { StyleOptions } from '../types';
 import { useSeo } from '../seo';
 
 const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280' };
-import { AdBanner, NativeBanner, AdSenseBanner } from '../components';
+import { AdBanner, NativeBanner, AdSenseBanner, RectangleAd } from '../components';
 
 export default function Home() {
   useSeo({
-    title: 'Free Email Signature Generator for Gmail, Outlook & Apple Mail | Free Signature Co',
-    description: 'Free email signature generator. Build a professional HTML email signature for Gmail, Outlook, Apple Mail, and Thunderbird in under a minute. Photo upload, social links, five templates, no account, no paywall, no watermark.',
     path: '/',
   });
 
@@ -43,6 +41,20 @@ export default function Home() {
               Browse Templates
             </Link>
           </div>
+
+          <dl className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-px max-w-2xl mx-auto rounded-2xl overflow-hidden border border-white/15">
+            {[
+              { stat: '5', label: 'Professional templates' },
+              { stat: '8+', label: 'Email clients supported' },
+              { stat: '$0', label: 'No paywall, ever' },
+              { stat: '0', label: 'Accounts required' },
+            ].map(({ stat, label }) => (
+              <div key={label} className="bg-white/5 px-4 py-5">
+                <dt className="text-2xl font-bold text-white">{stat}</dt>
+                <dd className="mt-1 text-xs text-white/70 leading-snug">{label}</dd>
+              </div>
+            ))}
+          </dl>
         </div>
       </section>
 
@@ -138,6 +150,75 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ═══ Choose Your Email Client ═══ */}
+      <section className="py-20 sm:py-24 bg-page-bg-alt" aria-labelledby="by-client">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 id="by-client" className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+              A Free Signature Generator for Every Email Client
+            </h2>
+            <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
+              The same signature works everywhere, but each email client installs it a little differently.
+              Start with the generator or guide built for your client.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <Link
+              to="/free-gmail-signature-generator"
+              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+            >
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Free Gmail Signature Generator</h3>
+              <p className="text-sm text-gray-500">
+                Build a Gmail signature and paste it straight into the web signature editor. Photo, links, and
+                layout carry over intact.
+              </p>
+              <p className="mt-4 text-sm font-medium text-brand-blue group-hover:text-brand-blue-hover transition-colors">
+                Make a Gmail signature &rarr;
+              </p>
+            </Link>
+            <Link
+              to="/free-email-signature-generator-mac"
+              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+            >
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Signature Generator for Mac</h3>
+              <p className="text-sm text-gray-500">
+                Made for Apple Mail on macOS, with templates that render correctly on Retina displays and in
+                dark mode.
+              </p>
+              <p className="mt-4 text-sm font-medium text-brand-blue group-hover:text-brand-blue-hover transition-colors">
+                Make a Mac signature &rarr;
+              </p>
+            </Link>
+            <Link
+              to="/how-to-add-email-signature-outlook"
+              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+            >
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Outlook Signature Guide</h3>
+              <p className="text-sm text-gray-500">
+                Step-by-step install for Outlook on Windows, Mac, the web, and mobile, including where each
+                version hides the setting.
+              </p>
+              <p className="mt-4 text-sm font-medium text-brand-blue group-hover:text-brand-blue-hover transition-colors">
+                Read the Outlook guide &rarr;
+              </p>
+            </Link>
+            <Link
+              to="/email-signature-best-practices"
+              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+            >
+              <h3 className="text-lg font-semibold text-gray-900 mb-2">Signature Best Practices</h3>
+              <p className="text-sm text-gray-500">
+                What to include, what to cut, and how to keep a signature readable across desktop, web, and
+                mobile inboxes.
+              </p>
+              <p className="mt-4 text-sm font-medium text-brand-blue group-hover:text-brand-blue-hover transition-colors">
+                See best practices &rarr;
+              </p>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* ═══ Native Banner ═══ */}
       <div className="bg-page-bg">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
@@ -197,7 +278,7 @@ export default function Home() {
 
       {/* ═══ Ad ═══ */}
       <div className="bg-page-bg-alt">
-        <AdBanner />
+        <RectangleAd />
       </div>
 
       {/* ═══ Features ═══ */}

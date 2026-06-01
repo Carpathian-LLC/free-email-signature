@@ -41,10 +41,7 @@ function formatDate(ms: number): string {
 
 export default function MySignatures() {
   useSeo({
-    title: 'My Signatures | Free Signature Co',
-    description: 'View the email signatures you have created. Saved only in this browser using localStorage. No account, nothing stored on our servers.',
     path: '/my-signatures',
-    noindex: true,
   });
 
   const navigate = useNavigate();
