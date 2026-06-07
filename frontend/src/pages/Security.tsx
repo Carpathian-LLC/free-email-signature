@@ -1,4 +1,4 @@
-import { AdBanner } from '../components';
+import { AdBanner, PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function Security() {
@@ -8,10 +8,13 @@ export default function Security() {
 
   return (
     <>
-    <section className="py-16 sm:py-20 bg-page-bg">
+    <PageHero
+      title="Security Policy"
+      image="https://images.unsplash.com/photo-1633265486064-086b219458ec?w=1600&q=80&auto=format&fit=crop"
+    />
+    <section className="py-16 sm:py-20 bg-page-bg-alt">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Security Policy</h1>
-
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
         <div className="space-y-6 text-sm text-gray-600 leading-relaxed">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Data in transit</h2>
@@ -65,6 +68,7 @@ export default function Security() {
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Reporting vulnerabilities</h2>
             <p>If you find a security issue, email info@carpathian.ai or open a private security advisory on GitHub. We take every report seriously.</p>
           </div>
+        </div>
         </div>
       </div>
     </section>

@@ -5,7 +5,7 @@ import { StyleOptions } from '../types';
 import { useSeo } from '../seo';
 
 const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280' };
-import { AdBanner } from '../components';
+import { AdBanner, PageHero } from '../components';
 
 const UPSELL_LABELS: Record<string, string> = {
   professional: 'Unlock Premium Features',
@@ -61,10 +61,13 @@ export default function Templates() {
   return (
     <>
       {/* Header */}
-      <section className="py-16 sm:py-20 bg-page-bg">
+      <PageHero
+        title="Free Email Signature Templates"
+        image="/email-hero-web.jpeg"
+      />
+      <section className="py-12 sm:py-16 bg-page-bg">
         <div className="mx-auto max-w-3xl px-6 lg:px-8 text-center">
-          <h1 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl">Free Email Signature Templates</h1>
-          <p className="mt-5 text-lg leading-8 text-gray-500">
+          <p className="text-lg leading-8 text-gray-500">
             Five professional email signature templates, all free, all open source. Each one is built with inline HTML tables
             so it renders correctly in Gmail, Outlook, Apple Mail, Thunderbird, and every other email client we could test.
             Pick the style that fits your role, fill in your details, and copy it into your email client in under a minute.

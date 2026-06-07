@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AdBanner, AdSenseBanner } from '../components';
+import { AdSenseBanner, PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function GmailSignatureGenerator() {
@@ -9,12 +9,13 @@ export default function GmailSignatureGenerator() {
 
   return (
     <>
-      <section className="py-16 sm:py-20 bg-page-bg">
+      <PageHero
+        title="Free Gmail Signature Generator"
+        image="https://images.unsplash.com/photo-1620287341401-e2945a4b9daa?w=1600&q=80&auto=format&fit=crop"
+      />
+      <section className="py-16 sm:py-20 bg-page-bg-alt">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            Free Gmail Signature Generator
-          </h1>
-
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
           <p className="text-gray-600 leading-relaxed mb-8">
             Make a professional Gmail email signature for free, right in your browser. There is no account to
             create and no watermark on the result. Choose a template, add your name, title, company, photo, and
@@ -75,11 +76,9 @@ export default function GmailSignatureGenerator() {
               Create your free Gmail signature
             </Link>
           </div>
+          </div>
         </div>
       </section>
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
     </>
   );
 }

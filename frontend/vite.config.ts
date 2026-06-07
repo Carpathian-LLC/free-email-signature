@@ -1,81 +1,11 @@
-import { defineConfig, Plugin } from 'vite'
+import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
-import { readFileSync, writeFileSync, mkdirSync } from 'fs'
-import { resolve, dirname } from 'path'
-import { SEO_PAGES } from './src/seo.data'
+import { readFileSync } from 'fs'
+import { resolve } from 'path'
 
-// Files copied verbatim from public/ (sitemap.xml, robots.txt) never enter the
-// rollup bundle, so generateBundle can't see them. Patch them on disk after the
-// build writes the output dir, so __SITE_URL__ resolves to the real site URL.
-function siteUrlPlugin(siteUrl: string): Plugin {
-  const targets = ['robots.txt', 'sitemap.xml'];
-  return {
-    name: 'site-url-replace',
-    writeBundle(options) {
-      const outDir = options.dir ?? resolve(__dirname, 'dist');
-      for (const name of targets) {
-        const path = resolve(outDir, name);
-        try {
-          const patched = readFileSync(path, 'utf-8').replaceAll('__SITE_URL__', siteUrl);
-          writeFileSync(path, patched);
-        } catch { /* file not present in this build */ }
-      }
-    },
-  }
-}
-
-// Build-time prerender. The app is a client-side SPA, so without this every
-// route would serve index.html's static meta and crawlers that do not run JS
-// (Google's non-JS pass, Facebook, LinkedIn, Slack, SEO auditors) would see
-// identical title/description on every URL. This writes one HTML file per route
-// with that route's meta baked in. SEO copy comes from SEO_PAGES (src/seo.data)
-// so the runtime hook and these static files never drift.
-function prerenderPlugin(siteUrl: string): Plugin {
-  const base = siteUrl.replace(/\/$/, '');
-  const esc = (s: string) =>
-    s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-
-  const setAttr = (html: string, selector: RegExp, value: string) =>
-    html.replace(selector, (_m, p1: string, p2: string) => p1 + value + p2);
-
-  return {
-    name: 'route-prerender',
-    writeBundle(options) {
-      const outDir = options.dir ?? resolve(__dirname, 'dist');
-      const template = readFileSync(resolve(outDir, 'index.html'), 'utf-8');
-
-      for (const [path, meta] of Object.entries(SEO_PAGES)) {
-        const title = esc(meta.title);
-        const description = esc(meta.description);
-        const url = path === '/' ? base + '/' : base + path;
-        const robots = meta.noindex
-          ? 'noindex, nofollow'
-          : 'index, follow, max-snippet:-1, max-image-preview:large';
-
-        let html = template.replace(/<title>[\s\S]*?<\/title>/, `<title>${title}</title>`);
-        html = setAttr(html, /(<meta name="description" content=")[^"]*(")/, description);
-        html = setAttr(html, /(<meta property="og:title" content=")[^"]*(")/, title);
-        html = setAttr(html, /(<meta property="og:description" content=")[^"]*(")/, description);
-        html = setAttr(html, /(<meta property="og:url" content=")[^"]*(")/, url);
-        html = setAttr(html, /(<meta name="twitter:title" content=")[^"]*(")/, title);
-        html = setAttr(html, /(<meta name="twitter:description" content=")[^"]*(")/, description);
-        html = setAttr(html, /(<link rel="canonical" href=")[^"]*(")/, url);
-        html = setAttr(html, /(<meta name="robots" content=")[^"]*(")/, robots);
-
-        // '/' overwrites the build's index.html; '/404' becomes 404.html for
-        // static-host not-found fallback; every other route gets path/index.html.
-        const outPath =
-          path === '/'
-            ? resolve(outDir, 'index.html')
-            : path === '/404'
-              ? resolve(outDir, '404.html')
-              : resolve(outDir, '.' + path, 'index.html');
-        mkdirSync(dirname(outPath), { recursive: true });
-        writeFileSync(outPath, html);
-      }
-    },
-  };
-}
+// Per-route static rendering (full body HTML + meta) and sitemap/robots
+// generation happen after the build in scripts/prerender.mjs, which renders the
+// SSR bundle. vite.config only produces the two bundles it needs.
 
 function loadKeysEnv(): Record<string, string> {
   const vars: Record<string, string> = {};
@@ -115,9 +45,18 @@ export default defineConfig(() => {
     }
   }
 
+  // `vite build` -> client bundle in dist/. The SSR bundle (consumed only by
+  // scripts/prerender.mjs to render each route to static HTML, then deleted) is
+  // produced by `vite build --ssr src/entry-server.tsx --outDir dist-server`.
+  // The SSR bundle has no use for the public/ assets, so skip copying them there.
+  const isSsrBuild = process.argv.includes('--ssr');
+
   return {
-    plugins: [react(), siteUrlPlugin(siteUrl), prerenderPlugin(siteUrl)],
+    plugins: [react()],
     define,
+    build: {
+      copyPublicDir: !isSsrBuild,
+    },
     server: {
       port: frontendPort,
     },

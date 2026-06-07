@@ -4,7 +4,7 @@ import { StyleOptions } from '../types';
 import { useSeo } from '../seo';
 
 const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280' };
-import { AdBanner, NativeBanner, AdSenseBanner, RectangleAd } from '../components';
+import { AdBanner, AdSenseBanner } from '../components';
 
 export default function Home() {
   useSeo({
@@ -14,7 +14,14 @@ export default function Home() {
   return (
     <>
       {/* ═══ Hero ═══ */}
-      <section className="relative py-20 sm:py-28 bg-brand-blue-dark border-b border-black/20">
+      <section className="relative py-12 sm:py-16 bg-brand-blue-dark border-b border-black/20 overflow-hidden">
+        <img
+          src="/email-hero-1-web.jpeg"
+          alt=""
+          aria-hidden="true"
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-brand-blue-dark/85" aria-hidden="true" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <div className="inline-block px-4 py-1.5 bg-white text-brand-blue-dark rounded-full text-sm font-semibold mb-6">
             Free. Open Source. No Account Required.
@@ -95,11 +102,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ═══ Ad ═══ */}
-      <div className="bg-page-bg-alt">
-        <AdSenseBanner />
-      </div>
 
       {/* ═══ How It Works ═══ */}
       <section className="py-20 sm:py-24 bg-page-bg" aria-labelledby="how-it-works">
@@ -219,13 +221,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ═══ Native Banner ═══ */}
-      <div className="bg-page-bg">
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
-          <NativeBanner />
-        </div>
-      </div>
-
       {/* ═══ Email Client Compatibility ═══ */}
       <section className="py-20 sm:py-24 bg-page-bg-alt" aria-labelledby="email-clients">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
@@ -275,11 +270,6 @@ export default function Home() {
           </div>
         </div>
       </section>
-
-      {/* ═══ Ad ═══ */}
-      <div className="bg-page-bg-alt">
-        <RectangleAd />
-      </div>
 
       {/* ═══ Features ═══ */}
       <section className="py-20 sm:py-24 bg-page-bg" aria-labelledby="features">
@@ -397,11 +387,6 @@ export default function Home() {
           </p>
         </div>
       </section>
-
-      {/* ═══ Ad ═══ */}
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
 
       {/* ═══ FAQ ═══ */}
       <section className="py-20 sm:py-24 bg-page-bg" aria-labelledby="faq">

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AdBanner, AdSenseBanner } from '../components';
+import { AdSenseBanner, PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function MacSignatureGenerator() {
@@ -9,12 +9,13 @@ export default function MacSignatureGenerator() {
 
   return (
     <>
-      <section className="py-16 sm:py-20 bg-page-bg">
+      <PageHero
+        title="Free Email Signature Generator for Mac and Apple Mail"
+        image="https://images.unsplash.com/photo-1579338775661-7d0b8621ec83?w=1600&q=80&auto=format&fit=crop"
+      />
+      <section className="py-16 sm:py-20 bg-page-bg-alt">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            Free Email Signature Generator for Mac and Apple Mail
-          </h1>
-
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
           <p className="text-gray-600 leading-relaxed mb-8">
             Build a polished email signature for your Mac in your browser, completely free and with no
             account required. Our generator works great with Apple Mail on macOS, and the same signature
@@ -75,11 +76,9 @@ export default function MacSignatureGenerator() {
               Create your free Mac signature
             </Link>
           </div>
+          </div>
         </div>
       </section>
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
     </>
   );
 }

@@ -1,7 +1,10 @@
 node_modules/
 dist/
+dist-server/
 *.env
 keys.env
+# Generated at build time from VITE_ADSENSE_CLIENT; never commit a publisher id.
+frontend/public/ads.txt
 __pycache__/
 *.pyc
 .venv/

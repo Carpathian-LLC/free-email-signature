@@ -1,4 +1,4 @@
-import { AdBanner } from '../components';
+import { AdBanner, PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function Privacy() {
@@ -8,10 +8,13 @@ export default function Privacy() {
 
   return (
     <>
-    <section className="py-16 sm:py-20 bg-page-bg">
+    <PageHero
+      title="Privacy Policy"
+      image="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1600&q=80&auto=format&fit=crop"
+    />
+    <section className="py-16 sm:py-20 bg-page-bg-alt">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <h1 className="text-3xl font-bold text-gray-900 mb-8">Privacy Policy</h1>
-
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
         <div className="space-y-6 text-sm text-gray-600 leading-relaxed">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">What we collect</h2>
@@ -58,6 +61,7 @@ export default function Privacy() {
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Contact</h2>
             <p>Questions? Open an issue on GitHub or email info@carpathian.ai.</p>
           </div>
+        </div>
         </div>
       </div>
     </section>

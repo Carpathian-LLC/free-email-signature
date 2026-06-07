@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AdBanner, AdSenseBanner } from '../components';
+import { AdSenseBanner, PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function AppleMailSignature() {
@@ -9,12 +9,13 @@ export default function AppleMailSignature() {
 
   return (
     <>
-      <section className="py-16 sm:py-20 bg-page-bg">
+      <PageHero
+        title="How to Add an Email Signature in Apple Mail"
+        image="https://images.unsplash.com/photo-1543145223-1f9043516739?w=1600&q=80&auto=format&fit=crop"
+      />
+      <section className="py-16 sm:py-20 bg-page-bg-alt">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            How to Add an Email Signature in Apple Mail
-          </h1>
-
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
           <p className="text-gray-600 leading-relaxed mb-8">
             Apple Mail on macOS supports a full HTML email signature with a photo and formatting, while the
             Mail app on iPhone and iPad uses a plain-text signature only. This guide covers both. Build your
@@ -71,11 +72,9 @@ export default function AppleMailSignature() {
               Create your free signature
             </Link>
           </div>
+          </div>
         </div>
       </section>
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
     </>
   );
 }

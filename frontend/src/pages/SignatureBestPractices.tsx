@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AdBanner } from '../components';
+import { AdBanner, PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function SignatureBestPractices() {
@@ -9,12 +9,13 @@ export default function SignatureBestPractices() {
 
   return (
     <>
-      <section className="py-16 sm:py-20 bg-page-bg">
+      <PageHero
+        title="Email Signature Best Practices and Examples"
+        image="https://images.unsplash.com/photo-1554412663-7b99cf315535?w=1600&q=80&auto=format&fit=crop"
+      />
+      <section className="py-16 sm:py-20 bg-page-bg-alt">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            Email Signature Best Practices and Examples
-          </h1>
-
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
           <p className="text-gray-600 leading-relaxed mb-8">
             A good email signature gives the recipient what they need to identify and reach you, and nothing more.
             These email signature best practices keep yours clean, professional, and reliable across desktop, web,
@@ -100,11 +101,9 @@ export default function SignatureBestPractices() {
               Create your free signature
             </Link>
           </div>
+          </div>
         </div>
       </section>
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
     </>
   );
 }

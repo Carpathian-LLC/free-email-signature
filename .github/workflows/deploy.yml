@@ -1,3 +1,7 @@
+# Carpathian-specific deployment hook. It pings Carpathian's platform API to
+# trigger a deploy and only does anything when the CARPATHIAN_API_KEY repo
+# secret is set, so it is a harmless no-op on forks. If you fork this project,
+# delete this file or replace it with your own deploy workflow.
 name: Deploy to Carpathian
 
 on:

@@ -4,7 +4,7 @@ import Cropper from 'react-easy-crop';
 import type { Area } from 'react-easy-crop';
 import { SignatureFields, SocialLink, TemplateId, StyleOptions } from '../types';
 import { templates, SAMPLE_DATA } from '../templates';
-import { Section, Field, AdBanner, SidebarAd, ColorPicker } from '../components';
+import { Section, Field, SidebarAd, ColorPicker } from '../components';
 import { SOCIAL_PLATFORMS } from '../socialIcons';
 import { useSeo } from '../seo';
 
@@ -746,16 +746,11 @@ export default function Create() {
                   </p>
                 </div>
               )}
-              <AdBanner />
               <SidebarAd />
             </div>
           </div>
         </div>
       </section>
-
-      <div className="bg-page-bg">
-        <AdBanner />
-      </div>
     </>
   );
 }

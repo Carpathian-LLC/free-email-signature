@@ -8,6 +8,8 @@ import Privacy from './pages/Privacy';
 import Security from './pages/Security';
 import NotFound from './pages/NotFound';
 import MySignatures from './pages/MySignatures';
+import Blog from './pages/Blog';
+import BlogPost from './pages/BlogPost';
 import GmailSignature from './pages/GmailSignature';
 import OutlookSignature from './pages/OutlookSignature';
 import AppleMailSignature from './pages/AppleMailSignature';
@@ -18,6 +20,9 @@ import ConsentBanner from './cmp/ConsentBanner';
 import { AdSenseBanner } from './components';
 
 const API_URL = import.meta.env.VITE_API_URL || '';
+// Optional donation link. Set VITE_DONATE_URL to your own (PayPal, Ko-fi, etc.);
+// when unset, the donate button is hidden so forks never link to someone else.
+const DONATE_URL = import.meta.env.VITE_DONATE_URL || '';
 
 function Layout() {
   const location = useLocation();
@@ -98,8 +103,8 @@ function Layout() {
       <nav className="bg-white/80 backdrop-blur-xl border-b border-gray-200 sticky top-0 z-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 h-14 flex items-center justify-between">
           <Link to="/" className="flex items-center gap-2 text-gray-900 font-bold text-base sm:text-lg hover:text-brand-blue transition-colors min-w-0">
-            <img src="/MyFreeEmailSignature_logo.png" alt="Free Signature Co" className="h-6 w-auto flex-shrink-0 hidden sm:block" />
-            <span className="truncate">Free Signature Co</span>
+            <img src="/MyFreeEmailSignature_logo.png" alt="Free Signature Co." className="h-6 w-auto flex-shrink-0 hidden sm:block" />
+            <span className="truncate">Free Signature Co.</span>
           </Link>
           <div className="flex items-center gap-3 sm:gap-6">
             <Link
@@ -107,6 +112,12 @@ function Layout() {
               className={`hidden sm:inline text-sm font-medium transition-colors ${isActive('/templates') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
             >
               Templates
+            </Link>
+            <Link
+              to="/blog"
+              className={`hidden sm:inline text-sm font-medium transition-colors ${location.pathname.startsWith('/blog') ? 'text-gray-900' : 'text-gray-500 hover:text-gray-900'}`}
+            >
+              Blog
             </Link>
             <Link
               to="/about"
@@ -141,8 +152,8 @@ function Layout() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 pb-8 border-b border-gray-100">
             <div>
               <div className="flex items-center gap-2 text-gray-900 font-bold text-base mb-3">
-                <img src="/MyFreeEmailSignature_logo.png" alt="Free Signature Co" className="h-6 w-auto flex-shrink-0" />
-                Free Signature Co
+                <img src="/MyFreeEmailSignature_logo.png" alt="Free Signature Co." className="h-6 w-auto flex-shrink-0" />
+                Free Signature Co.
               </div>
               <p className="text-sm text-gray-500 leading-relaxed">
                 An open source project by{' '}
@@ -151,15 +162,18 @@ function Layout() {
                 </a>
               </p>
               <p className="text-sm italic mt-2 text-gray-400">Made with love and 100% recycled electrons.</p>
-              <button type="button" onClick={() => setShowDonate(true)} className="donate-shimmer font-bold text-xs mt-3 border border-brand-blue rounded-md px-3 py-1.5 hover:opacity-80 transition-opacity">
-                Super Ultra Premium Extra Deluxe Donate Button
-              </button>
+              {DONATE_URL && (
+                <button type="button" onClick={() => setShowDonate(true)} className="donate-shimmer font-bold text-xs mt-3 border border-brand-blue rounded-md px-3 py-1.5 hover:opacity-80 transition-opacity">
+                  Super Ultra Premium Extra Deluxe Donate Button
+                </button>
+              )}
             </div>
             <div>
               <h4 className="text-gray-900 text-sm font-semibold mb-3">Product</h4>
               <ul className="space-y-2 text-sm text-gray-500">
                 <li><Link to="/templates" className="hover:text-gray-900 transition-colors">Templates</Link></li>
                 <li><Link to="/create" className="hover:text-gray-900 transition-colors">Create Signature</Link></li>
+                <li><Link to="/blog" className="hover:text-gray-900 transition-colors">Blog</Link></li>
                 <li><Link to="/about" className="hover:text-gray-900 transition-colors">About</Link></li>
               </ul>
             </div>
@@ -200,7 +214,7 @@ function Layout() {
             </p>
             <div className="flex flex-col gap-3 mt-6">
               <a
-                href="https://paypal.me/smalkasian"
+                href={DONATE_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors"
@@ -229,6 +243,8 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="/create" element={<Create />} />
         <Route path="/templates" element={<Templates />} />
+        <Route path="/blog" element={<Blog />} />
+        <Route path="/blog/:slug" element={<BlogPost />} />
         <Route path="/about" element={<About />} />
         <Route path="/privacy" element={<Privacy />} />
         <Route path="/security" element={<Security />} />

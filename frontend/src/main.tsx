@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import { getConsentFor } from './cmp/ConsentBanner'
@@ -26,10 +26,19 @@ if (clarityId && /^[a-z0-9]+$/i.test(clarityId) && getConsentFor('clarity')) {
   })(window, document, "clarity", "script", clarityId);
 }
 
-createRoot(document.getElementById('root')!).render(
+const rootEl = document.getElementById('root')!;
+const app = (
   <StrictMode>
     <BrowserRouter>
       <App />
     </BrowserRouter>
-  </StrictMode>,
-)
+  </StrictMode>
+);
+
+// Routes are prerendered to static HTML at build time, so hydrate the existing
+// markup when present. Falls back to a fresh render in dev, where #root is empty.
+if (rootEl.hasChildNodes()) {
+  hydrateRoot(rootEl, app);
+} else {
+  createRoot(rootEl).render(app);
+}

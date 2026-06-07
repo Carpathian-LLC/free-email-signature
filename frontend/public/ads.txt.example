@@ -1,0 +1,7 @@
+# Reference only. The real ads.txt is generated at build time from
+# VITE_ADSENSE_CLIENT (see scripts/prerender.mjs), so you do not need to
+# create one by hand. Just set VITE_ADSENSE_CLIENT in keys.env and build.
+#
+# The generated line looks like this (pub id is your ca-pub-... with the
+# leading "ca-" stripped; the trailing token is Google's fixed cert id):
+google.com, pub-XXXXXXXXXXXXXXXX, DIRECT, f08c47fec0942fa0

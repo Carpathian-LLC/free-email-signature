@@ -9,6 +9,32 @@ export function Section({ title, children }: { title: string; children: React.Re
   );
 }
 
+// Image header banner used at the top of content pages. The photo sits behind a
+// solid brand-color overlay (no gradient) so white text always has strong
+// contrast. Renders the page's single <h1>, so the page body must not add another.
+export function PageHero({
+  title,
+  subtitle,
+  image,
+}: {
+  title: string;
+  subtitle?: string;
+  image: string;
+}) {
+  return (
+    <section className="relative py-16 sm:py-20 bg-brand-blue-dark border-b border-black/20 overflow-hidden">
+      <img src={image} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
+      <div className="absolute inset-0 bg-brand-blue-dark/85" aria-hidden="true" />
+      <div className="relative mx-auto max-w-3xl px-4 sm:px-6 text-center">
+        <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">{title}</h1>
+        {subtitle ? (
+          <p className="mt-4 text-white/90 leading-relaxed max-w-2xl mx-auto">{subtitle}</p>
+        ) : null}
+      </div>
+    </section>
+  );
+}
+
 export function Field({
   label,
   value,

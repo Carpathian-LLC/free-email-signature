@@ -1,7 +1,10 @@
 import { Link } from 'react-router-dom';
-import { AdBanner } from '../components';
+import { AdBanner, PageHero } from '../components';
 import { useSeo } from '../seo';
 import { SOCIAL_PLATFORMS } from '../socialIcons';
+
+// Optional donation link; hidden when VITE_DONATE_URL is unset (see App.tsx).
+const DONATE_URL = import.meta.env.VITE_DONATE_URL || '';
 
 const SAMUEL_SOCIALS: { id: string; url: string }[] = [
   { id: 'linkedin', url: 'https://linkedin.com/in/samuel-malkasian' },
@@ -43,18 +46,14 @@ export default function About() {
 
   return (
     <>
-    <article className="py-16 sm:py-20 bg-page-bg">
+    <PageHero
+      title="Why does this exist?"
+      subtitle="Because you shouldn't need a subscription to make an email signature."
+      image="/email-hero-3-web.jpeg"
+    />
+    <article className="py-16 sm:py-20 bg-page-bg-alt">
       <div className="mx-auto max-w-3xl px-4 sm:px-6">
-
-        <header className="mb-12">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 tracking-tight">
-            Why does this exist?
-          </h1>
-          <p className="mt-4 text-lg text-gray-500 leading-relaxed">
-            Because you shouldn't need a subscription to make an email signature.
-          </p>
-        </header>
-
+        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
         <div className="space-y-10 text-gray-600 leading-relaxed">
 
           <section aria-labelledby="the-problem">
@@ -142,12 +141,14 @@ export default function About() {
                   GitHub
                 </a>.
               </li>
-              <li>
-                <a href="https://paypal.me/smalkasian" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-blue-hover font-medium">
-                  Buy me a coffee
-                </a>{' '}
-                if you're feeling generous. Not required, not expected, but appreciated.
-              </li>
+              {DONATE_URL && (
+                <li>
+                  <a href={DONATE_URL} target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-blue-hover font-medium">
+                    Buy me a coffee
+                  </a>{' '}
+                  if you're feeling generous. Not required, not expected, but appreciated.
+                </li>
+              )}
             </ul>
           </section>
 
@@ -209,6 +210,7 @@ export default function About() {
             </Link>
           </div>
 
+        </div>
         </div>
       </div>
     </article>

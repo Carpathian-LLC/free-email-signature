@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AdBanner } from '../components';
+import { AdBanner, PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function OutlookSignature() {
@@ -9,12 +9,13 @@ export default function OutlookSignature() {
 
   return (
     <>
-      <section className="py-16 sm:py-20 bg-page-bg">
+      <PageHero
+        title="How to Add an Email Signature in Outlook"
+        image="https://images.unsplash.com/photo-1602016736566-7ed6a58894bd?w=1600&q=80&auto=format&fit=crop"
+      />
+      <section className="py-16 sm:py-20 bg-page-bg-alt">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            How to Add an Email Signature in Outlook
-          </h1>
-
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
           <p className="text-gray-600 leading-relaxed mb-8">
             Outlook comes in several versions, and the signature setting lives in a different place in each one.
             This guide covers new Outlook and Outlook on the web, which share the same settings, and classic
@@ -74,11 +75,9 @@ export default function OutlookSignature() {
               Create your free signature
             </Link>
           </div>
+          </div>
         </div>
       </section>
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
     </>
   );
 }

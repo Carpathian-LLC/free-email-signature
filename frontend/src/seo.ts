@@ -32,7 +32,7 @@ function upsertCanonical(href: string) {
 
 export function useSeo({ path, title, description, noindex }: SeoOptions) {
   const page = SEO_PAGES[path];
-  const resolvedTitle = title ?? page?.title ?? 'Free Signature Co';
+  const resolvedTitle = title ?? page?.title ?? 'Free Signature Co.';
   const resolvedDescription = description ?? page?.description ?? '';
   const resolvedNoindex = noindex ?? page?.noindex ?? false;
 

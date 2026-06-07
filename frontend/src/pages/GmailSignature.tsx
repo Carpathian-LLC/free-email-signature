@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AdBanner, AdSenseBanner } from '../components';
+import { AdSenseBanner, PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function GmailSignature() {
@@ -9,12 +9,13 @@ export default function GmailSignature() {
 
   return (
     <>
-      <section className="py-16 sm:py-20 bg-page-bg">
+      <PageHero
+        title="How to Add an Email Signature in Gmail (Free, 2026 Guide)"
+        image="https://images.unsplash.com/photo-1603791440384-56cd371ee9a7?w=1600&q=80&auto=format&fit=crop"
+      />
+      <section className="py-16 sm:py-20 bg-page-bg-alt">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <h1 className="text-3xl font-bold text-gray-900 mb-6">
-            How to Add an Email Signature in Gmail (Free, 2026 Guide)
-          </h1>
-
+          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
           <p className="text-gray-600 leading-relaxed mb-8">
             Adding an email signature in Gmail takes about a minute. This guide covers Gmail on the web,
             where you can paste a fully formatted HTML signature, and the Gmail mobile app, which uses a
@@ -72,11 +73,9 @@ export default function GmailSignature() {
               Create your free signature
             </Link>
           </div>
+          </div>
         </div>
       </section>
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
     </>
   );
 }
