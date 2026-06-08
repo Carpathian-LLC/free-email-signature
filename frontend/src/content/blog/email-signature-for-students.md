@@ -2,7 +2,7 @@
 title: "How to Create an Email Signature as a Student"
 description: "Learn how to create a professional student email signature that works for job applications, internships, and faculty emails, with real examples and a free builder."
 slug: email-signature-for-students
-date: 2026-03-23
+date: 2025-07-04
 author: Free Signature Co.
 tags: email signature, students, job search, email tips, professional communication
 image: https://images.unsplash.com/photo-1513258496099-48168024aec0?w=1200&q=80&auto=format&fit=crop

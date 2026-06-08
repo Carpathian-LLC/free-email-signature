@@ -2,7 +2,7 @@
 title: "How to Start an Email: Greetings for Every Situation"
 description: "Learn how to start an email with the right greeting for any situation, from job applications to cold outreach, with real examples and quick fixes."
 slug: how-to-start-an-email
-date: 2026-05-31
+date: 2026-02-15
 author: Free Signature Co.
 tags: email writing, greetings, professional communication, email etiquette, career
 image: https://images.unsplash.com/photo-1672380135241-c024f7fbfa13?w=1200&q=80&auto=format&fit=crop

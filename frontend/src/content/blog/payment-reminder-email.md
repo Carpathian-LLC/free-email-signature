@@ -2,7 +2,7 @@
 title: "How to Write a Payment Reminder Email That Gets You Paid"
 description: "Chasing invoices is awkward. Learn how to write polite, firm payment reminder emails, with a sequence and templates for each stage."
 slug: payment-reminder-email
-date: 2026-05-11
+date: 2025-09-14
 author: Free Signature Co.
 tags: invoicing, freelance, small business, email writing, collections
 image: https://images.unsplash.com/photo-1626266061368-46a8f578ddd6?w=1200&q=80&auto=format&fit=crop

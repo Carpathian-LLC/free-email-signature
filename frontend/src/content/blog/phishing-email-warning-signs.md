@@ -2,7 +2,7 @@
 title: "How to Spot a Phishing Email: 10 Warning Signs"
 description: "Phishing emails are getting harder to catch. Learn the ten warning signs of a scam email and exactly what to do when one lands in your inbox."
 slug: phishing-email-warning-signs
-date: 2026-06-02
+date: 2025-09-28
 author: Free Signature Co.
 tags: email security, phishing, online safety, scam prevention, cybersecurity
 image: https://images.unsplash.com/photo-1633265486064-086b219458ec?w=1200&q=80&auto=format&fit=crop

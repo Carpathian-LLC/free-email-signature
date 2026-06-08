@@ -2,7 +2,7 @@
 title: "How to Write Accessible Emails Everyone Can Read"
 description: "Make your emails readable for everyone, including people using screen readers. A practical guide to accessible structure, links, images, and color."
 slug: accessible-email-writing
-date: 2026-06-03
+date: 2025-09-27
 author: Free Signature Co.
 tags: accessibility, email writing, inclusive communication, email design, best practices
 image: https://images.unsplash.com/photo-1516342243255-ac2202f9f149?w=1200&q=80&auto=format&fit=crop

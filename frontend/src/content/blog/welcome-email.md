@@ -2,7 +2,7 @@
 title: "How to Write a Welcome Email for New Customers or Hires"
 description: "Learn how to write a welcome email for new customers or new hires, with subject line tips, structure, tone advice, and two ready-to-use examples."
 slug: welcome-email
-date: 2026-02-24
+date: 2026-05-21
 author: Free Signature Co.
 tags: welcome email, onboarding, email writing, customer success, hr
 image: https://images.unsplash.com/photo-1473186578172-c141e6798cf4?w=1200&q=80&auto=format&fit=crop

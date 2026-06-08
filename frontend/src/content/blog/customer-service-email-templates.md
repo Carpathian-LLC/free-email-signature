@@ -2,7 +2,7 @@
 title: "Customer Service Email Templates and Best Practices"
 description: "Customer service email templates and best practices, with examples for apologies, refunds, delays, and angry customers. Write replies that build trust."
 slug: customer-service-email-templates
-date: 2026-04-10
+date: 2025-09-17
 author: Free Signature Co.
 tags: customer service, email templates, communication, support, writing
 image: https://images.unsplash.com/photo-1626863905121-3b0c0ed7b94c?w=1200&q=80&auto=format&fit=crop

@@ -2,7 +2,7 @@
 title: "How to Write an Interview Follow-Up Email"
 description: "Learn how to write an interview follow-up email that strengthens your candidacy, with timing tips, real examples, and templates for thank-you and check-in notes."
 slug: interview-follow-up-email
-date: 2026-04-28
+date: 2025-12-27
 author: Free Signature Co.
 tags: interview follow-up, job search, email writing, career, professional communication
 image: https://images.unsplash.com/photo-1758518731694-41ea7fa6a2d9?w=1200&q=80&auto=format&fit=crop

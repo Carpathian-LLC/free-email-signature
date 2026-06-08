@@ -2,7 +2,7 @@
 title: "Email Writing Tips for Non-Native English Speakers"
 description: "Practical email writing for ESL professionals: structure, polite phrasing, common mistakes to avoid, and example emails that sound natural and clear in English."
 slug: esl-email-writing
-date: 2026-03-11
+date: 2025-12-03
 author: Free Signature Co.
 tags: esl, email writing, communication, professional, english
 image: https://images.unsplash.com/photo-1603575448878-868a20723f5d?w=1200&q=80&auto=format&fit=crop

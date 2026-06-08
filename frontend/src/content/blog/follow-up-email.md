@@ -2,7 +2,7 @@
 title: "How to Write a Follow-Up Email (Templates Included)"
 description: "Learn how to write a follow-up email that gets replies. Practical structure, timing tips, and copy-paste templates for jobs, sales, and client work."
 slug: follow-up-email
-date: 2026-05-25
+date: 2025-07-02
 author: Free Signature Co.
 tags: follow-up email, email writing, job search, sales, communication
 image: https://images.unsplash.com/photo-1554672408-17407e0322ce?w=1200&q=80&auto=format&fit=crop

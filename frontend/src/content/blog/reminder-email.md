@@ -2,7 +2,7 @@
 title: "How to Write a Polite Reminder Email"
 description: "Learn how to write a polite reminder email that gets a reply without sounding pushy, with ready-to-use templates, timing tips, and subject line examples."
 slug: reminder-email
-date: 2026-04-04
+date: 2025-08-18
 author: Free Signature Co.
 tags: email, reminder email, communication, productivity, follow-up
 image: https://images.unsplash.com/photo-1519086588705-c935fdedcc14?w=1200&q=80&auto=format&fit=crop

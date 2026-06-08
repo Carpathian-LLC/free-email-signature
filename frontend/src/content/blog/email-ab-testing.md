@@ -2,7 +2,7 @@
 title: "A/B Testing Your Emails: A Beginner's Guide"
 description: "Stop guessing what works. Learn how to run simple, reliable A/B tests on your email subject lines, content, and calls to action."
 slug: email-ab-testing
-date: 2026-05-26
+date: 2025-07-14
 author: Free Signature Co.
 tags: email marketing, a/b testing, optimization, open rates, data
 image: https://images.unsplash.com/photo-1666875753105-c63a6f3bdc86?w=1200&q=80&auto=format&fit=crop

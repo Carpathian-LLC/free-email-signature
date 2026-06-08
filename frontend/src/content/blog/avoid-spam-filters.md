@@ -2,7 +2,7 @@
 title: "How to Write Emails That Avoid Spam Filters"
 description: "Learn how to avoid spam filters with practical email tips on subject lines, links, sender reputation, and content so your important messages land in the inbox."
 slug: avoid-spam-filters
-date: 2026-03-17
+date: 2025-12-19
 author: Free Signature Co.
 tags: email deliverability, spam filters, email writing, inbox, communication
 image: https://images.unsplash.com/photo-1690264617102-0d4d1faa1322?w=1200&q=80&auto=format&fit=crop

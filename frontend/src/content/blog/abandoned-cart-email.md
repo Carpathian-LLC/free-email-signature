@@ -2,7 +2,7 @@
 title: "How to Write an Abandoned Cart Email That Recovers Sales"
 description: "Abandoned cart emails recover real revenue when done well. Learn the timing, structure, and copy that brings shoppers back to finish checkout."
 slug: abandoned-cart-email
-date: 2026-05-23
+date: 2025-11-22
 author: Free Signature Co.
 tags: email marketing, ecommerce, abandoned cart, conversion, sales emails
 image: https://images.unsplash.com/photo-1683117927786-f146451082fb?w=1200&q=80&auto=format&fit=crop

@@ -2,7 +2,7 @@
 title: "How to Email Your Boss Without Overthinking It"
 description: "Emailing your manager should not be stressful. Learn a simple structure and real examples for updates, questions, time off, and bad news."
 slug: email-your-boss
-date: 2026-05-15
+date: 2026-03-15
 author: Free Signature Co.
 tags: workplace communication, email writing, managing up, professional email, career
 image: https://images.unsplash.com/photo-1602016736566-7ed6a58894bd?w=1200&q=80&auto=format&fit=crop

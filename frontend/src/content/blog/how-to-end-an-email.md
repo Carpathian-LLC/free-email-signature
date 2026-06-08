@@ -2,7 +2,7 @@
 title: "How to End an Email: Sign-Offs That Actually Work"
 description: "Learn how to end an email with sign-offs that actually work. Practical closings for work, job applications, and cold outreach, plus examples and FAQs."
 slug: how-to-end-an-email
-date: 2026-05-28
+date: 2025-11-16
 author: Free Signature Co.
 tags: email writing, sign-offs, professional communication, email etiquette, productivity
 image: https://images.unsplash.com/photo-1487017159836-4e23ece2e4cf?w=1200&q=80&auto=format&fit=crop

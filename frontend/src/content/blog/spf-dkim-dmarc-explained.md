@@ -2,7 +2,7 @@
 title: "SPF, DKIM, and DMARC Explained (Without the Jargon)"
 description: "A plain-English guide to SPF, DKIM, and DMARC: what each email authentication record does, why it matters, and how to set them up."
 slug: spf-dkim-dmarc-explained
-date: 2026-06-06
+date: 2025-12-12
 author: Free Signature Co.
 tags: email deliverability, email authentication, spf, dkim, dmarc
 image: https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1200&q=80&auto=format&fit=crop
