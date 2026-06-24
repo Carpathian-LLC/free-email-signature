@@ -36,7 +36,7 @@ export function getRoutes(): RouteMeta[] {
   for (const post of posts) {
     routes.push({
       path: `/blog/${post.slug}`,
-      title: `${post.title} | Free Signature Co.`,
+      title: post.title,
       description: post.description,
       noindex: false,
       image: post.image,

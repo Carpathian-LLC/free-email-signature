@@ -18,7 +18,7 @@ export default function BlogPost() {
 
   useSeo({
     path: `/blog/${slug}`,
-    title: post ? `${post.title} | Free Signature Co.` : 'Article Not Found | Free Signature Co.',
+    title: post ? post.title : 'Article Not Found | Free Signature Co.',
     description: post?.description,
     noindex: !post,
   });

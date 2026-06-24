@@ -17,8 +17,7 @@ export default function Home() {
       <section className="relative py-12 sm:py-16 bg-brand-blue-dark border-b border-black/20 overflow-hidden">
         <img
           src="/email-hero-1-web.jpeg"
-          alt=""
-          aria-hidden="true"
+          alt="Free email signature generator for Gmail, Outlook, and Apple Mail"
           className="absolute inset-0 h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-brand-blue-dark/85" aria-hidden="true" />

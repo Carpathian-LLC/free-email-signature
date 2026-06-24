@@ -17,7 +17,7 @@ export interface PageSeo {
 
 export const SEO_PAGES: Record<string, PageSeo> = {
   '/': {
-    title: 'Free Email Signature Generator for Gmail, Outlook & Apple Mail | Free Signature Co.',
+    title: 'Free Email Signature Generator for Gmail, Outlook & Apple Mail',
     description:
       'Free email signature generator for Gmail, Outlook, and Apple Mail. Build a professional HTML signature with your photo and links in a minute. No signup.',
   },
@@ -27,7 +27,7 @@ export const SEO_PAGES: Record<string, PageSeo> = {
       'Build a free professional HTML email signature in your browser. Add a photo, social links, and brand color, then paste into Gmail, Outlook, or Apple Mail.',
   },
   '/templates': {
-    title: 'Email Signature Templates for Gmail, Outlook, and Apple Mail | Free Signature Co.',
+    title: 'Email Signature Templates for Gmail, Outlook & Apple Mail',
     description:
       'Ten free professional email signature templates for Gmail, Outlook, and Apple Mail: professional, minimal, modern, bold, compact, elegant, sidebar, stacked, corporate, and creative. No account needed.',
   },
@@ -37,7 +37,7 @@ export const SEO_PAGES: Record<string, PageSeo> = {
       'Practical guides on writing better emails: subject lines, greetings, sign-offs, follow-ups, and etiquette. Free advice from the email signature team.',
   },
   '/about': {
-    title: 'About Free Signature Co. | Why We Built a Free Email Signature Generator',
+    title: 'About Free Signature Co. | Free Email Signature Generator',
     description:
       'Why Carpathian built a free email signature generator with no accounts, no paywall, and no watermark. Our take on subscription fatigue.',
   },
@@ -58,22 +58,22 @@ export const SEO_PAGES: Record<string, PageSeo> = {
     noindex: true,
   },
   '/how-to-add-email-signature-gmail': {
-    title: 'How to Add an Email Signature in Gmail (Free, 2026 Guide) | Free Signature Co.',
+    title: 'How to Add an Email Signature in Gmail (Free 2026 Guide)',
     description:
       'Step-by-step guide to adding a professional HTML email signature in Gmail on the web, plus a note on the Gmail mobile app. Free, no account required.',
   },
   '/how-to-add-email-signature-outlook': {
-    title: 'How to Add an Email Signature in Outlook (Free Guide) | Free Signature Co.',
+    title: 'How to Add an Email Signature in Outlook (Free Guide)',
     description:
       'Step-by-step instructions for adding an HTML email signature in new Outlook, Outlook on the web, and classic Outlook desktop for Windows. Free, no account.',
   },
   '/how-to-add-email-signature-apple-mail': {
-    title: 'How to Add an Email Signature in Apple Mail (macOS and iPhone) | Free Signature Co.',
+    title: 'How to Add an Email Signature in Apple Mail (macOS & iPhone)',
     description:
       'Step-by-step guide to adding an HTML email signature in Apple Mail on macOS, plus the plain-text signature setting on iPhone and iPad. Free, no account required.',
   },
   '/free-email-signature-generator-mac': {
-    title: 'Free Email Signature Generator for Mac & Apple Mail | Free Signature Co.',
+    title: 'Free Email Signature Generator for Mac & Apple Mail',
     description:
       'Create a free professional email signature for Mac and Apple Mail. Add your photo and logo in the browser, then paste it straight into Apple Mail.',
   },

@@ -23,7 +23,7 @@ export function PageHero({
 }) {
   return (
     <section className="relative py-16 sm:py-20 bg-brand-blue-dark border-b border-black/20 overflow-hidden">
-      <img src={image} alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
+      <img src={image} alt={title} className="absolute inset-0 h-full w-full object-cover" />
       <div className="absolute inset-0 bg-brand-blue-dark/85" aria-hidden="true" />
       <div className="relative mx-auto max-w-3xl px-4 sm:px-6 text-center">
         <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-white">{title}</h1>

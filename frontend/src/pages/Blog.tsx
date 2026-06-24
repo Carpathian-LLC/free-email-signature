@@ -19,7 +19,7 @@ export default function Blog() {
     <>
       {/* ═══ Header ═══ */}
       <section className="relative py-16 sm:py-20 bg-brand-blue-dark border-b border-black/20 overflow-hidden">
-        <img src="/email-hero-2-web.jpeg" alt="" aria-hidden="true" className="absolute inset-0 h-full w-full object-cover" />
+        <img src="/email-hero-2-web.jpeg" alt="The Email Writing Blog" className="absolute inset-0 h-full w-full object-cover" />
         <div className="absolute inset-0 bg-brand-blue-dark/85" aria-hidden="true" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
           <h1 className="text-3xl sm:text-4xl xl:text-5xl font-bold tracking-tight text-white">
