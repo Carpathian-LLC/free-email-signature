@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AdBanner, PageHero } from '../components';
+import { PageHero } from '../components';
 import { useSeo } from '../seo';
 import { SOCIAL_PLATFORMS } from '../socialIcons';
 
@@ -16,7 +16,6 @@ const CARPATHIAN_SOCIALS: { id: string; url: string }[] = [
   { id: 'x', url: 'https://x.com/carpathianai' },
   { id: 'instagram', url: 'https://instagram.com/carpathianai' },
   { id: 'youtube', url: 'https://www.youtube.com/@Carpathianai' },
-  { id: 'github', url: 'https://github.com/Carpathian-LLC' },
 ];
 
 
@@ -52,8 +51,8 @@ export default function About() {
       image="/email-hero-3-web.jpeg"
     />
     <article className="py-16 sm:py-20 bg-page-bg-alt">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
+      <div className="mx-auto max-w-3xl lg:max-w-5xl xl:max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 sm:p-8 lg:p-10 xl:p-12">
         <div className="space-y-10 text-gray-600 leading-relaxed">
 
           <section aria-labelledby="the-problem">
@@ -107,7 +106,7 @@ export default function About() {
             <p>
               I miss when people built things because they <em>liked</em> building things. Not because everything has
               to be a hustle, a side project with a monetization strategy, or a SaaS with a pricing page. Some of us
-              are just creatives who like making stuff. That's the whole motivation behind Carpathian's open source work.
+              are just creatives who like making stuff. That's the whole motivation behind Carpathian's work.
             </p>
             <blockquote className="border-l-4 border-brand-blue pl-4 my-6 text-gray-700 italic">
               Open technology, limitless possibilities.
@@ -136,11 +135,6 @@ export default function About() {
             <h2 id="support" className="text-xl font-semibold text-gray-900 mb-3">Want to support the project?</h2>
             <ul className="list-disc list-inside space-y-2 ml-1">
               <li>Share it on social media or write about it online. Word of mouth is everything.</li>
-              <li>Star the project on{' '}
-                <a href="https://github.com/Carpathian-LLC/free-email-signature" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-blue-hover font-medium">
-                  GitHub
-                </a>.
-              </li>
               {DONATE_URL && (
                 <li>
                   <a href={DONATE_URL} target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-blue-hover font-medium">
@@ -155,12 +149,8 @@ export default function About() {
           <section aria-labelledby="contribute">
             <h2 id="contribute" className="text-xl font-semibold text-gray-900 mb-3">Build with us</h2>
             <p>
-              If you write code and want to contribute to open source software that actually helps people, we'd love
-              to hear from you. Check out our{' '}
-              <a href="https://github.com/Carpathian-LLC" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-blue-hover font-medium">
-                GitHub organization
-              </a>{' '}
-              or reach out at{' '}
+              If you write code and want to contribute to software that actually helps people, we'd love
+              to hear from you. Reach out at{' '}
               <a href="mailto:info@carpathian.ai" className="text-brand-blue hover:text-brand-blue-hover font-medium">
                 info@carpathian.ai
               </a>.
@@ -205,7 +195,7 @@ export default function About() {
           </section>
 
           <div className="pt-6 border-t border-gray-200">
-            <Link to="/create" className="inline-block bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors">
+            <Link to="/create" className="inline-block bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors">
               Create your signature
             </Link>
           </div>
@@ -214,9 +204,6 @@ export default function About() {
         </div>
       </div>
     </article>
-    <div className="bg-page-bg-alt">
-      <AdBanner />
-    </div>
     </>
   );
 }

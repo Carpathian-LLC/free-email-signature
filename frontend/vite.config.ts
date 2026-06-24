@@ -22,7 +22,7 @@ function loadKeysEnv(): Record<string, string> {
   return vars;
 }
 
-export default defineConfig(() => {
+export default defineConfig(({ isPreview }) => {
   const env = loadKeysEnv();
 
   const siteUrl = env.VITE_SITE_URL;
@@ -51,7 +51,17 @@ export default defineConfig(() => {
   // The SSR bundle has no use for the public/ assets, so skip copying them there.
   const isSsrBuild = process.argv.includes('--ssr');
 
+  // The build prerenders every route to its own dir/index.html. In `vite
+  // preview` (how this is served in prod) we must NOT use SPA mode: spa serves
+  // the root index.html for any path without an exact file match, so clean URLs
+  // like /blog/post collapse to the homepage shell and every page self-reports
+  // as a duplicate of the homepage, which blocks indexing. 'mpa' makes preview
+  // resolve dir/index.html for clean URLs instead. Dev stays 'spa' so deep-link
+  // refreshes still work locally (dev has no prerendered files to fall back to).
+  const appType: 'spa' | 'mpa' = isPreview ? 'mpa' : 'spa';
+
   return {
+    appType,
     plugins: [react()],
     define,
     build: {

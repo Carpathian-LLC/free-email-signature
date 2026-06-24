@@ -29,7 +29,7 @@ export const SEO_PAGES: Record<string, PageSeo> = {
   '/templates': {
     title: 'Email Signature Templates for Gmail, Outlook, and Apple Mail | Free Signature Co.',
     description:
-      'Five free professional email signature templates for Gmail, Outlook, and Apple Mail: professional, minimal, modern, bold, and compact. No account needed.',
+      'Ten free professional email signature templates for Gmail, Outlook, and Apple Mail: professional, minimal, modern, bold, compact, elegant, sidebar, stacked, corporate, and creative. No account needed.',
   },
   '/blog': {
     title: 'The Email Writing Blog | Free Signature Co.',
@@ -39,7 +39,7 @@ export const SEO_PAGES: Record<string, PageSeo> = {
   '/about': {
     title: 'About Free Signature Co. | Why We Built a Free Email Signature Generator',
     description:
-      'Why Carpathian built a free, open source email signature generator with no accounts, no paywall, and no watermark. Our take on subscription fatigue.',
+      'Why Carpathian built a free email signature generator with no accounts, no paywall, and no watermark. Our take on subscription fatigue.',
   },
   '/privacy': {
     title: 'Privacy Policy | Free Signature Co.',

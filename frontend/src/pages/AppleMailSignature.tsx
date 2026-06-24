@@ -14,8 +14,8 @@ export default function AppleMailSignature() {
         image="https://images.unsplash.com/photo-1543145223-1f9043516739?w=1600&q=80&auto=format&fit=crop"
       />
       <section className="py-16 sm:py-20 bg-page-bg-alt">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
+        <div className="mx-auto max-w-3xl lg:max-w-5xl xl:max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 sm:p-8 lg:p-10 xl:p-12">
           <p className="text-gray-600 leading-relaxed mb-8">
             Apple Mail on macOS supports a full HTML email signature with a photo and formatting, while the
             Mail app on iPhone and iPad uses a plain-text signature only. This guide covers both. Build your
@@ -25,7 +25,7 @@ export default function AppleMailSignature() {
           <div className="mb-8">
             <Link
               to="/create"
-              className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
+              className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
             >
               Create your free signature
             </Link>
@@ -67,7 +67,7 @@ export default function AppleMailSignature() {
           <div className="mt-10">
             <Link
               to="/create"
-              className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
+              className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
             >
               Create your free signature
             </Link>

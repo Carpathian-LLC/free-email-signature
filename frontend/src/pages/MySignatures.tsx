@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { SignatureFields } from '../types';
-import { AdBanner } from '../components';
 import { useSeo } from '../seo';
 
 // Keys must match the persistence keys used in Create.tsx.
@@ -131,7 +130,7 @@ export default function MySignatures() {
               </p>
               <Link
                 to="/create"
-                className="inline-block bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors"
+                className="inline-block bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors"
               >
                 Create a Signature
               </Link>
@@ -177,9 +176,6 @@ export default function MySignatures() {
           )}
         </div>
       </section>
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
     </>
   );
 }

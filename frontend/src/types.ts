@@ -25,7 +25,17 @@ export interface StyleOptions {
   iconColor: string;
 }
 
-export type TemplateId = 'professional' | 'minimal' | 'modern' | 'bold' | 'compact';
+export type TemplateId =
+  | 'professional'
+  | 'minimal'
+  | 'modern'
+  | 'bold'
+  | 'compact'
+  | 'elegant'
+  | 'sidebar'
+  | 'stacked'
+  | 'corporate'
+  | 'creative';
 
 export interface Template {
   id: TemplateId;

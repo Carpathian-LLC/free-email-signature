@@ -5,7 +5,7 @@ import { StyleOptions } from '../types';
 import { useSeo } from '../seo';
 
 const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280' };
-import { AdBanner, PageHero } from '../components';
+import { PageHero } from '../components';
 
 const UPSELL_LABELS: Record<string, string> = {
   professional: 'Unlock Premium Features',
@@ -13,13 +13,18 @@ const UPSELL_LABELS: Record<string, string> = {
   modern: 'Upgrade to Pro+',
   bold: 'Subscribe for More Templates',
   compact: 'Start Free Trial',
+  elegant: 'Unlock Elegant Pro',
+  sidebar: 'Get the Premium Panel',
+  stacked: 'Upgrade Your Stack',
+  corporate: 'Enterprise Plan',
+  creative: 'Go Creative Plus',
 };
 
 const POPUP_MESSAGES = [
   'There is no premium version. Everything is already unlocked. This is a free tool made by someone who hates paywalls as much as you do.',
   "Of course there's no premium version. What would we even lock? It's an email signature. Go make yours.",
   "You just clicked an upsell link out of habit, didn't you? That's what the internet has done to us. Everything here is free. Always will be.",
-  "The whole codebase is public on GitHub. We couldn't sneak in a paywall even if we wanted to.",
+  "There is no premium build hiding somewhere. You have already seen everything. It is all free.",
 ];
 
 const TEMPLATE_DETAILS: Record<string, { tagline: string; whenToUse: string }> = {
@@ -42,6 +47,26 @@ const TEMPLATE_DETAILS: Record<string, { tagline: string; whenToUse: string }> =
   compact: {
     tagline: 'A condensed, one-line-feeling layout that takes up the least possible space.',
     whenToUse: 'Best for high-volume email senders, support teams, and anyone who replies thirty times a day and hates seeing their own giant signature in every thread.',
+  },
+  elegant: {
+    tagline: 'A centered serif layout with symmetric dividers and quiet, refined typography.',
+    whenToUse: 'Best for consultants, lawyers, writers, and anyone in a field where a classic, understated look reads as more credible than a splash of brand color.',
+  },
+  sidebar: {
+    tagline: 'A colored side panel holds your photo and name next to a clean block of contact details.',
+    whenToUse: 'Best for people who want a business-card feel with a touch of brand color, without the signature taking over the message.',
+  },
+  stacked: {
+    tagline: 'A centered single column with the photo on top and everything aligned down the middle.',
+    whenToUse: 'Best for personal brands, creators, and anyone who wants a balanced, symmetric signature that reads well on both desktop and mobile.',
+  },
+  corporate: {
+    tagline: 'A formal two-column layout with labeled contact rows and a short accent rule.',
+    whenToUse: 'Best for finance, legal, enterprise sales, and anyone whose signature needs to look like it came out of a brand guidelines document.',
+  },
+  creative: {
+    tagline: 'A softly tinted card with an accent bar across the top and a rounded photo.',
+    whenToUse: 'Best for designers, marketers, and small teams who want a friendly, branded card that still renders cleanly in every email client.',
   },
 };
 
@@ -68,12 +93,12 @@ export default function Templates() {
       <section className="py-12 sm:py-16 bg-page-bg">
         <div className="mx-auto max-w-3xl px-6 lg:px-8 text-center">
           <p className="text-lg leading-8 text-gray-500">
-            Five professional email signature templates, all free, all open source. Each one is built with inline HTML tables
+            Ten professional email signature templates, all free. Each one is built with inline HTML tables
             so it renders correctly in Gmail, Outlook, Apple Mail, Thunderbird, and every other email client we could test.
             Pick the style that fits your role, fill in your details, and copy it into your email client in under a minute.
           </p>
           <p className="mt-4 text-sm text-gray-400">
-            No account. No paywall. No watermark. The same five templates everyone else has, except not locked behind a subscription.
+            No account. No paywall. No watermark. Ten full templates, none locked behind a subscription.
           </p>
         </div>
       </section>
@@ -113,7 +138,7 @@ export default function Templates() {
                   </ul>
                   <Link
                     to={`/create?template=${t.id}`}
-                    className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
+                    className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
                   >
                     Use This Template
                   </Link>
@@ -193,7 +218,7 @@ export default function Templates() {
           <div className="mt-12 text-center">
             <Link
               to="/create"
-              className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
+              className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
             >
               Build Your Signature
             </Link>
@@ -216,11 +241,6 @@ export default function Templates() {
           </div>
         </div>
       )}
-
-      {/* Ad */}
-      <div className="bg-page-bg">
-        <AdBanner />
-      </div>
     </>
   );
 }

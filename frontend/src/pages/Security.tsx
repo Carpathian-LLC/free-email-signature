@@ -1,4 +1,4 @@
-import { AdBanner, PageHero } from '../components';
+import { PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function Security() {
@@ -13,8 +13,8 @@ export default function Security() {
       image="https://images.unsplash.com/photo-1633265486064-086b219458ec?w=1600&q=80&auto=format&fit=crop"
     />
     <section className="py-16 sm:py-20 bg-page-bg-alt">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
+      <div className="mx-auto max-w-3xl lg:max-w-5xl xl:max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 sm:p-8 lg:p-10 xl:p-12">
         <div className="space-y-6 text-sm text-gray-600 leading-relaxed">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Data in transit</h2>
@@ -60,21 +60,13 @@ export default function Security() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">Open source</h2>
-            <p>The full source code is public on <a href="https://github.com/Carpathian-LLC/free-email-signature" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-blue-hover">GitHub</a>. Security through obscurity is not security.</p>
-          </div>
-
-          <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Reporting vulnerabilities</h2>
-            <p>If you find a security issue, email info@carpathian.ai or open a private security advisory on GitHub. We take every report seriously.</p>
+            <p>If you find a security issue, email info@carpathian.ai. We take every report seriously.</p>
           </div>
         </div>
         </div>
       </div>
     </section>
-    <div className="bg-page-bg-alt">
-      <AdBanner />
-    </div>
     </>
   );
 }

@@ -75,13 +75,6 @@ export default function BlogPost() {
               <span className="mx-2">/</span>
               <Link to="/blog" className="hover:text-gray-600 transition-colors">Blog</Link>
             </nav>
-            <div className="flex flex-wrap gap-2 mb-4">
-              {post.tags.map(tag => (
-                <span key={tag} className="text-xs font-medium text-brand-blue bg-brand-blue/5 rounded-full px-2.5 py-1">
-                  {tag}
-                </span>
-              ))}
-            </div>
             <h1 className="text-3xl sm:text-4xl font-bold tracking-tight text-gray-900 leading-tight">
               {post.title}
             </h1>
@@ -155,7 +148,7 @@ export default function BlogPost() {
                   <Link
                     key={r.slug}
                     to={`/blog/${r.slug}`}
-                    className="group flex flex-col bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+                    className="group flex flex-col bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg overflow-hidden hover:border-brand-blue hover:ring-brand-blue/20 hover:shadow-2xl hover:-translate-y-1 transition-all"
                   >
                     {r.image && (
                       <div className="aspect-[16/10] bg-gray-100 overflow-hidden">

@@ -4,7 +4,7 @@ import Cropper from 'react-easy-crop';
 import type { Area } from 'react-easy-crop';
 import { SignatureFields, SocialLink, TemplateId, StyleOptions } from '../types';
 import { templates, SAMPLE_DATA } from '../templates';
-import { Section, Field, SidebarAd, ColorPicker } from '../components';
+import { Section, Field, ColorPicker } from '../components';
 import { SOCIAL_PLATFORMS } from '../socialIcons';
 import { useSeo } from '../seo';
 
@@ -519,7 +519,7 @@ export default function Create() {
       )}
 
       {/* ── Page ───────────────────────────────────────────────── */}
-      <section className="py-8 sm:py-12 bg-page-bg-alt min-h-screen">
+      <section className="py-8 sm:py-12 bg-gray-200 min-h-screen">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between mb-2">
             <h1 className="text-2xl font-bold text-gray-900">Create Your Signature</h1>
@@ -542,7 +542,7 @@ export default function Create() {
                 className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                   templateId === t.id
                     ? 'bg-brand-blue text-white'
-                    : 'bg-white text-gray-600 border border-gray-200 hover:border-brand-blue'
+                    : 'bg-white text-gray-700 border border-gray-300 hover:border-brand-blue'
                 }`}
               >
                 {t.name}
@@ -615,7 +615,7 @@ export default function Create() {
                           value={link.platform}
                           onChange={e => updateSocialLink(link.id, { platform: e.target.value })}
                           placeholder="Platform name"
-                          className="flex-1 px-3 py-1.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                          className="flex-1 px-3 py-1.5 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
                         />
                       )}
                       <button
@@ -630,7 +630,7 @@ export default function Create() {
                       value={link.url}
                       onChange={e => updateSocialLink(link.id, { url: e.target.value })}
                       placeholder={link.platformId ? `Your ${link.platform} URL` : 'Profile URL (https://...)'}
-                      className="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                      className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
                     />
                     {!link.platformId && (
                       <input
@@ -638,7 +638,7 @@ export default function Create() {
                         value={link.iconUrl}
                         onChange={e => updateSocialLink(link.id, { iconUrl: e.target.value })}
                         placeholder="Icon image URL (PNG recommended)"
-                        className="w-full px-3 py-1.5 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
+                        className="w-full px-3 py-1.5 bg-white border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue"
                       />
                     )}
                   </div>
@@ -712,7 +712,7 @@ export default function Create() {
 
             {/* ── Right column: preview ──────────────────────── */}
             <div className="lg:sticky lg:top-20 self-start space-y-4">
-              <div className="bg-white rounded-xl border border-gray-200 p-5">
+              <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5">
                 <h2 className="text-sm font-semibold text-gray-900 mb-3">Preview</h2>
                 <div className="border border-gray-100 rounded-lg p-4 sm:p-6 min-h-[120px] overflow-x-auto">
                   <div ref={previewRef} dangerouslySetInnerHTML={{ __html: previewHtml }} />
@@ -723,7 +723,7 @@ export default function Create() {
               </div>
 
               {hasContent && (
-                <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
+                <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-3">
                   <h2 className="text-sm font-semibold text-gray-900">Copy Signature</h2>
                   <div className="flex flex-col sm:flex-row gap-2">
                     <button
@@ -746,7 +746,6 @@ export default function Create() {
                   </p>
                 </div>
               )}
-              <SidebarAd />
             </div>
           </div>
         </div>

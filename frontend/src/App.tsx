@@ -135,7 +135,7 @@ function Layout() {
             )}
             <Link
               to="/create"
-              className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-4 py-1.5 text-sm font-semibold transition-colors"
+              className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-4 py-1.5 text-sm font-semibold transition-colors"
             >
               Create
             </Link>
@@ -156,8 +156,8 @@ function Layout() {
                 Free Signature Co.
               </div>
               <p className="text-sm text-gray-500 leading-relaxed">
-                An open source project by{' '}
-                <a href="https://carpathian.ai/open-source" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-blue-hover transition-colors font-medium">
+                A project by{' '}
+                <a href="https://carpathian.ai" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-blue-hover transition-colors font-medium">
                   Carpathian
                 </a>
               </p>
@@ -191,7 +191,6 @@ function Layout() {
             <div>
               <h4 className="text-gray-900 text-sm font-semibold mb-3">Resources</h4>
               <ul className="space-y-2 text-sm text-gray-500">
-                <li><a href="https://github.com/Carpathian-LLC/free-email-signature" target="_blank" rel="noopener noreferrer" className="hover:text-gray-900 transition-colors">GitHub</a></li>
                 <li><Link to="/privacy" className="hover:text-gray-900 transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/security" className="hover:text-gray-900 transition-colors">Security</Link></li>
               </ul>

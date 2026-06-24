@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { AdBanner, PageHero } from '../components';
+import { PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function OutlookSignature() {
@@ -14,8 +14,8 @@ export default function OutlookSignature() {
         image="https://images.unsplash.com/photo-1602016736566-7ed6a58894bd?w=1600&q=80&auto=format&fit=crop"
       />
       <section className="py-16 sm:py-20 bg-page-bg-alt">
-        <div className="mx-auto max-w-3xl px-4 sm:px-6">
-          <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
+        <div className="mx-auto max-w-3xl lg:max-w-5xl xl:max-w-6xl px-4 sm:px-6 lg:px-8">
+          <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 sm:p-8 lg:p-10 xl:p-12">
           <p className="text-gray-600 leading-relaxed mb-8">
             Outlook comes in several versions, and the signature setting lives in a different place in each one.
             This guide covers new Outlook and Outlook on the web, which share the same settings, and classic
@@ -26,7 +26,7 @@ export default function OutlookSignature() {
           <div className="mb-8">
             <Link
               to="/create"
-              className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
+              className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
             >
               Create your free signature
             </Link>
@@ -45,8 +45,6 @@ export default function OutlookSignature() {
                 <li>Click <strong>Save</strong>.</li>
               </ol>
             </div>
-
-            <AdBanner />
 
             <div>
               <h2 className="text-xl font-semibold text-gray-900 mb-3">Classic Outlook desktop (Windows)</h2>
@@ -70,7 +68,7 @@ export default function OutlookSignature() {
           <div className="mt-10">
             <Link
               to="/create"
-              className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
+              className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
             >
               Create your free signature
             </Link>

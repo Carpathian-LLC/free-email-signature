@@ -45,7 +45,7 @@ export default function Blog() {
             {featured && (
               <Link
                 to={`/blog/${featured.slug}`}
-                className="group block bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all mb-12 sm:grid sm:grid-cols-2"
+                className="group block bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg overflow-hidden hover:border-brand-pink hover:ring-brand-pink/20 hover:shadow-2xl hover:-translate-y-1 transition-all mb-12 sm:grid sm:grid-cols-2"
               >
                 {featured.image && (
                   <div className="aspect-[16/10] sm:aspect-auto sm:h-full bg-gray-100 overflow-hidden">
@@ -58,13 +58,6 @@ export default function Blog() {
                   </div>
                 )}
                 <div className="p-6 sm:p-8 flex flex-col justify-center">
-                  <div className="flex flex-wrap gap-2 mb-3">
-                    {featured.tags.slice(0, 3).map(tag => (
-                      <span key={tag} className="text-xs font-medium text-brand-blue bg-brand-blue/5 rounded-full px-2.5 py-1">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
                   <h2 className="text-2xl font-bold text-gray-900 group-hover:text-brand-blue transition-colors">
                     {featured.title}
                   </h2>
@@ -82,7 +75,7 @@ export default function Blog() {
                 <div key={post.slug} className="contents">
                   <Link
                     to={`/blog/${post.slug}`}
-                    className="group flex flex-col bg-white rounded-2xl border border-gray-200 overflow-hidden hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+                    className="group flex flex-col bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg overflow-hidden hover:border-brand-pink hover:ring-brand-pink/20 hover:shadow-2xl hover:-translate-y-1 transition-all"
                   >
                     {post.image && (
                       <div className="aspect-[16/10] bg-gray-100 overflow-hidden">
@@ -95,13 +88,6 @@ export default function Blog() {
                       </div>
                     )}
                     <div className="p-5 flex flex-col flex-1">
-                      <div className="flex flex-wrap gap-2 mb-2">
-                        {post.tags.slice(0, 2).map(tag => (
-                          <span key={tag} className="text-xs font-medium text-brand-blue bg-brand-blue/5 rounded-full px-2.5 py-1">
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
                       <h3 className="text-lg font-semibold text-gray-900 group-hover:text-brand-blue transition-colors leading-snug">
                         {post.title}
                       </h3>
@@ -125,7 +111,7 @@ export default function Blog() {
             <div className="text-center mt-14">
               <Link
                 to="/create"
-                className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
+                className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
               >
                 Create your free email signature
               </Link>

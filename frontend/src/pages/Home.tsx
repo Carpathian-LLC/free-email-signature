@@ -4,7 +4,7 @@ import { StyleOptions } from '../types';
 import { useSeo } from '../seo';
 
 const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280' };
-import { AdBanner, AdSenseBanner } from '../components';
+import { AdSenseBanner, ScaledPreview } from '../components';
 
 export default function Home() {
   useSeo({
@@ -23,14 +23,11 @@ export default function Home() {
         />
         <div className="absolute inset-0 bg-brand-blue-dark/85" aria-hidden="true" />
         <div className="relative mx-auto max-w-4xl px-6 text-center">
-          <div className="inline-block px-4 py-1.5 bg-white text-brand-blue-dark rounded-full text-sm font-semibold mb-6">
-            Free. Open Source. No Account Required.
-          </div>
           <h1 className="text-4xl font-bold tracking-tight text-white sm:text-5xl xl:text-6xl">
-            Free Email Signature Generator <br className="hidden sm:block" /> for Gmail, Outlook, and Apple Mail
+            <span className="text-brand-pink">Free Email Signature</span> Generator
           </h1>
           <p className="mt-6 leading-8 text-white max-w-2xl mx-auto">
-            A fast, browser-based HTML email signature generator. Five professional templates, photo and logo upload,
+            A fast, browser-based HTML email signature generator. Ten professional templates, photo and logo upload,
             social link integration, and one-click copy as rich text or raw HTML. Compatible with Gmail, Outlook,
             Apple Mail, Thunderbird, Yahoo Mail, ProtonMail, and Fastmail. No account. No paywall. No watermark.
           </p>
@@ -43,40 +40,21 @@ export default function Home() {
             </Link>
             <Link
               to="/templates"
-              className="bg-transparent hover:bg-white/10 text-white border border-white rounded-md px-6 py-3 font-semibold transition-colors"
+              className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors"
             >
               Browse Templates
             </Link>
           </div>
-
-          <dl className="mt-14 grid grid-cols-2 sm:grid-cols-4 gap-px max-w-2xl mx-auto rounded-2xl overflow-hidden border border-white/15">
-            {[
-              { stat: '5', label: 'Professional templates' },
-              { stat: '8+', label: 'Email clients supported' },
-              { stat: '$0', label: 'No paywall, ever' },
-              { stat: '0', label: 'Accounts required' },
-            ].map(({ stat, label }) => (
-              <div key={label} className="bg-white/5 px-4 py-5">
-                <dt className="text-2xl font-bold text-white">{stat}</dt>
-                <dd className="mt-1 text-xs text-white/70 leading-snug">{label}</dd>
-              </div>
-            ))}
-          </dl>
         </div>
       </section>
 
-      {/* ═══ Ad 1 ═══ */}
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
-
       {/* ═══ Template Showcase ═══ */}
-      <section className="py-20 sm:py-24 bg-page-bg-alt">
+      <section className="py-20 sm:py-24 bg-gray-100">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Email Signature Templates</h2>
             <p className="mt-4 text-gray-500 max-w-2xl mx-auto">
-              Five professional HTML email signature templates. Each template is built with inline tables and inline CSS
+              Ten professional HTML email signature templates. Each template is built with inline tables and inline CSS
               for predictable rendering in Gmail, Outlook, Apple Mail, and Thunderbird. Click any template to start building.
             </p>
           </div>
@@ -85,15 +63,16 @@ export default function Home() {
               <Link
                 key={t.id}
                 to={`/create?template=${t.id}`}
-                className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+                className="group bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 hover:border-brand-pink hover:ring-brand-pink/20 hover:shadow-2xl hover:-translate-y-1 transition-all"
               >
                 <h3 className="text-lg font-semibold text-gray-900 mb-1">{t.name} Email Signature Template</h3>
                 <p className="text-sm text-gray-500 mb-4">{t.description}</p>
-                <div className="bg-gray-50 rounded-lg p-4 overflow-hidden" style={{ height: 140 }}>
-                  <div style={{ transform: 'scale(0.75)', transformOrigin: 'top left' }}>
-                    <div dangerouslySetInnerHTML={{ __html: t.build(SAMPLE_DATA, PREVIEW_STYLE) }} />
-                  </div>
-                </div>
+                <ScaledPreview
+                  html={t.build(SAMPLE_DATA, PREVIEW_STYLE)}
+                  className="bg-gray-50 rounded-lg border border-gray-200 p-4 overflow-hidden"
+                  style={{ height: 150 }}
+                  maxScale={0.85}
+                />
                 <p className="mt-4 text-sm font-medium text-brand-blue group-hover:text-brand-blue-hover transition-colors">
                   Use this template &rarr;
                 </p>
@@ -104,7 +83,7 @@ export default function Home() {
       </section>
 
       {/* ═══ How It Works ═══ */}
-      <section className="py-20 sm:py-24 bg-page-bg" aria-labelledby="how-it-works">
+      <section className="py-20 sm:py-24 bg-gray-100" aria-labelledby="how-it-works">
         <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-14">
             <h2 id="how-it-works" className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -115,15 +94,15 @@ export default function Home() {
             </p>
           </div>
           <ol className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <li className="bg-white rounded-2xl border border-gray-200 p-6">
+            <li className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <div className="text-sm font-bold text-brand-blue mb-2">Step 1</div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Choose a Template</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
-                Select from five email signature templates: Professional, Minimal, Modern, Bold, or Compact.
+                Select from ten email signature templates: Professional, Minimal, Modern, Bold, Compact, Elegant, Sidebar, Stacked, Corporate, or Creative.
                 Switch templates at any time. Your details carry over automatically.
               </p>
             </li>
-            <li className="bg-white rounded-2xl border border-gray-200 p-6">
+            <li className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <div className="text-sm font-bold text-brand-blue mb-2">Step 2</div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Enter Your Details</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
@@ -132,7 +111,7 @@ export default function Home() {
                 browser localStorage and never sent to a server.
               </p>
             </li>
-            <li className="bg-white rounded-2xl border border-gray-200 p-6">
+            <li className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <div className="text-sm font-bold text-brand-blue mb-2">Step 3</div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Copy and Paste</h3>
               <p className="text-sm text-gray-600 leading-relaxed">
@@ -144,7 +123,7 @@ export default function Home() {
           <div className="text-center mt-12">
             <Link
               to="/create"
-              className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
+              className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
             >
               Start Building
             </Link>
@@ -153,7 +132,7 @@ export default function Home() {
       </section>
 
       {/* ═══ Choose Your Email Client ═══ */}
-      <section className="py-20 sm:py-24 bg-page-bg-alt" aria-labelledby="by-client">
+      <section className="py-20 sm:py-24 bg-gray-100" aria-labelledby="by-client">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 id="by-client" className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -167,7 +146,7 @@ export default function Home() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             <Link
               to="/free-gmail-signature-generator"
-              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+              className="group bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 hover:border-brand-pink hover:ring-brand-pink/20 hover:shadow-2xl hover:-translate-y-1 transition-all"
             >
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Free Gmail Signature Generator</h3>
               <p className="text-sm text-gray-500">
@@ -180,7 +159,7 @@ export default function Home() {
             </Link>
             <Link
               to="/free-email-signature-generator-mac"
-              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+              className="group bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 hover:border-brand-pink hover:ring-brand-pink/20 hover:shadow-2xl hover:-translate-y-1 transition-all"
             >
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Email Signature Generator for Mac</h3>
               <p className="text-sm text-gray-500">
@@ -193,7 +172,7 @@ export default function Home() {
             </Link>
             <Link
               to="/how-to-add-email-signature-outlook"
-              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+              className="group bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 hover:border-brand-pink hover:ring-brand-pink/20 hover:shadow-2xl hover:-translate-y-1 transition-all"
             >
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Outlook Signature Guide</h3>
               <p className="text-sm text-gray-500">
@@ -206,7 +185,7 @@ export default function Home() {
             </Link>
             <Link
               to="/email-signature-best-practices"
-              className="group bg-white rounded-2xl border border-gray-200 p-6 hover:border-brand-blue hover:shadow-lg hover:shadow-brand-blue/5 transition-all"
+              className="group bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 hover:border-brand-pink hover:ring-brand-pink/20 hover:shadow-2xl hover:-translate-y-1 transition-all"
             >
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Signature Best Practices</h3>
               <p className="text-sm text-gray-500">
@@ -222,7 +201,7 @@ export default function Home() {
       </section>
 
       {/* ═══ Email Client Compatibility ═══ */}
-      <section className="py-20 sm:py-24 bg-page-bg-alt" aria-labelledby="email-clients">
+      <section className="py-20 sm:py-24 bg-gray-100" aria-labelledby="email-clients">
         <div className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 id="email-clients" className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -235,35 +214,35 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 text-center">
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-4">
               <div className="font-semibold text-gray-900">Gmail</div>
               <div className="text-xs text-gray-500 mt-1">Web, iOS, Android</div>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-4">
               <div className="font-semibold text-gray-900">Outlook</div>
               <div className="text-xs text-gray-500 mt-1">Windows, Mac, Web, Mobile</div>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-4">
               <div className="font-semibold text-gray-900">Apple Mail</div>
               <div className="text-xs text-gray-500 mt-1">macOS, iOS, iPadOS</div>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-4">
               <div className="font-semibold text-gray-900">Thunderbird</div>
               <div className="text-xs text-gray-500 mt-1">Windows, macOS, Linux</div>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-4">
               <div className="font-semibold text-gray-900">Yahoo Mail</div>
               <div className="text-xs text-gray-500 mt-1">Web, Mobile</div>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-4">
               <div className="font-semibold text-gray-900">ProtonMail</div>
               <div className="text-xs text-gray-500 mt-1">Web, Mobile</div>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-4">
               <div className="font-semibold text-gray-900">Spark</div>
               <div className="text-xs text-gray-500 mt-1">macOS, iOS, Android</div>
             </div>
-            <div className="bg-white rounded-xl border border-gray-200 p-4">
+            <div className="bg-white rounded-xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-4">
               <div className="font-semibold text-gray-900">Fastmail, Hey</div>
               <div className="text-xs text-gray-500 mt-1">Web, Mobile</div>
             </div>
@@ -272,7 +251,7 @@ export default function Home() {
       </section>
 
       {/* ═══ Features ═══ */}
-      <section className="py-20 sm:py-24 bg-page-bg" aria-labelledby="features">
+      <section className="py-20 sm:py-24 bg-gray-100" aria-labelledby="features">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-12">
             <h2 id="features" className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Features</h2>
@@ -281,61 +260,55 @@ export default function Home() {
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">No Account Required</h3>
               <p className="text-sm text-gray-500">
                 Signature data stored in browser localStorage. No registration, no email collection,
                 no server-side user record.
               </p>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Fully Unlocked</h3>
               <p className="text-sm text-gray-500">
-                All five email signature templates, all export formats, all customization options. No premium tier.
+                All ten email signature templates, all export formats, all customization options. No premium tier.
               </p>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Photo and Logo Upload</h3>
               <p className="text-sm text-gray-500">
                 Upload a profile photo or company logo with built-in cropping. Images served from a content-addressed
                 URL for reliable cross-client rendering.
               </p>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Social Link Icons</h3>
               <p className="text-sm text-gray-500">
                 Add LinkedIn, X, GitHub, Instagram, Facebook, YouTube, Mastodon, Bluesky, and more.
                 Icons inherit your accent color.
               </p>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Brand Color Customization</h3>
               <p className="text-sm text-gray-500">
                 Set your accent color, separator color, and icon color. Match your company branding without
                 editing raw HTML.
               </p>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Rich Text and Raw HTML Export</h3>
               <p className="text-sm text-gray-500">
                 Copy as rich text for direct paste into webmail, or export raw HTML for manual installation,
                 team templating, or MDM deployment.
               </p>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Privacy by Default</h3>
               <p className="text-sm text-gray-500">
                 Form data never leaves your browser. Image uploads use content-addressed hashing with a secret salt.
                 No third-party tracking unless you accept the cookie banner.
               </p>
             </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Open Source</h3>
-              <p className="text-sm text-gray-500">
-                Full source code published on GitHub under a permissive license. Audit it, fork it, or self-host it.
-              </p>
-            </div>
-            <div className="bg-white rounded-2xl border border-gray-200 p-6">
+            <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Mobile Compatible</h3>
               <p className="text-sm text-gray-500">
                 Signatures render correctly on Gmail iOS, Gmail Android, Apple Mail on iPhone and iPad,
@@ -389,112 +362,88 @@ export default function Home() {
       </section>
 
       {/* ═══ FAQ ═══ */}
-      <section className="py-20 sm:py-24 bg-page-bg" aria-labelledby="faq">
+      <section className="py-20 sm:py-24 bg-gray-100" aria-labelledby="faq">
         <div className="mx-auto max-w-3xl px-4 sm:px-6">
           <div className="text-center mb-12">
             <h2 id="faq" className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
               Frequently Asked Questions
             </h2>
           </div>
-          <dl className="space-y-8">
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">Is this email signature generator really free?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                Yes. Every template, every feature, every export format is free. No account, no trial period, no credit
-                card on file, no hidden fees. The full source code is published on GitHub.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">Does it work with Gmail and Outlook?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                Yes. Signatures are generated as inline HTML tables with inline CSS, the standard format for
-                cross-client email rendering. Compatible with Gmail, Outlook (Web, Windows, Mac, and Mobile),
-                Apple Mail, Thunderbird, Yahoo Mail, ProtonMail, Spark, Hey, and Fastmail.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">How do I add the signature to Gmail?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                Copy your signature from the Create page. Open Gmail, click the gear icon, select See all settings,
-                scroll to the Signature section, click Create new, paste the signature into the editor, and save.
-                Assign as default for new messages and replies.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">How do I add the signature to Outlook?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                On Outlook for the web: Settings, Mail, Compose and reply, paste into the Email signature field.
-                On Outlook desktop (Windows and Mac): File, Options, Mail, Signatures, New, paste into the editor.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">How do I add the signature to Apple Mail?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                Open Mail, then Settings, then Signatures. Select the account, click the plus button, and paste your
-                signature. Uncheck Always match my default message font to preserve formatting.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">Can I add a profile photo or company logo?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                Yes. The Create page includes a photo uploader with built-in cropping. Images are hosted at a
-                content-addressed URL with a secret salt, ensuring reliable cross-client rendering and
-                non-guessable URLs.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">Is there a watermark or branding?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                No. No watermark, no "Sent from" footer, no "Powered by" tagline. The signature contains only the
-                information you enter.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">Will the signature render on mobile devices?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                Yes. Inline tables and inline CSS render correctly on Gmail iOS, Gmail Android, Apple Mail on iPhone
-                and iPad, and Outlook mobile.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">Do I need an account?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                No. The application has no user accounts. Form data is stored in browser localStorage and
-                never transmitted to a server.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">Can I use this for my whole team or company?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                Yes. There is no per-seat pricing. Share the link with your team for individual use, or export the
-                raw HTML and template it for company-wide deployment. The repository is open source under a
-                permissive license.
-              </dd>
-            </div>
-            <div>
-              <dt className="text-lg font-semibold text-gray-900">What email signature templates are included?</dt>
-              <dd className="mt-2 text-gray-600 leading-relaxed">
-                Five templates: Professional (classic corporate layout with photo and dividers), Minimal (plain text
-                with a single divider), Modern (accent bar with contemporary typography), Bold (colored header bar),
-                and Compact (condensed single-block format).
-              </dd>
-            </div>
-          </dl>
+          <div className="space-y-4">
+            {[
+              {
+                q: 'Is this email signature generator really free?',
+                a: 'Yes. Every template, every feature, every export format is free. No account, no trial period, no credit card on file, no hidden fees.',
+              },
+              {
+                q: 'Does it work with Gmail and Outlook?',
+                a: 'Yes. Signatures are generated as inline HTML tables with inline CSS, the standard format for cross-client email rendering. Compatible with Gmail, Outlook (Web, Windows, Mac, and Mobile), Apple Mail, Thunderbird, Yahoo Mail, ProtonMail, Spark, Hey, and Fastmail.',
+              },
+              {
+                q: 'How do I add the signature to Gmail?',
+                a: 'Copy your signature from the Create page. Open Gmail, click the gear icon, select See all settings, scroll to the Signature section, click Create new, paste the signature into the editor, and save. Assign as default for new messages and replies.',
+              },
+              {
+                q: 'How do I add the signature to Outlook?',
+                a: 'On Outlook for the web: Settings, Mail, Compose and reply, paste into the Email signature field. On Outlook desktop (Windows and Mac): File, Options, Mail, Signatures, New, paste into the editor.',
+              },
+              {
+                q: 'How do I add the signature to Apple Mail?',
+                a: 'Open Mail, then Settings, then Signatures. Select the account, click the plus button, and paste your signature. Uncheck Always match my default message font to preserve formatting.',
+              },
+              {
+                q: 'Can I add a profile photo or company logo?',
+                a: 'Yes. The Create page includes a photo uploader with built-in cropping. Images are hosted at a content-addressed URL with a secret salt, ensuring reliable cross-client rendering and non-guessable URLs.',
+              },
+              {
+                q: 'Is there a watermark or branding?',
+                a: 'No. No watermark, no "Sent from" footer, no "Powered by" tagline. The signature contains only the information you enter.',
+              },
+              {
+                q: 'Will the signature render on mobile devices?',
+                a: 'Yes. Inline tables and inline CSS render correctly on Gmail iOS, Gmail Android, Apple Mail on iPhone and iPad, and Outlook mobile.',
+              },
+              {
+                q: 'Do I need an account?',
+                a: 'No. The application has no user accounts. Form data is stored in browser localStorage and never transmitted to a server.',
+              },
+              {
+                q: 'Can I use this for my whole team or company?',
+                a: 'Yes. There is no per-seat pricing. Share the link with your team for individual use, or export the raw HTML and template it for company-wide deployment.',
+              },
+              {
+                q: 'What email signature templates are included?',
+                a: 'Ten templates: Professional (classic corporate layout with photo and dividers), Minimal (plain text with a single divider), Modern (accent bar with contemporary typography), Bold (colored header bar), Compact (condensed single-block format), Elegant (centered serif layout), Sidebar (colored side panel with photo), Stacked (centered single column), Corporate (formal two-column with labeled details), and Creative (tinted card with accent top bar).',
+              },
+            ].map((item) => (
+              <details key={item.q} className="group bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6">
+                <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-lg font-semibold text-gray-900 [&::-webkit-details-marker]:hidden">
+                  <span>{item.q}</span>
+                  <svg
+                    className="h-5 w-5 flex-shrink-0 text-brand-pink transition-transform duration-200 group-open:rotate-180"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                    strokeWidth={2}
+                    aria-hidden="true"
+                  >
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+                  </svg>
+                </summary>
+                <p className="mt-3 text-gray-600 leading-relaxed">{item.a}</p>
+              </details>
+            ))}
+          </div>
           <div className="text-center mt-12">
             <Link
               to="/create"
-              className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
+              className="bg-brand-pink hover:bg-brand-pink-dark text-white rounded-md px-6 py-3 font-semibold transition-colors inline-block"
             >
               Create Your Free Email Signature
             </Link>
           </div>
         </div>
       </section>
-
-      {/* ═══ Ad 2 ═══ */}
-      <div className="bg-page-bg-alt">
-        <AdBanner />
-      </div>
     </>
   );
 }

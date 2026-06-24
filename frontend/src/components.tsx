@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 
 export function Section({ title, children }: { title: string; children: React.ReactNode }) {
   return (
-    <div className="bg-white rounded-xl border border-gray-200 p-5 space-y-3">
+    <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-5 space-y-3">
       <h2 className="text-sm font-semibold text-gray-900">{title}</h2>
       {children}
     </div>
@@ -50,13 +50,13 @@ export function Field({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-500 mb-1">{label}</label>
+      <label className="block text-xs font-semibold text-gray-700 mb-1">{label}</label>
       <input
         type={type}
         value={value}
         onChange={e => onChange(e.target.value)}
         placeholder={placeholder}
-        className="w-full px-3 py-2 bg-white border border-gray-200 rounded-xl text-gray-900 placeholder:text-gray-400 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-transparent"
+        className="w-full px-3 py-2 bg-gray-100 border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue focus:bg-white"
       />
     </div>
   );
@@ -81,7 +81,7 @@ export function ColorPicker({
 }) {
   return (
     <div>
-      <label className="block text-xs font-medium text-gray-500 mb-1.5">{label}</label>
+      <label className="block text-xs font-semibold text-gray-700 mb-1.5">{label}</label>
       <div className="flex items-center gap-1.5 flex-wrap">
         {PRESET_COLORS.map(color => (
           <button
@@ -116,171 +116,67 @@ export function ColorPicker({
   );
 }
 
-// ── Ad Banners ──────────────────────────────────────────────────────
+// ── Scaled signature preview ─────────────────────────────────────────
 
-const isDev = import.meta.env.DEV;
-
-function AdPlaceholder({ width, height, label }: { width: number; height: number; label: string }) {
-  return (
-    <div
-      className="border-2 border-dashed border-gray-300 rounded-lg flex items-center justify-center text-xs text-gray-400"
-      style={{ width, height }}
-    >
-      {label} ({width}x{height})
-    </div>
-  );
-}
-
-export function AdBanner() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [adLoaded, setAdLoaded] = useState(false);
-  const adKey = import.meta.env.VITE_AD_BANNER_KEY;
-  const adNetwork = import.meta.env.VITE_AD_BANNER_NETWORK;
-
-  const isMobile = typeof window !== 'undefined' &&
-    (window.innerWidth <= 767 || /Android|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent));
-  const width = isMobile ? 320 : 468;
-  const height = isMobile ? 50 : 60;
+// Renders a signature's raw HTML scaled to fit a fixed-size box without
+// clipping. Templates vary in natural height, so a single hardcoded scale
+// crops the taller ones. After mount we measure the untransformed content and
+// pick the largest scale (capped at maxScale) that fits the box's content area
+// in both directions, then recompute whenever the box resizes.
+export function ScaledPreview({
+  html,
+  className = '',
+  style,
+  maxScale = 1,
+}: {
+  html: string;
+  className?: string;
+  style?: React.CSSProperties;
+  maxScale?: number;
+}) {
+  const boxRef = useRef<HTMLDivElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = useState(0.75);
 
   useEffect(() => {
-    if (!adKey || !adNetwork || !ref.current || ref.current.children.length > 0) return;
-    if (!/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(adNetwork)) return;
-    if (!/^[a-f0-9]+$/i.test(adKey)) return;
+    const box = boxRef.current;
+    const content = contentRef.current;
+    if (!box || !content) return;
 
-    const config = document.createElement('script');
-    config.textContent = `atOptions = {'key':'${adKey}','format':'iframe','height':${height},'width':${width},'params':{}};`;
-    ref.current.appendChild(config);
+    const fit = () => {
+      const cs = getComputedStyle(box);
+      const padX = parseFloat(cs.paddingLeft) + parseFloat(cs.paddingRight);
+      const padY = parseFloat(cs.paddingTop) + parseFloat(cs.paddingBottom);
+      const bw = box.clientWidth - padX;
+      const bh = box.clientHeight - padY;
+      const cw = content.scrollWidth;
+      const ch = content.scrollHeight;
+      if (cw <= 0 || ch <= 0 || bw <= 0 || bh <= 0) return;
+      setScale(Math.min(maxScale, bw / cw, bh / ch));
+    };
 
-    const invoke = document.createElement('script');
-    invoke.src = `https://${adNetwork}/${adKey}/invoke.js`;
-    ref.current.appendChild(invoke);
-
-    const timer = setTimeout(() => {
-      if (ref.current && ref.current.querySelector('iframe')) setAdLoaded(true);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [adKey, adNetwork, width, height]);
-
-  if (!adKey) return null;
+    fit();
+    const ro = new ResizeObserver(fit);
+    ro.observe(box);
+    return () => ro.disconnect();
+  }, [html, maxScale]);
 
   return (
-    <div className="flex justify-center py-4 overflow-hidden">
-      <div ref={ref} />
-      {isDev && !adLoaded && <AdPlaceholder width={width} height={height} label="Banner Ad" />}
+    <div ref={boxRef} className={className} style={style}>
+      <div
+        ref={contentRef}
+        style={{ transform: `scale(${scale})`, transformOrigin: 'top left', width: 'fit-content' }}
+        dangerouslySetInnerHTML={{ __html: html }}
+      />
     </div>
   );
 }
 
-export function SidebarAd() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [adLoaded, setAdLoaded] = useState(false);
-  const adKey = import.meta.env.VITE_AD_SIDEBAR_KEY;
-  const adNetwork = import.meta.env.VITE_AD_BANNER_NETWORK;
-
-  useEffect(() => {
-    if (!adKey || !adNetwork || !ref.current || ref.current.children.length > 0) return;
-    if (!/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(adNetwork)) return;
-    if (!/^[a-f0-9]+$/i.test(adKey)) return;
-
-    const config = document.createElement('script');
-    config.textContent = `atOptions = {'key':'${adKey}','format':'iframe','height':600,'width':160,'params':{}};`;
-    ref.current.appendChild(config);
-
-    const invoke = document.createElement('script');
-    invoke.src = `https://${adNetwork}/${adKey}/invoke.js`;
-    ref.current.appendChild(invoke);
-
-    const timer = setTimeout(() => {
-      if (ref.current && ref.current.querySelector('iframe')) setAdLoaded(true);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [adKey, adNetwork]);
-
-  if (!adKey) return null;
-
-  return (
-    <div className="flex justify-center py-4 overflow-hidden">
-      <div ref={ref} />
-      {isDev && !adLoaded && <AdPlaceholder width={160} height={600} label="Sidebar Ad" />}
-    </div>
-  );
-}
-
-export function RectangleAd() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [adLoaded, setAdLoaded] = useState(false);
-  const adKey = import.meta.env.VITE_AD_RECTANGLE_KEY;
-  const adNetwork = import.meta.env.VITE_AD_BANNER_NETWORK;
-
-  useEffect(() => {
-    if (!adKey || !adNetwork || !ref.current || ref.current.children.length > 0) return;
-    if (!/^[a-z0-9.-]+\.[a-z]{2,}$/i.test(adNetwork)) return;
-    if (!/^[a-f0-9]+$/i.test(adKey)) return;
-
-    const config = document.createElement('script');
-    config.textContent = `atOptions = {'key':'${adKey}','format':'iframe','height':250,'width':300,'params':{}};`;
-    ref.current.appendChild(config);
-
-    const invoke = document.createElement('script');
-    invoke.src = `https://${adNetwork}/${adKey}/invoke.js`;
-    ref.current.appendChild(invoke);
-
-    const timer = setTimeout(() => {
-      if (ref.current && ref.current.querySelector('iframe')) setAdLoaded(true);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [adKey, adNetwork]);
-
-  if (!adKey) return null;
-
-  return (
-    <div className="flex justify-center py-4 overflow-hidden">
-      <div ref={ref} />
-      {isDev && !adLoaded && <AdPlaceholder width={300} height={250} label="Rectangle Ad" />}
-    </div>
-  );
-}
-
-export function NativeBanner() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [adLoaded, setAdLoaded] = useState(false);
-  const scriptUrl = import.meta.env.VITE_AD_NATIVE_SCRIPT;
-  const containerId = import.meta.env.VITE_AD_NATIVE_CONTAINER;
-
-  useEffect(() => {
-    if (!scriptUrl || !containerId || !ref.current || ref.current.children.length > 0) return;
-    if (!scriptUrl.startsWith('https://')) return;
-
-    const script = document.createElement('script');
-    script.async = true;
-    script.setAttribute('data-cfasync', 'false');
-    script.src = scriptUrl;
-    ref.current.appendChild(script);
-
-    const container = document.createElement('div');
-    container.id = containerId;
-    ref.current.appendChild(container);
-
-    const timer = setTimeout(() => {
-      if (ref.current && ref.current.querySelector('iframe')) setAdLoaded(true);
-    }, 3000);
-    return () => clearTimeout(timer);
-  }, [scriptUrl, containerId]);
-
-  if (!scriptUrl) return null;
-
-  return (
-    <div className="flex justify-center py-4 overflow-hidden">
-      <div ref={ref} />
-      {isDev && !adLoaded && <AdPlaceholder width={468} height={120} label="Native Ad" />}
-    </div>
-  );
-}
+// ── Ads ─────────────────────────────────────────────────────────────
 
 // Google AdSense responsive display unit. Renders only when both the publisher
 // ID and a slot ID are set (env-driven, nothing hardcoded). The loader script
-// is injected once in main.tsx. Runs independently of the Adsterra units above,
-// so both networks can earn at once.
+// is injected once via index.html.
 export function AdSenseBanner() {
   const client = import.meta.env.VITE_ADSENSE_CLIENT;
   const slot = import.meta.env.VITE_ADSENSE_BANNER_SLOT;

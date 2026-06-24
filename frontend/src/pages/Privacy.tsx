@@ -1,4 +1,4 @@
-import { AdBanner, PageHero } from '../components';
+import { PageHero } from '../components';
 import { useSeo } from '../seo';
 
 export default function Privacy() {
@@ -13,8 +13,8 @@ export default function Privacy() {
       image="https://images.unsplash.com/photo-1614064641938-3bbee52942c7?w=1600&q=80&auto=format&fit=crop"
     />
     <section className="py-16 sm:py-20 bg-page-bg-alt">
-      <div className="mx-auto max-w-3xl px-4 sm:px-6">
-        <div className="bg-white rounded-2xl border border-gray-200 shadow-sm p-6 sm:p-8 lg:p-10">
+      <div className="mx-auto max-w-3xl lg:max-w-5xl xl:max-w-6xl px-4 sm:px-6 lg:px-8">
+        <div className="bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-lg p-6 sm:p-8 lg:p-10 xl:p-12">
         <div className="space-y-6 text-sm text-gray-600 leading-relaxed">
           <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">What we collect</h2>
@@ -53,21 +53,13 @@ export default function Privacy() {
           </div>
 
           <div>
-            <h2 className="text-lg font-semibold text-gray-900 mb-2">Open source</h2>
-            <p>This application is fully open source. You can read every line of code on <a href="https://github.com/Carpathian-LLC/free-email-signature" target="_blank" rel="noopener noreferrer" className="text-brand-blue hover:text-brand-blue-hover">GitHub</a> and verify these claims.</p>
-          </div>
-
-          <div>
             <h2 className="text-lg font-semibold text-gray-900 mb-2">Contact</h2>
-            <p>Questions? Open an issue on GitHub or email info@carpathian.ai.</p>
+            <p>Questions? Email info@carpathian.ai.</p>
           </div>
         </div>
         </div>
       </div>
     </section>
-    <div className="bg-page-bg-alt">
-      <AdBanner />
-    </div>
     </>
   );
 }
