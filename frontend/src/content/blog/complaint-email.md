@@ -3,7 +3,7 @@ title: "How to Write a Complaint Email That Gets Results"
 description: "Learn how to write a complaint email that actually gets results. Templates, examples, and a clear structure to get refunds, fixes, and real responses."
 slug: complaint-email
 date: 2025-11-01
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: complaint email, email writing, customer service, professional communication, templates
 image: https://images.unsplash.com/photo-1567083370726-198ccd78fa0e?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Write a Complaint Email That Gets Results"

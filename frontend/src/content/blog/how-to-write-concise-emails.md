@@ -3,7 +3,7 @@ title: "How to Write Concise Emails People Actually Read"
 description: "Learn how to write concise emails people actually read. Practical tips, real examples, and a simple structure to get faster replies and clearer communication."
 slug: how-to-write-concise-emails
 date: 2026-05-22
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email writing, concise emails, communication, productivity, professional
 image: https://images.unsplash.com/photo-1600267165477-6d4cc741b379?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Write Concise Emails People Actually Read"

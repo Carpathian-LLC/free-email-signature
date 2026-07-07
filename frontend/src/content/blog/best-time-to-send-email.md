@@ -3,7 +3,7 @@ title: "The Best Time to Send an Email, According to the Data"
 description: "When should you hit send? A practical look at what the data says about email timing, plus how to find the best send time for your own audience."
 slug: best-time-to-send-email
 date: 2026-02-12
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email marketing, send time, open rates, productivity, email tips
 image: https://images.unsplash.com/photo-1504868584819-f8e8b4b6d7e3?w=1200&q=80&auto=format&fit=crop
 imageAlt: "The Best Time to Send an Email, According to the Data"

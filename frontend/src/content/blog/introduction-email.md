@@ -3,7 +3,7 @@ title: "How to Write an Introduction Email"
 description: "Learn how to write an introduction email that gets replies. Real templates, subject line tips, and a structure for connecting people, prospects, and contacts."
 slug: introduction-email
 date: 2025-08-14
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: introduction email, email writing, networking, professional communication, email templates
 image: https://images.unsplash.com/photo-1762401244552-9eb61a7f9416?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Write an Introduction Email"

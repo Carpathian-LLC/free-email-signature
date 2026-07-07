@@ -3,7 +3,7 @@ title: "Formal vs Casual Email Tone: How to Get It Right"
 description: "Learn how to match email tone to your reader. Practical rules, real examples, and a formal vs casual cheat sheet to help you sound right every time."
 slug: formal-vs-casual-email-tone
 date: 2025-10-14
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email tone, email writing, professional communication, etiquette, business email
 image: https://images.unsplash.com/photo-1634562876572-5abe57afcceb?w=1200&q=80&auto=format&fit=crop
 imageAlt: "Formal vs Casual Email Tone: How to Get It Right"

@@ -3,7 +3,7 @@ title: "Reply All Etiquette: When to Use It and When Not To"
 description: "Master reply all etiquette with clear rules, real examples, and FAQs. Learn exactly when to Reply All and when a single reply (or BCC) is the better call."
 slug: reply-all-etiquette
 date: 2025-10-18
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: reply all etiquette, email etiquette, professional email, communication, workplace email
 image: https://images.unsplash.com/photo-1625297673326-14790108da55?w=1200&q=80&auto=format&fit=crop
 imageAlt: "Reply All Etiquette: When to Use It and When Not To"

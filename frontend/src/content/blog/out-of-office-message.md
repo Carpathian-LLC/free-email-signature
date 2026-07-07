@@ -3,7 +3,7 @@ title: "How to Write an Out-of-Office Message (With Examples)"
 description: "Learn how to write an out-of-office message that sets clear expectations. Practical tips plus ready-to-use auto-reply examples for vacation, sick days, and more."
 slug: out-of-office-message
 date: 2025-06-10
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: out of office, email, auto-reply, professional communication, templates
 image: https://images.unsplash.com/photo-1507525428034-b723cf961d3e?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Write an Out-of-Office Message (With Examples)"

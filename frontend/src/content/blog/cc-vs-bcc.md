@@ -3,7 +3,7 @@ title: "CC vs BCC: When to Use Each in Email"
 description: "Confused about CC vs BCC in email? Learn exactly when to use each field, how to avoid common mistakes, and keep your messages professional and private."
 slug: cc-vs-bcc
 date: 2025-06-20
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email, cc vs bcc, communication, etiquette, productivity
 image: https://images.unsplash.com/photo-1611677806845-363fccca2c51?w=1200&q=80&auto=format&fit=crop
 imageAlt: "CC vs BCC: When to Use Each in Email"

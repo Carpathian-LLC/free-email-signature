@@ -3,7 +3,7 @@ title: "How to Choose a Professional Email Address"
 description: "Learn how to choose a professional email address that builds trust. Practical rules for formats, domains, and what to avoid, plus examples and FAQs."
 slug: professional-email-address
 date: 2025-06-14
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email, professional, career, communication, branding
 image: https://images.unsplash.com/photo-1604933762161-67313106146c?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Choose a Professional Email Address"

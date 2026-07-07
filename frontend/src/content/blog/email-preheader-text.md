@@ -3,7 +3,7 @@ title: "Preheader Text: The Most Ignored Line in Your Email"
 description: "Preheader text is the preview line next to your subject. Learn how to write it well to lift open rates and set the right expectation."
 slug: email-preheader-text
 date: 2026-03-25
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email marketing, preheader, subject lines, open rates, email design
 image: https://images.unsplash.com/photo-1488509082528-cefbba5ad692?w=1200&q=80&auto=format&fit=crop
 imageAlt: "Preheader Text: The Most Ignored Line in Your Email"

@@ -3,7 +3,7 @@ title: "Using AI to Write Better Emails Without Sounding Robotic"
 description: "Learn how to use AI for email writing without sounding robotic. Practical prompts, real examples, and editing tips to keep your emails clear, warm, and human."
 slug: ai-email-writing
 date: 2026-05-17
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: ai email writing, email tips, productivity, communication, writing
 image: https://images.unsplash.com/photo-1697577418970-95d99b5a55cf?w=1200&q=80&auto=format&fit=crop
 imageAlt: "Using AI to Write Better Emails Without Sounding Robotic"

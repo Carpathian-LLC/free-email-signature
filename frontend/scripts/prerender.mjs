@@ -18,7 +18,10 @@ const DIST_SERVER = resolve(ROOT, 'dist-server');
 
 // Interactive app routes are left as empty shells so the client renders them
 // fresh (no hydration mismatch from localStorage-derived initial state).
-const SKIP_BODY = new Set(['/create', '/my-signatures']);
+// /create is prerendered: its state initializes to SSR-safe defaults (EMPTY
+// fields, default template, localStorage read deferred to useEffect), and it
+// carries a static informational content block that crawlers need to see.
+const SKIP_BODY = new Set(['/my-signatures']);
 
 function loadKeysEnv() {
   const vars = {};

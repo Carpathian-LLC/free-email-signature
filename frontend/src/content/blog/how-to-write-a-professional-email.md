@@ -3,7 +3,7 @@ title: "How to Write a Professional Email (With Examples)"
 description: "Learn how to write a professional email step by step, with real examples for subject lines, greetings, requests, and follow-ups that get clear replies."
 slug: how-to-write-a-professional-email
 date: 2025-12-06
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email writing, professional communication, business email, email tips, workplace
 image: https://images.unsplash.com/photo-1486312338219-ce68d2c6f44d?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Write a Professional Email (With Examples)"

@@ -3,7 +3,7 @@ title: "How to Say No in an Email (Politely but Firmly)"
 description: "Saying no over email is a skill. Learn how to decline requests clearly and kindly, with templates that protect your time and your relationships."
 slug: how-to-say-no-in-email
 date: 2025-07-22
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email writing, communication, boundaries, workplace, templates
 image: https://images.unsplash.com/photo-1587560699334-cc4ff634909a?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Say No in an Email (Politely but Firmly)"

@@ -3,7 +3,7 @@ title: "Email Signature Etiquette: Dos and Donts"
 description: "Learn email signature etiquette with clear dos and donts. Practical rules on length, contact info, formatting, fonts, links, and tone for professional email."
 slug: email-signature-etiquette
 date: 2026-01-31
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email signature, etiquette, professional email, business communication, email tips
 image: https://images.unsplash.com/photo-1681505526188-b05e68c77582?w=1200&q=80&auto=format&fit=crop
 imageAlt: "Email Signature Etiquette: Dos and Donts"
@@ -122,6 +122,17 @@ Run your signature through these questions:
 - Have I removed anything that does not help the reader?
 
 If you answer yes to the first four and have trimmed the fifth, you are in good shape. For a deeper look at layout and formatting choices, our guide to [email signature best practices](/email-signature-best-practices) goes further.
+
+## How we baked these rules into the templates
+
+When we designed the ten [signature templates](/templates) in our generator, every etiquette rule above turned into a build decision, so you inherit the good defaults without having to police yourself:
+
+- **Length is capped by design.** Even the most detailed template tops out around five lines of real content. There is nowhere to paste a paragraph-long quote or a directory of six phone numbers, because the layouts simply do not have room for the noise.
+- **Everything important is real text, never an image.** Your name, title, and contact details are rendered as selectable text in inline HTML tables. A photo or logo is optional garnish. If a recipient blocks images, nothing essential disappears.
+- **One font, one accent color.** The templates use web-safe fonts sized close to body text, and the brand color is limited to a single accent such as your name or a divider, exactly as the "do not use hard-to-read colors" rule advises.
+- **They are built to survive mobile and reply threads.** Because they are table-based and compact, they hold their shape on a phone and do not turn a long thread into a wall of repeated banners.
+
+In other words, the fastest way to follow email signature etiquette is to start from a layout that already does. If you would rather not hand-build one, you can [create a free email signature](/create) that respects these rules out of the box.
 
 ## Frequently Asked Questions
 

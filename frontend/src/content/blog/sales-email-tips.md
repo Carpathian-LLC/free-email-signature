@@ -3,7 +3,7 @@ title: "How to Write Sales Emails That Convert"
 description: "Learn how to write sales emails that convert with practical tips on subject lines, structure, value, and follow-ups, plus real example emails you can adapt."
 slug: sales-email-tips
 date: 2026-05-11
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: sales email, cold email, email writing, outreach, follow-up
 image: https://images.unsplash.com/photo-1524293772845-840102eccb82?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Write Sales Emails That Convert"

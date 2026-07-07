@@ -53,7 +53,16 @@ export default function BlogPost() {
     image: post.image ? [post.image] : undefined,
     datePublished: post.date,
     dateModified: post.date,
-    author: { '@type': 'Organization', name: 'Free Signature Co.', url: 'https://carpathian.ai' },
+    author: {
+      '@type': 'Person',
+      name: post.author,
+      jobTitle: 'Founder, Carpathian AI',
+      url: `${SITE_URL}/about`,
+      sameAs: [
+        'https://linkedin.com/in/samuel-malkasian',
+        'https://x.com/samuelmalkasian',
+      ],
+    },
     publisher: {
       '@type': 'Organization',
       name: 'Free Signature Co.',
@@ -115,6 +124,32 @@ export default function BlogPost() {
         {/* ═══ Body ═══ */}
         <div className="mx-auto max-w-3xl px-4 sm:px-6 py-12">
           <div className="article-body" dangerouslySetInnerHTML={{ __html: post.html }} />
+
+          {/* ═══ Author bio (E-E-A-T) ═══ */}
+          <aside className="mt-12 bg-white rounded-2xl border border-gray-200 ring-1 ring-gray-900/5 shadow-sm p-6 sm:p-7">
+            <div className="flex items-start gap-4">
+              <img
+                src="https://carpathian.ai/profile-images/samuel-malkasian.jpeg"
+                alt={post.author}
+                loading="lazy"
+                className="w-14 h-14 rounded-full object-cover flex-shrink-0"
+              />
+              <div className="flex-1 min-w-0">
+                <div className="text-xs font-semibold uppercase tracking-wide text-gray-400">Written by</div>
+                <h2 className="text-base font-semibold text-gray-900">{post.author}</h2>
+                <p className="text-sm text-gray-500">Founder, Carpathian AI</p>
+                <p className="mt-3 text-sm text-gray-600 leading-relaxed">
+                  Samuel builds free, no-account tools at Carpathian, including this email signature generator.
+                  He writes about email, communication, and the software that gets in the way of both.{' '}
+                  <Link to="/about" className="text-brand-blue hover:text-brand-blue-hover font-medium">More about the project</Link>.
+                </p>
+                <div className="mt-3 flex gap-4">
+                  <a href="https://linkedin.com/in/samuel-malkasian" target="_blank" rel="noopener noreferrer" className="text-sm text-brand-blue hover:text-brand-blue-hover font-medium">LinkedIn</a>
+                  <a href="https://x.com/samuelmalkasian" target="_blank" rel="noopener noreferrer" className="text-sm text-brand-blue hover:text-brand-blue-hover font-medium">X</a>
+                </div>
+              </div>
+            </div>
+          </aside>
 
           <div className="mt-12 bg-brand-blue-dark rounded-2xl p-8 text-center">
             <h2 className="text-2xl font-bold text-white mb-2">Put it into practice</h2>

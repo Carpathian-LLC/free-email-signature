@@ -3,7 +3,7 @@ title: "How to Negotiate Salary Over Email"
 description: "Negotiating salary by email gives you time to get the words right. Learn how to counter an offer professionally, with examples that work."
 slug: negotiate-salary-email
 date: 2025-12-21
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: career, salary negotiation, job offer, email writing, professional communication
 image: https://images.unsplash.com/photo-1638262052640-82e94d64664a?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Negotiate Salary Over Email"

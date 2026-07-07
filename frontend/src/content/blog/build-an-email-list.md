@@ -3,7 +3,7 @@ title: "How to Build an Email List From Scratch"
 description: "Build an email list the right way, without buying contacts. Learn the opt-in forms, lead magnets, and habits that grow a list people actually read."
 slug: build-an-email-list
 date: 2025-09-24
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email marketing, list building, lead generation, newsletters, growth
 image: https://images.unsplash.com/photo-1557200134-90327ee9fafa?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Build an Email List From Scratch"

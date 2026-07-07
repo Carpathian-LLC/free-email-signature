@@ -3,7 +3,7 @@ title: "Async Communication: Writing Emails That Replace Meetings"
 description: "Good async writing can replace half your meetings. Learn how to write emails and updates that move work forward without a call."
 slug: async-communication-email
 date: 2025-07-30
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: async communication, remote work, productivity, email writing, workplace
 image: https://images.unsplash.com/photo-1759752394757-323a0adc0d62?w=1200&q=80&auto=format&fit=crop
 imageAlt: "Async Communication: Writing Emails That Replace Meetings"

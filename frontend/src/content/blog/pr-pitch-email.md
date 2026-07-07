@@ -3,7 +3,7 @@ title: "How to Pitch Journalists by Email (PR Outreach)"
 description: "Reporters get hundreds of pitches a day. Learn how to write a media pitch email that stands out, respects their time, and earns coverage."
 slug: pr-pitch-email
 date: 2026-03-19
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: public relations, media pitch, outreach, email writing, journalism
 image: https://images.unsplash.com/photo-1497105943914-b90d55145023?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Pitch Journalists by Email (PR Outreach)"

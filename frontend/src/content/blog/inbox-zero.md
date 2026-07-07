@@ -3,7 +3,7 @@ title: "Inbox Zero: How to Manage Email Without Losing Your Mind"
 description: "Inbox zero is about a calm, controlled inbox, not an empty one. Learn practical triage, batching, and reply systems to manage email without burning out."
 slug: inbox-zero
 date: 2026-02-04
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: inbox zero, email management, productivity, email writing, time management
 image: https://images.unsplash.com/photo-1553775282-20af80779df7?w=1200&q=80&auto=format&fit=crop
 imageAlt: "Inbox Zero: How to Manage Email Without Losing Your Mind"

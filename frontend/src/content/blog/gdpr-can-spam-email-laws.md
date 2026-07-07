@@ -3,7 +3,7 @@ title: "Email Marketing Laws: GDPR, CAN-SPAM, and CASL Made Simple"
 description: "A plain-English guide to the email laws that matter: GDPR, CAN-SPAM, and CASL, and the simple steps that keep your email program compliant."
 slug: gdpr-can-spam-email-laws
 date: 2025-08-10
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email marketing, gdpr, can-spam, compliance, email law
 image: https://images.unsplash.com/photo-1654588831193-0285dab84d5a?w=1200&q=80&auto=format&fit=crop
 imageAlt: "Email Marketing Laws: GDPR, CAN-SPAM, and CASL Made Simple"

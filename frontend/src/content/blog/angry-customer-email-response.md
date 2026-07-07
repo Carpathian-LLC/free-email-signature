@@ -3,7 +3,7 @@ title: "How to Respond to an Angry Customer Email"
 description: "An angry email is a chance to keep a customer. Learn a calm, structured way to respond that de-escalates and solves the problem."
 slug: angry-customer-email-response
 date: 2025-07-08
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: customer service, support, email writing, de-escalation, communication
 image: https://images.unsplash.com/photo-1607524219458-c5849519805f?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Respond to an Angry Customer Email"

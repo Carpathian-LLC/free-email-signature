@@ -3,7 +3,7 @@ title: "How to Write Email Subject Lines That Get Opened"
 description: "Learn how to write email subject lines that get opened. Practical formulas, real examples, and mistakes to avoid for clearer, higher-response emails."
 slug: email-subject-lines
 date: 2025-06-23
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email subject lines, email writing, communication, productivity, outreach
 image: https://images.unsplash.com/photo-1596526131083-e8c633c948d2?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Write Email Subject Lines That Get Opened"

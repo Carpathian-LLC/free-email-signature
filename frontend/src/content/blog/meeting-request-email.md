@@ -3,7 +3,7 @@ title: "How to Write a Meeting Request Email"
 description: "Learn how to write a meeting request email that gets a yes. Clear structure, real examples, subject line tips, and follow-up advice for any professional."
 slug: meeting-request-email
 date: 2025-07-12
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email writing, meetings, professional communication, productivity, outreach
 image: https://images.unsplash.com/photo-1686771416282-3888ddaf249b?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Write a Meeting Request Email"

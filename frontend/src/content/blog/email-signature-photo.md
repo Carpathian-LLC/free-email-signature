@@ -3,7 +3,7 @@ title: "Should You Put a Photo in Your Email Signature?"
 description: "A headshot can make your signature warmer or cluttered. Learn when a photo helps, when it hurts, and how to add one the right way."
 slug: email-signature-photo
 date: 2026-01-29
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: email signature, personal branding, signature design, professional image, email tips
 image: https://images.unsplash.com/photo-1544654803-b69140b285a1?w=1200&q=80&auto=format&fit=crop
 imageAlt: "Should You Put a Photo in Your Email Signature?"
@@ -64,6 +64,17 @@ The technical side is where most signature photos go wrong. Get these details ri
 - **Host the image, do not embed it where you can avoid it.** Reference the photo from a stable public URL rather than attaching it. Embedded images can show up as paperclip attachments or get stripped, while a hosted image loads cleanly. The tradeoff is that some clients block external images by default, which is exactly why your signature should still make full sense without the picture.
 
 A signature that depends on the photo loading is a fragile signature. The text should carry your name, title, and contact details on its own.
+
+## How our generator handles signature photos
+
+We built the photo step in [our free signature generator](/create) around exactly these failure modes, so it is worth explaining what it does and why, because the same choices apply whether you use our tool or add a photo by hand.
+
+- **It crops to a circle at a square aspect ratio.** When you upload a photo, you get a cropper locked to a 1:1 square and rendered as a round mask. That is deliberate: square and circular images are the two shapes that lay out predictably across email clients, while a tall portrait throws off the row height and pushes your contact details out of alignment.
+- **It caps the file at 2 MB and 2000 by 2000 pixels.** Those limits exist because a signature photo has no business being larger. Anything over that is downscaled and rejected before it ever reaches a recipient, which keeps your emails light and keeps you off the wrong side of spam filters.
+- **It hosts the image at a stable URL instead of embedding it.** The cropped photo is uploaded and referenced by link, so it loads cleanly rather than showing up as a paperclip attachment or getting stripped by the recipient's client.
+- **It never lets the layout depend on the image.** The templates put your name, title, and contact details in real text next to the photo, so if a recipient blocks images, the signature still reads as a complete, intentional block rather than a layout with a hole in it.
+
+If you would rather not think about any of this, that is the point of the tool. If you are hand-building a signature, copy the same rules: square crop, small hosted file, and text that stands on its own.
 
 ## Accessibility and alt text
 

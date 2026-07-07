@@ -3,7 +3,7 @@ title: "How to Write a Fundraising Email That Gets Donations"
 description: "Learn how to write a fundraising email that moves people to give, with a clear story, a specific ask, and an easy way to donate."
 slug: fundraising-email
 date: 2026-01-06
-author: Free Signature Co.
+author: Samuel Malkasian
 tags: nonprofit, fundraising, email writing, donations, storytelling
 image: https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200&q=80&auto=format&fit=crop
 imageAlt: "How to Write a Fundraising Email That Gets Donations"
