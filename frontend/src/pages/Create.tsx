@@ -105,9 +105,13 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+// background is a CSS color painted behind the photo, or 'transparent' to keep
+// alpha. Transparent crops must export as PNG: JPEG has no alpha channel and
+// the canvas flattens transparent pixels to black.
 async function getCroppedImg(
   imageSrc: string,
   pixelCrop: { x: number; y: number; width: number; height: number },
+  background: string,
 ): Promise<Blob> {
   const image = await loadImage(imageSrc);
   const canvas = document.createElement('canvas');
@@ -117,6 +121,11 @@ async function getCroppedImg(
   const scale = Math.min(1, maxSize / Math.max(pixelCrop.width, pixelCrop.height));
   canvas.width = Math.round(pixelCrop.width * scale);
   canvas.height = Math.round(pixelCrop.height * scale);
+
+  if (background !== 'transparent') {
+    ctx.fillStyle = background;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
 
   ctx.drawImage(
     image,
@@ -129,7 +138,7 @@ async function getCroppedImg(
   return new Promise((resolve, reject) => {
     canvas.toBlob(
       blob => (blob ? resolve(blob) : reject(new Error('Canvas export failed'))),
-      'image/jpeg',
+      background === 'transparent' ? 'image/png' : 'image/jpeg',
       0.9,
     );
   });
@@ -149,6 +158,7 @@ export default function Create() {
   const [uploading, setUploading] = useState(false);
 
   const [cropImage, setCropImage] = useState<string | null>(null);
+  const [cropBg, setCropBg] = useState<string>('transparent');
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
@@ -273,6 +283,7 @@ export default function Create() {
     setCropImage(imageSrc);
     setCrop({ x: 0, y: 0 });
     setZoom(1);
+    setCropBg('transparent');
     setCroppedAreaPixels(null);
     setCropError(null);
   }
@@ -318,7 +329,8 @@ export default function Create() {
     setUploading(true);
     setCropError(null);
     try {
-      const blob = await getCroppedImg(cropImage, croppedAreaPixels);
+      const blob = await getCroppedImg(cropImage, croppedAreaPixels, cropBg);
+      const uploadName = cropBg === 'transparent' ? 'cropped.png' : 'cropped.jpg';
       if (API_URL) {
         if (!uploadToken) {
           // Tokens are single-use; the previous one was consumed. Fetch a
@@ -331,7 +343,7 @@ export default function Create() {
         }
         try {
           const form = new FormData();
-          form.append('file', blob, 'cropped.jpg');
+          form.append('file', blob, uploadName);
           form.append('upload_token', uploadToken);
           if (honeypot) form.append('website_url', honeypot);
           const res = await fetch(`${API_URL}/api/upload`, { method: 'POST', body: form });
@@ -478,6 +490,40 @@ export default function Create() {
                 onChange={e => setZoom(Number(e.target.value))}
                 className="flex-1 accent-brand-blue"
               />
+            </div>
+            <div className="mt-3 flex items-center gap-2">
+              <span className="text-xs text-gray-500 flex-shrink-0">Background</span>
+              <button
+                onClick={() => setCropBg('transparent')}
+                title="Transparent"
+                aria-label="Transparent background"
+                className={`w-6 h-6 rounded-full border-2 transition-all ${
+                  cropBg === 'transparent' ? 'border-gray-900 scale-110' : 'border-gray-300 hover:border-gray-400'
+                }`}
+                style={{
+                  background:
+                    'repeating-conic-gradient(#d1d5db 0% 25%, #ffffff 0% 50%) 0 0 / 8px 8px',
+                }}
+              />
+              <button
+                onClick={() => setCropBg('#ffffff')}
+                title="White"
+                aria-label="White background"
+                className={`w-6 h-6 rounded-full border-2 bg-white transition-all ${
+                  cropBg === '#ffffff' ? 'border-gray-900 scale-110' : 'border-gray-300 hover:border-gray-400'
+                }`}
+              />
+              <input
+                type="color"
+                value={cropBg === 'transparent' ? '#ffffff' : cropBg}
+                onChange={e => setCropBg(e.target.value)}
+                title="Custom color"
+                aria-label="Custom background color"
+                className="w-6 h-6 rounded-full border-2 border-gray-300 hover:border-gray-400 cursor-pointer p-0"
+              />
+              <span className="text-[11px] text-gray-400">
+                {cropBg === 'transparent' ? 'Transparent (PNG)' : cropBg}
+              </span>
             </div>
             {cropError && (
               <p className="mt-2 text-xs text-red-500">{cropError}</p>
