@@ -19,7 +19,7 @@ import SignatureBestPractices from './pages/SignatureBestPractices';
 import ConsentBanner from './cmp/ConsentBanner';
 import { AdSenseBanner } from './components';
 
-const API_URL = import.meta.env.VITE_API_URL || '';
+const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
 // Optional donation link. Set VITE_DONATE_URL to your own (PayPal, Ko-fi, etc.);
 // when unset, the donate button is hidden so forks never link to someone else.
 const DONATE_URL = import.meta.env.VITE_DONATE_URL || '';

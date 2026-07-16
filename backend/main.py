@@ -9,6 +9,7 @@
 # - MySQL optional. App runs without it, photo upload is just disabled.
 # ------------------------------------------------------------------------------------
 
+import asyncio
 import hashlib
 import io
 import logging
@@ -16,6 +17,7 @@ import os
 import re
 import secrets
 import struct
+import threading
 import time
 from pathlib import Path
 
@@ -317,6 +319,7 @@ def _init_db():
                 user=os.environ.get("DB_USER"),
                 password=os.environ.get("DB_PASS"),
                 database=os.environ.get("DB_NAME"),
+                connection_timeout=int(os.environ.get("DB_CONNECT_TIMEOUT", "5")),
                 **ssl_config,
             )
             app_logger.info("MySQL pool ready (TLS: %s)", bool(ssl_config))
@@ -336,7 +339,35 @@ def _init_db():
             time.sleep(retry_interval)
 
 
-_init_db()
+def _preload_type_map():
+    """Pre-warm the type map so image retrieval never touches the DB."""
+    conn = None
+    try:
+        conn = db_pool.get_connection()
+        cursor = conn.cursor()
+        cursor.execute("SELECT random_hash, asset_hash, content_type FROM images")
+        for rh, ah, ct in cursor.fetchall():
+            _type_map[f"{rh}/{ah}"] = ct
+        cursor.close()
+        app_logger.info("Preloaded %d image type mappings", len(_type_map))
+    except Exception as e:
+        app_logger.warning("Type map preload failed: %s", e)
+    finally:
+        if conn:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+
+def _init_db_background():
+    """DB init runs off the main thread so the server accepts traffic
+    immediately; photo upload stays disabled (db_pool is None) until it
+    finishes. Without this, a slow or unreachable MySQL blocks startup for up
+    to DB_RETRY_DURATION and nginx serves 502s the whole time."""
+    _init_db()
+    if db_pool:
+        _preload_type_map()
 
 
 # ------------------------------------------------------------------------------------
@@ -391,26 +422,8 @@ async def request_pipeline(request: Request, call_next):
 
 @app.on_event("startup")
 async def on_startup():
-    """Pre-warm the type map so image retrieval never touches the DB."""
     app_logger.info("Server started on port %s", os.environ.get("BACKEND_PORT", "?"))
-    if db_pool:
-        conn = None
-        try:
-            conn = db_pool.get_connection()
-            cursor = conn.cursor()
-            cursor.execute("SELECT random_hash, asset_hash, content_type FROM images")
-            for rh, ah, ct in cursor.fetchall():
-                _type_map[f"{rh}/{ah}"] = ct
-            cursor.close()
-            app_logger.info("Preloaded %d image type mappings", len(_type_map))
-        except Exception as e:
-            app_logger.warning("Type map preload failed: %s", e)
-        finally:
-            if conn:
-                try:
-                    conn.close()
-                except Exception:
-                    pass
+    threading.Thread(target=_init_db_background, daemon=True, name="db-init").start()
 
 
 @app.on_event("shutdown")
@@ -550,6 +563,29 @@ def _is_bot_request(request: Request) -> bool:
     return False
 
 
+def _insert_image_record(random_hash: str, asset_hash: str, content_type: str,
+                         file_size: int, original_name: str, uploader_ip: str) -> None:
+    """Blocking MySQL insert for an uploaded image. Runs via asyncio.to_thread
+    from the async upload route so a slow DB can't stall the event loop."""
+    conn = None
+    try:
+        conn = db_pool.get_connection()
+        cursor = conn.cursor()
+        cursor.execute(
+            "INSERT INTO images (random_hash, asset_hash, content_type, file_size, original_name, uploader_ip) "
+            "VALUES (%s, %s, %s, %s, %s, %s)",
+            (random_hash, asset_hash, content_type, file_size, original_name, uploader_ip),
+        )
+        conn.commit()
+        cursor.close()
+    finally:
+        if conn:
+            try:
+                conn.close()
+            except Exception:
+                pass
+
+
 def _is_safe_hex(segment: str) -> bool:
     """Only allow lowercase hex characters in URL path segments. Blocks any
     directory traversal attempts like ../ or %2e%2e."""
@@ -671,25 +707,27 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
         security_logger.info("Honeypot triggered from %s", client_ip)
         return JSONResponse(content=HONEYPOT_RESPONSE)
 
-    # ── Bot detection: missing browser headers, silent drop ──────
+    # ── Bot heuristics: log-only. Header checks false-positive on privacy
+    # browsers and older Safari; the honeypot field, token requirement, and
+    # rate limit remain the hard gates ───────────────────────────
     if _is_bot_request(request):
-        security_logger.info("Bot-like request dropped from %s", client_ip)
-        return JSONResponse(content=HONEYPOT_RESPONSE)
+        security_logger.info("Bot-like headers on upload from %s", client_ip)
 
-    # ── Token validation: required, prevents direct API abuse ───
+    # ── Token validation: required. Missing or expired tokens get an honest
+    # error so a real user's client can fetch a fresh token and retry ──
     upload_token_value = form.get("upload_token")
     if not upload_token_value or not isinstance(upload_token_value, str):
         security_logger.info("Missing upload token from %s", client_ip)
-        return JSONResponse(content=HONEYPOT_RESPONSE)
+        return JSONResponse(status_code=400, content={"error": "Upload session expired. Please try again."})
 
     issued_at = _page_tokens.pop(upload_token_value, None)
     if not issued_at:
         security_logger.info("Invalid upload token from %s", client_ip)
-        return JSONResponse(content=HONEYPOT_RESPONSE)
+        return JSONResponse(status_code=400, content={"error": "Upload session expired. Please try again."})
 
     if (time.time() - issued_at) * 1000 < MIN_UPLOAD_TIME_MS:
         security_logger.info("Upload too fast from %s (%.0fms)", client_ip, (time.time() - issued_at) * 1000)
-        return JSONResponse(content=HONEYPOT_RESPONSE)
+        return JSONResponse(status_code=400, content={"error": "Please wait a moment and try again."})
 
     if not _check_rate_limit(client_ip):
         security_logger.warning("Rate limit exceeded: %s", client_ip)
@@ -733,17 +771,12 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
     file_path.chmod(0o600)
 
     key = f"{random_hash}/{asset_hash}"
-    conn = None
     try:
-        conn = db_pool.get_connection()
-        cursor = conn.cursor()
-        cursor.execute(
-            "INSERT INTO images (random_hash, asset_hash, content_type, file_size, original_name, uploader_ip) "
-            "VALUES (%s, %s, %s, %s, %s, %s)",
-            (random_hash, asset_hash, detected_type, len(content), (file.filename or "upload")[:255], client_ip),
+        await asyncio.to_thread(
+            _insert_image_record,
+            random_hash, asset_hash, detected_type, len(content),
+            (file.filename or "upload")[:255], client_ip,
         )
-        conn.commit()
-        cursor.close()
         _cache_image(key, content, detected_type)
         _type_map[key] = detected_type
     except Exception as e:
@@ -756,12 +789,6 @@ async def upload_image(request: Request, file: UploadFile = File(...)):
         except OSError:
             pass
         return JSONResponse(status_code=500, content={"error": "Upload failed. Please try again later."})
-    finally:
-        if conn:
-            try:
-                conn.close()
-            except Exception:
-                pass
 
     app_logger.info("Upload %s %d bytes %s", key, len(content), detected_type)
     images_logger.info("/cos/%s", key)

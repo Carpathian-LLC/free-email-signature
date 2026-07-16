@@ -17,7 +17,7 @@ const TEMPLATE_KEY = 'sig-gen-template';
 const STYLE_KEY = 'sig-gen-style';
 const HISTORY_KEY = 'cos_saved_signatures';
 const HISTORY_CAP = 25;
-const API_URL = import.meta.env.VITE_API_URL || '';
+const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
 
 const EMPTY: SignatureFields = {
   fullName: '', title: '', company: '', email: '', phone: '', website: '',
@@ -34,6 +34,18 @@ const DEFAULT_STYLE: StyleOptions = {
 
 function newId(): string {
   return Math.random().toString(36).slice(2, 10);
+}
+
+// Confirms an uploaded image URL actually serves an image before we put it in
+// the signature, so a rejected upload can't silently become a broken photo.
+function verifyImageLoads(url: string): Promise<boolean> {
+  return new Promise(resolve => {
+    const img = new Image();
+    const timer = setTimeout(() => resolve(false), 10000);
+    img.onload = () => { clearTimeout(timer); resolve(true); };
+    img.onerror = () => { clearTimeout(timer); resolve(false); };
+    img.src = url;
+  });
 }
 
 function loadFields(): SignatureFields {
@@ -164,13 +176,14 @@ export default function Create() {
     path: '/create',
   });
 
-  useEffect(() => {
-    if (API_URL) {
-      fetch(`${API_URL}/api/upload-token`).then(r => r.json()).then(d => {
-        if (d.token) setUploadToken(d.token);
-      }).catch(() => {});
-    }
+  const fetchUploadToken = useCallback(() => {
+    if (!API_URL) return;
+    fetch(`${API_URL}/api/upload-token`).then(r => r.json()).then(d => {
+      if (d.token) setUploadToken(d.token);
+    }).catch(() => {});
   }, []);
+
+  useEffect(() => { fetchUploadToken(); }, [fetchUploadToken]);
 
   useEffect(() => {
     setFields(loadFields());
@@ -307,19 +320,39 @@ export default function Create() {
     try {
       const blob = await getCroppedImg(cropImage, croppedAreaPixels);
       if (API_URL) {
+        if (!uploadToken) {
+          // Tokens are single-use; the previous one was consumed. Fetch a
+          // replacement and have the user retry rather than uploading without
+          // one, which the server rejects.
+          fetchUploadToken();
+          setCropError('Upload session expired. Please try again in a few seconds.');
+          setUploading(false);
+          return;
+        }
         try {
           const form = new FormData();
           form.append('file', blob, 'cropped.jpg');
-          if (uploadToken) form.append('upload_token', uploadToken);
+          form.append('upload_token', uploadToken);
           if (honeypot) form.append('website_url', honeypot);
           const res = await fetch(`${API_URL}/api/upload`, { method: 'POST', body: form });
           const data = await res.json();
+          setUploadToken('');
+          fetchUploadToken();
           if (data.success) {
-            update('photoUrl', `${API_URL}${data.url}`);
-            closeCrop();
+            const url = `${API_URL}${data.url}`;
+            if (await verifyImageLoads(url)) {
+              update('photoUrl', url);
+              closeCrop();
+              setUploading(false);
+              return;
+            }
+            setCropError('Upload could not be verified. Please try again.');
             setUploading(false);
             return;
           }
+          setCropError(data.error || 'Upload failed. Please try again later.');
+          setUploading(false);
+          return;
         } catch {
           setCropError('Upload failed. Please try again later.');
           setUploading(false);
