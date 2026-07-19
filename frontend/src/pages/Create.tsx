@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
+import type { CountryCode } from 'libphonenumber-js/min';
 import { Link, useSearchParams } from 'react-router-dom';
 import Cropper from 'react-easy-crop';
 import type { Area } from 'react-easy-crop';
@@ -17,6 +18,7 @@ const TEMPLATE_KEY = 'sig-gen-template';
 const STYLE_KEY = 'sig-gen-style';
 const HISTORY_KEY = 'cos_saved_signatures';
 const HISTORY_CAP = 25;
+const PHONE_COUNTRY_KEY = 'sig-gen-phone-country';
 const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
 
 const EMPTY: SignatureFields = {
@@ -86,11 +88,22 @@ function loadStyle(): StyleOptions {
   } catch { return DEFAULT_STYLE; }
 }
 
-function formatPhone(raw: string): string {
-  const digits = raw.replace(/\D/g, '');
-  if (digits.length === 10) return `(${digits.slice(0, 3)}) ${digits.slice(3, 6)}-${digits.slice(6)}`;
-  if (digits.length === 11 && digits[0] === '1') return `(${digits.slice(1, 4)}) ${digits.slice(4, 7)}-${digits.slice(7)}`;
-  return raw;
+// libphonenumber-js is lazy-loaded after mount so its metadata never lands in
+// the main bundle. Until it arrives, phone input passes through unformatted.
+type PhoneLib = typeof import('libphonenumber-js/min');
+let phoneLib: PhoneLib | null = null;
+
+function formatPhone(raw: string, country: string): string {
+  if (!phoneLib) return raw;
+  try {
+    // A leading + carries its own country code, which overrides the selector
+    const formatter = raw.trim().startsWith('+')
+      ? new phoneLib.AsYouType()
+      : new phoneLib.AsYouType(country as CountryCode);
+    return formatter.input(raw);
+  } catch {
+    return raw;
+  }
 }
 
 // ── Crop utilities ──────────────────────────────────────────────────
@@ -159,6 +172,8 @@ export default function Create() {
 
   const [cropImage, setCropImage] = useState<string | null>(null);
   const [cropBg, setCropBg] = useState<string>('transparent');
+  const [phoneCountry, setPhoneCountry] = useState<string>('US');
+  const [phoneCountries, setPhoneCountries] = useState<{ code: string; name: string; calling: string }[]>([]);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
   const [croppedAreaPixels, setCroppedAreaPixels] = useState<Area | null>(null);
@@ -196,6 +211,26 @@ export default function Create() {
   useEffect(() => { fetchUploadToken(); }, [fetchUploadToken]);
 
   useEffect(() => {
+    let cancelled = false;
+    import('libphonenumber-js/min').then(m => {
+      if (cancelled) return;
+      phoneLib = m;
+      const names = new Intl.DisplayNames(['en'], { type: 'region' });
+      const list = m.getCountries().map(c => {
+        let name: string = c;
+        try { name = names.of(c) || c; } catch { /* unknown region code */ }
+        return { code: c as string, name, calling: m.getCountryCallingCode(c) as string };
+      }).sort((a, b) => a.name.localeCompare(b.name));
+      setPhoneCountries(list);
+    }).catch(() => {});
+    try {
+      const saved = localStorage.getItem(PHONE_COUNTRY_KEY);
+      if (saved && /^[A-Z]{2}$/.test(saved)) setPhoneCountry(saved);
+    } catch { /* noop */ }
+    return () => { cancelled = true; };
+  }, []);
+
+  useEffect(() => {
     setFields(loadFields());
     const initial = paramTemplate && templates.some(t => t.id === paramTemplate) ? paramTemplate : loadTemplate();
     setTemplateId(initial);
@@ -221,7 +256,20 @@ export default function Create() {
   // ── Field updates ─────────────────────────────────────────────
 
   function update(key: keyof Omit<SignatureFields, 'socialLinks'>, value: string) {
-    setFields(prev => ({ ...prev, [key]: key === 'phone' ? formatPhone(value) : value }));
+    setFields(prev => {
+      if (key !== 'phone') return { ...prev, [key]: value };
+      // Only reformat while the user is adding characters; formatting on
+      // deletion re-inserts the punctuation being deleted and traps the caret.
+      const next = value.length > prev.phone.length ? formatPhone(value, phoneCountry) : value;
+      return { ...prev, phone: next };
+    });
+  }
+
+  function changePhoneCountry(code: string) {
+    setPhoneCountry(code);
+    try { localStorage.setItem(PHONE_COUNTRY_KEY, code); } catch { /* noop */ }
+    // Re-run formatting for the new country on the bare digits
+    setFields(prev => ({ ...prev, phone: formatPhone(prev.phone.replace(/[^\d+]/g, ''), code) }));
   }
 
   function handleClear() {
@@ -640,7 +688,30 @@ export default function Create() {
 
               <Section title="Contact">
                 <Field label="Email" value={fields.email} onChange={v => update('email', v)} placeholder="peter@carpathian.ai" type="email" />
-                <Field label="Phone" value={fields.phone} onChange={v => update('phone', v)} placeholder="(515) 344-3081" />
+                <div>
+                  <label className="block text-xs font-semibold text-gray-700 mb-1">Phone</label>
+                  <div className="flex gap-2">
+                    {phoneCountries.length > 0 && (
+                      <select
+                        value={phoneCountry}
+                        onChange={e => changePhoneCountry(e.target.value)}
+                        aria-label="Phone country"
+                        className="w-32 flex-shrink-0 px-2 py-2 bg-gray-100 border border-gray-300 rounded-xl text-gray-900 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue focus:bg-white"
+                      >
+                        {phoneCountries.map(c => (
+                          <option key={c.code} value={c.code}>{c.name} (+{c.calling})</option>
+                        ))}
+                      </select>
+                    )}
+                    <input
+                      type="text"
+                      value={fields.phone}
+                      onChange={e => update('phone', e.target.value)}
+                      placeholder={phoneCountry === 'US' ? '(515) 344-3081' : `+${phoneCountries.find(c => c.code === phoneCountry)?.calling ?? ''}`}
+                      className="flex-1 min-w-0 px-3 py-2 bg-gray-100 border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue focus:bg-white"
+                    />
+                  </div>
+                </div>
                 <Field label="Website" value={fields.website} onChange={v => update('website', v)} placeholder="https://carpathian.ai" />
                 <Field label="Address Line 1" value={fields.addressLine1} onChange={v => update('addressLine1', v)} placeholder="West Des Moines, IA 50265" />
                 <Field label="Address Line 2" value={fields.addressLine2} onChange={v => update('addressLine2', v)} placeholder="" />
