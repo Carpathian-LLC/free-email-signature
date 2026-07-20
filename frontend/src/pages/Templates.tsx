@@ -4,7 +4,7 @@ import { templates, SAMPLE_DATA, SAMPLE_PHOTOS } from '../templates';
 import { StyleOptions } from '../types';
 import { useSeo } from '../seo';
 
-const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280' };
+const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280', addressTwoLines: false };
 import { PageHero } from '../components';
 
 const UPSELL_LABELS: Record<string, string> = {

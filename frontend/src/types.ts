@@ -23,6 +23,7 @@ export interface StyleOptions {
   accentColor: string;
   separatorColor: string;
   iconColor: string;
+  addressTwoLines: boolean;
 }
 
 export type TemplateId =

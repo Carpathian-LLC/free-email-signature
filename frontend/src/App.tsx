@@ -23,11 +23,15 @@ const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
 // Optional donation link. Set VITE_DONATE_URL to your own (PayPal, Ko-fi, etc.);
 // when unset, the donate button is hidden so forks never link to someone else.
 const DONATE_URL = import.meta.env.VITE_DONATE_URL || '';
+// Optional contact page for feedback / template requests. When unset, the
+// footer links are hidden so forks never point at someone else's contact form.
+const CONTACT_URL = (import.meta.env.VITE_CONTACT_URL || '').replace(/\/+$/, '');
 
 function Layout() {
   const location = useLocation();
   const isActive = (path: string) => location.pathname === path;
   const [showDonate, setShowDonate] = useState(false);
+  const [contactSubject, setContactSubject] = useState<string | null>(null);
   const [sigCount, setSigCount] = useState<number | null>(null);
   const [hasSaved, setHasSaved] = useState(false);
 
@@ -193,6 +197,20 @@ function Layout() {
               <ul className="space-y-2 text-sm text-gray-500">
                 <li><Link to="/privacy" className="hover:text-gray-900 transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/security" className="hover:text-gray-900 transition-colors">Security</Link></li>
+                {CONTACT_URL && (
+                  <>
+                    <li>
+                      <button type="button" onClick={() => setContactSubject('Feedback - Free Signature Co.')} className="hover:text-gray-900 transition-colors">
+                        Provide Feedback
+                      </button>
+                    </li>
+                    <li>
+                      <button type="button" onClick={() => setContactSubject('Template Request - Free Signature Co.')} className="hover:text-gray-900 transition-colors">
+                        Request a Template
+                      </button>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
@@ -204,6 +222,36 @@ function Layout() {
           </div>
         </div>
       </footer>
+
+      {contactSubject && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4" onClick={() => setContactSubject(null)}>
+          <div className="bg-white rounded-2xl shadow-xl max-w-md w-full p-8 text-center" onClick={e => e.stopPropagation()}>
+            <h3 className="text-gray-900 font-semibold mb-2">Heading to Carpathian</h3>
+            <p className="text-gray-700 leading-relaxed">
+              You will be redirected to Carpathian&apos;s website to contact us through there.
+              Routing messages through one contact form helps us cut down on spam and respond faster.
+            </p>
+            <div className="flex flex-col gap-3 mt-6">
+              <a
+                href={`${CONTACT_URL}?subject=${encodeURIComponent(contactSubject)}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                onClick={() => setContactSubject(null)}
+                className="bg-brand-blue hover:bg-brand-blue-hover text-white rounded-md px-6 py-3 font-semibold transition-colors"
+              >
+                Continue to Contact Form
+              </a>
+              <button
+                type="button"
+                onClick={() => setContactSubject(null)}
+                className="text-sm text-gray-400 hover:text-gray-600 transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showDonate && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm px-4" onClick={() => setShowDonate(false)}>

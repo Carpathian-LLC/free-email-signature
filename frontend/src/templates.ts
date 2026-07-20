@@ -65,7 +65,7 @@ function isSafeImgSrc(url: string): boolean {
   return isSafeUrl(url);
 }
 
-function buildSocialHtml(f: SignatureFields, style: StyleOptions, gap: string = '&nbsp;'): string {
+function buildSocialHtml(f: SignatureFields, style: StyleOptions, gap: string = '&nbsp;&nbsp;'): string {
   let html = '';
   for (const link of f.socialLinks) {
     if (!link.url || !isSafeUrl(toHref(link.url))) continue;
@@ -86,6 +86,15 @@ function buildSocialHtml(f: SignatureFields, style: StyleOptions, gap: string = 
 function toHref(url: string): string {
   if (url.startsWith('http://') || url.startsWith('https://')) return url;
   return `https://${url}`;
+}
+
+// Address as pre-escaped HTML: one comma-joined line, or two lines separated
+// by <br> when the style option asks for it. Callers interpolate it directly
+// (no further esc()).
+function buildAddressHtml(f: SignatureFields, style: StyleOptions): string {
+  const parts = [f.addressLine1, f.addressLine2].filter(Boolean);
+  if (!parts.length) return '';
+  return style.addressTwoLines ? parts.map(esc).join('<br>') : esc(parts.join(', '));
 }
 
 // ─── Professional ───────────────────────────────────────────────────
@@ -132,8 +141,8 @@ function buildMinimal(f: SignatureFields, style: StyleOptions): string {
   if (f.website && isSafeUrl(toHref(f.website))) contact.push(`<a href="${esc(toHref(f.website))}" style="color:#6b7280;text-decoration:none" target="_blank">${esc(f.website)}</a>`);
   if (contact.length) lines.push(`<p style="margin:0;padding:0;font-size:12px;color:#6b7280;font-family:Arial,sans-serif">${contact.join(' &middot; ')}</p>`);
 
-  const address = [f.addressLine1, f.addressLine2].filter(Boolean).join(', ');
-  if (address) lines.push(`<p style="margin:2px 0 0;padding:0;font-size:12px;color:#9ca3af;font-family:Arial,sans-serif">${esc(address)}</p>`);
+  const address = buildAddressHtml(f, style);
+  if (address) lines.push(`<p style="margin:2px 0 0;padding:0;font-size:12px;color:#9ca3af;font-family:Arial,sans-serif">${address}</p>`);
   if (social) lines.push(`<p style="margin:8px 0 0;padding:0">${social}</p>`);
 
   return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,sans-serif"><tbody><tr><td>${lines.join('')}</td></tr></tbody></table>`;
@@ -154,8 +163,8 @@ function buildModern(f: SignatureFields, style: StyleOptions): string {
   if (f.email) lines.push(`<p style="margin:0;padding:0;font-size:12px;font-family:Arial,sans-serif"><a href="mailto:${esc(f.email)}" style="color:#374151;text-decoration:none">${esc(f.email)}</a></p>`);
   if (f.phone) lines.push(`<p style="margin:2px 0 0;padding:0;font-size:12px;color:#374151;font-family:Arial,sans-serif">${esc(f.phone)}</p>`);
   if (f.website && isSafeUrl(toHref(f.website))) lines.push(`<p style="margin:2px 0 0;padding:0;font-size:12px;font-family:Arial,sans-serif"><a href="${esc(toHref(f.website))}" style="color:${esc(accent)};text-decoration:none" target="_blank">${esc(f.website)}</a></p>`);
-  const address = [f.addressLine1, f.addressLine2].filter(Boolean).join(', ');
-  if (address) lines.push(`<p style="margin:2px 0 0;padding:0;font-size:12px;color:#6b7280;font-family:Arial,sans-serif">${esc(address)}</p>`);
+  const address = buildAddressHtml(f, style);
+  if (address) lines.push(`<p style="margin:2px 0 0;padding:0;font-size:12px;color:#6b7280;font-family:Arial,sans-serif">${address}</p>`);
   if (social) lines.push(`<p style="margin:8px 0 0;padding:0">${social}</p>`);
 
   const content = lines.join('');
@@ -183,13 +192,13 @@ function buildBold(f: SignatureFields, style: StyleOptions): string {
   if (f.email) contactParts.push(`<a href="mailto:${esc(f.email)}" style="color:#374151;text-decoration:none">${esc(f.email)}</a>`);
   if (f.phone) contactParts.push(`<span style="color:#374151">${esc(f.phone)}</span>`);
   if (f.website && isSafeUrl(toHref(f.website))) contactParts.push(`<a href="${esc(toHref(f.website))}" style="color:${esc(accent)};text-decoration:none" target="_blank">${esc(f.website)}</a>`);
-  const address = [f.addressLine1, f.addressLine2].filter(Boolean).join(', ');
+  const address = buildAddressHtml(f, style);
 
   let contactBlock = '';
   if (contactParts.length || address || social) {
     const inner: string[] = [];
     if (contactParts.length) inner.push(`<p style="margin:0;padding:0;font-size:12px;font-family:Arial,sans-serif">${contactParts.join(' &middot; ')}</p>`);
-    if (address) inner.push(`<p style="margin:4px 0 0;padding:0;font-size:11px;color:#9ca3af;font-family:Arial,sans-serif">${esc(address)}</p>`);
+    if (address) inner.push(`<p style="margin:4px 0 0;padding:0;font-size:11px;color:#9ca3af;font-family:Arial,sans-serif">${address}</p>`);
     if (social) inner.push(`<p style="margin:8px 0 0;padding:0">${social}</p>`);
     contactBlock = `<table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr><td style="padding:10px 16px;border:1px solid ${esc(sep)};border-top:none">${inner.join('')}</td></tr></tbody></table>`;
   }
@@ -203,7 +212,7 @@ function buildBold(f: SignatureFields, style: StyleOptions): string {
 // ─── Compact ────────────────────────────────────────────────────────
 
 function buildCompact(f: SignatureFields, style: StyleOptions): string {
-  const social = buildSocialHtml(f, style, ' ');
+  const social = buildSocialHtml(f, style, '&nbsp;');
   const photo = isSafeImgSrc(f.photoUrl) ? f.photoUrl : '';
   const lines: string[] = [];
 
@@ -219,8 +228,8 @@ function buildCompact(f: SignatureFields, style: StyleOptions): string {
   if (f.website && isSafeUrl(toHref(f.website))) contact.push(`<a href="${esc(toHref(f.website))}" style="color:#6b7280;text-decoration:none" target="_blank">${esc(f.website)}</a>`);
   if (contact.length) lines.push(`<p style="margin:2px 0 0;padding:0;font-size:12px;color:#6b7280;font-family:Arial,sans-serif">${contact.join(' &middot; ')}</p>`);
 
-  const address = [f.addressLine1, f.addressLine2].filter(Boolean).join(', ');
-  if (address) lines.push(`<p style="margin:2px 0 0;padding:0;font-size:11px;color:#9ca3af;font-family:Arial,sans-serif">${esc(address)}</p>`);
+  const address = buildAddressHtml(f, style);
+  if (address) lines.push(`<p style="margin:2px 0 0;padding:0;font-size:11px;color:#9ca3af;font-family:Arial,sans-serif">${address}</p>`);
   if (social) lines.push(`<p style="margin:6px 0 0;padding:0">${social}</p>`);
 
   if (photo) {
@@ -252,8 +261,8 @@ function buildElegant(f: SignatureFields, style: StyleOptions): string {
   if (f.website && isSafeUrl(toHref(f.website))) contact.push(`<a href="${esc(toHref(f.website))}" style="color:#6b7280;text-decoration:none" target="_blank">${esc(f.website)}</a>`);
   if (contact.length) lines.push(`<p style="margin:10px 0 0;padding:0;font-size:12px;color:#6b7280;font-family:${serif}">${contact.join(' &middot; ')}</p>`);
 
-  const address = [f.addressLine1, f.addressLine2].filter(Boolean).join(', ');
-  if (address) lines.push(`<p style="margin:4px 0 0;padding:0;font-size:12px;color:#9ca3af;font-family:${serif}">${esc(address)}</p>`);
+  const address = buildAddressHtml(f, style);
+  if (address) lines.push(`<p style="margin:4px 0 0;padding:0;font-size:12px;color:#9ca3af;font-family:${serif}">${address}</p>`);
   if (social) lines.push(`<p style="margin:10px 0 0;padding:0">${social}</p>`);
 
   return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:${serif}"><tbody><tr><td align="center" style="text-align:center">${lines.join('')}</td></tr></tbody></table>`;
@@ -277,8 +286,8 @@ function buildSidebar(f: SignatureFields, style: StyleOptions): string {
   if (f.email) lines.push(`<p style="margin:0;padding:0;font-size:12px;font-family:Arial,sans-serif"><a href="mailto:${esc(f.email)}" style="color:#6b7280;text-decoration:none">${esc(f.email)}</a></p>`);
   if (f.phone) lines.push(`<p style="margin:3px 0 0;padding:0;font-size:12px;color:#6b7280;font-family:Arial,sans-serif">${esc(f.phone)}</p>`);
   if (f.website && isSafeUrl(toHref(f.website))) lines.push(`<p style="margin:3px 0 0;padding:0;font-size:12px;font-family:Arial,sans-serif"><a href="${esc(toHref(f.website))}" style="color:${esc(accent)};text-decoration:none" target="_blank">${esc(f.website)}</a></p>`);
-  const address = [f.addressLine1, f.addressLine2].filter(Boolean).join(', ');
-  if (address) lines.push(`<p style="margin:3px 0 0;padding:0;font-size:12px;color:#9ca3af;font-family:Arial,sans-serif">${esc(address)}</p>`);
+  const address = buildAddressHtml(f, style);
+  if (address) lines.push(`<p style="margin:3px 0 0;padding:0;font-size:12px;color:#9ca3af;font-family:Arial,sans-serif">${address}</p>`);
   if (social) lines.push(`<p style="margin:10px 0 0;padding:0">${social}</p>`);
   const detailHtml = `<td style="padding:16px 18px;vertical-align:middle">${lines.join('')}</td>`;
 
@@ -303,8 +312,8 @@ function buildStacked(f: SignatureFields, style: StyleOptions): string {
   if (f.email) lines.push(`<p style="margin:0;padding:0;font-size:12px;font-family:Arial,sans-serif"><a href="mailto:${esc(f.email)}" style="color:#6b7280;text-decoration:none">${esc(f.email)}</a></p>`);
   if (f.phone) lines.push(`<p style="margin:3px 0 0;padding:0;font-size:12px;color:#6b7280;font-family:Arial,sans-serif">${esc(f.phone)}</p>`);
   if (f.website && isSafeUrl(toHref(f.website))) lines.push(`<p style="margin:3px 0 0;padding:0;font-size:12px;font-family:Arial,sans-serif"><a href="${esc(toHref(f.website))}" style="color:#6b7280;text-decoration:none" target="_blank">${esc(f.website)}</a></p>`);
-  const address = [f.addressLine1, f.addressLine2].filter(Boolean).join(', ');
-  if (address) lines.push(`<p style="margin:3px 0 0;padding:0;font-size:12px;color:#9ca3af;font-family:Arial,sans-serif">${esc(address)}</p>`);
+  const address = buildAddressHtml(f, style);
+  if (address) lines.push(`<p style="margin:3px 0 0;padding:0;font-size:12px;color:#9ca3af;font-family:Arial,sans-serif">${address}</p>`);
   if (social) lines.push(`<p style="margin:10px 0 0;padding:0">${social}</p>`);
 
   return `<table cellpadding="0" cellspacing="0" border="0" style="font-family:Arial,sans-serif"><tbody><tr><td align="center" style="text-align:center">${lines.join('')}</td></tr></tbody></table>`;
@@ -330,8 +339,8 @@ function buildCorporate(f: SignatureFields, style: StyleOptions): string {
   if (f.email) rows.push(row('Email', `<a href="mailto:${esc(f.email)}" style="color:#374151;text-decoration:none">${esc(f.email)}</a>`));
   if (f.phone) rows.push(row('Phone', esc(f.phone)));
   if (f.website && isSafeUrl(toHref(f.website))) rows.push(row('Web', `<a href="${esc(toHref(f.website))}" style="color:${esc(accent)};text-decoration:none" target="_blank">${esc(f.website)}</a>`));
-  const address = [f.addressLine1, f.addressLine2].filter(Boolean).join(', ');
-  if (address) rows.push(row('Office', esc(address)));
+  const address = buildAddressHtml(f, style);
+  if (address) rows.push(row('Office', address));
   const contactTable = rows.length ? `<table cellpadding="0" cellspacing="0" border="0">${`<tbody>${rows.join('')}</tbody>`}</table>` : '';
 
   const photoCell = photo ? `<td style="vertical-align:top;padding-right:16px"><img src="${esc(photo)}" width="80" height="80" alt="${esc(f.fullName)}" style="border-radius:6px;display:block"></td>` : '';
@@ -358,8 +367,8 @@ function buildCreative(f: SignatureFields, style: StyleOptions): string {
   if (f.phone) contact.push(`<span style="color:#374151">${esc(f.phone)}</span>`);
   if (f.website && isSafeUrl(toHref(f.website))) contact.push(`<a href="${esc(toHref(f.website))}" style="color:#374151;text-decoration:none" target="_blank">${esc(f.website)}</a>`);
   if (contact.length) lines.push(`<p style="margin:10px 0 0;padding:0;font-size:12px;color:#374151;font-family:Arial,sans-serif">${contact.join('<br>')}</p>`);
-  const address = [f.addressLine1, f.addressLine2].filter(Boolean).join(', ');
-  if (address) lines.push(`<p style="margin:6px 0 0;padding:0;font-size:11px;color:#9ca3af;font-family:Arial,sans-serif">${esc(address)}</p>`);
+  const address = buildAddressHtml(f, style);
+  if (address) lines.push(`<p style="margin:6px 0 0;padding:0;font-size:11px;color:#9ca3af;font-family:Arial,sans-serif">${address}</p>`);
   if (social) lines.push(`<p style="margin:10px 0 0;padding:0">${social}</p>`);
 
   const photoCell = photo ? `<td style="vertical-align:top;padding-left:18px"><img src="${esc(photo)}" width="84" height="84" alt="${esc(f.fullName)}" style="border-radius:12px;display:block"></td>` : '';

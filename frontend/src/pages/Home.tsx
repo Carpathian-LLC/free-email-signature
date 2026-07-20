@@ -3,7 +3,7 @@ import { templates, SAMPLE_DATA } from '../templates';
 import { StyleOptions } from '../types';
 import { useSeo } from '../seo';
 
-const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280' };
+const PREVIEW_STYLE: StyleOptions = { accentColor: '#1B8FF2', separatorColor: '#e5e7eb', iconColor: '#6b7280', addressTwoLines: false };
 import { AdSenseBanner, ScaledPreview } from '../components';
 
 export default function Home() {
