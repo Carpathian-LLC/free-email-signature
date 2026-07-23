@@ -19,6 +19,7 @@ const STYLE_KEY = 'sig-gen-style';
 const HISTORY_KEY = 'cos_saved_signatures';
 const HISTORY_CAP = 25;
 const PHONE_COUNTRY_KEY = 'sig-gen-phone-country';
+const PHONE_INTL_KEY = 'sig-gen-phone-intl';
 const API_URL = (import.meta.env.VITE_API_URL || '').replace(/\/+$/, '');
 
 const EMPTY: SignatureFields = {
@@ -95,9 +96,15 @@ function loadStyle(): StyleOptions {
 type PhoneLib = typeof import('libphonenumber-js/min');
 let phoneLib: PhoneLib | null = null;
 
-function formatPhone(raw: string, country: string): string {
+function formatPhone(raw: string, country: string, intl: boolean): string {
   if (!phoneLib) return raw;
   try {
+    // Once the number is complete and valid, honor the national/international
+    // display preference. Partial input falls through to as-you-type below.
+    if (intl) {
+      const parsed = phoneLib.parsePhoneNumberFromString(raw, country as CountryCode);
+      if (parsed && parsed.isValid()) return parsed.formatInternational();
+    }
     // A leading + carries its own country code, which overrides the selector
     const formatter = raw.trim().startsWith('+')
       ? new phoneLib.AsYouType()
@@ -175,6 +182,7 @@ export default function Create() {
   const [cropImage, setCropImage] = useState<string | null>(null);
   const [cropBg, setCropBg] = useState<string>('transparent');
   const [phoneCountry, setPhoneCountry] = useState<string>('US');
+  const [phoneIntl, setPhoneIntl] = useState(false);
   const [phoneCountries, setPhoneCountries] = useState<{ code: string; name: string; calling: string }[]>([]);
   const [crop, setCrop] = useState({ x: 0, y: 0 });
   const [zoom, setZoom] = useState(1);
@@ -228,6 +236,7 @@ export default function Create() {
     try {
       const saved = localStorage.getItem(PHONE_COUNTRY_KEY);
       if (saved && /^[A-Z]{2}$/.test(saved)) setPhoneCountry(saved);
+      setPhoneIntl(localStorage.getItem(PHONE_INTL_KEY) === '1');
     } catch { /* noop */ }
     return () => { cancelled = true; };
   }, []);
@@ -262,7 +271,7 @@ export default function Create() {
       if (key !== 'phone') return { ...prev, [key]: value };
       // Only reformat while the user is adding characters; formatting on
       // deletion re-inserts the punctuation being deleted and traps the caret.
-      const next = value.length > prev.phone.length ? formatPhone(value, phoneCountry) : value;
+      const next = value.length > prev.phone.length ? formatPhone(value, phoneCountry, phoneIntl) : value;
       return { ...prev, phone: next };
     });
   }
@@ -271,7 +280,23 @@ export default function Create() {
     setPhoneCountry(code);
     try { localStorage.setItem(PHONE_COUNTRY_KEY, code); } catch { /* noop */ }
     // Re-run formatting for the new country on the bare digits
-    setFields(prev => ({ ...prev, phone: formatPhone(prev.phone.replace(/[^\d+]/g, ''), code) }));
+    setFields(prev => ({ ...prev, phone: formatPhone(prev.phone.replace(/[^\d+]/g, ''), code, phoneIntl) }));
+  }
+
+  function changePhoneIntl(checked: boolean) {
+    setPhoneIntl(checked);
+    try { localStorage.setItem(PHONE_INTL_KEY, checked ? '1' : '0'); } catch { /* noop */ }
+    // Convert the current number between national and international display
+    setFields(prev => {
+      if (!phoneLib) return prev;
+      try {
+        const parsed = phoneLib.parsePhoneNumberFromString(prev.phone, phoneCountry as CountryCode);
+        if (parsed && parsed.isValid()) {
+          return { ...prev, phone: checked ? parsed.formatInternational() : parsed.formatNational() };
+        }
+      } catch { /* leave as typed */ }
+      return prev;
+    });
   }
 
   function handleClear() {
@@ -713,6 +738,15 @@ export default function Create() {
                       className="flex-1 min-w-0 px-3 py-2 bg-gray-100 border border-gray-300 rounded-xl text-gray-900 placeholder:text-gray-500 text-sm focus:outline-none focus:ring-2 focus:ring-brand-blue focus:border-brand-blue focus:bg-white"
                     />
                   </div>
+                  <label className="mt-1.5 flex items-center gap-2 text-xs text-gray-700 cursor-pointer select-none">
+                    <input
+                      type="checkbox"
+                      checked={phoneIntl}
+                      onChange={e => changePhoneIntl(e.target.checked)}
+                      className="accent-brand-blue w-3.5 h-3.5"
+                    />
+                    International format (+44 1234 123456)
+                  </label>
                 </div>
                 <Field label="Website" value={fields.website} onChange={v => update('website', v)} placeholder="https://carpathian.ai" />
                 <Field label="Address Line 1" value={fields.addressLine1} onChange={v => update('addressLine1', v)} placeholder="West Des Moines, IA 50265" />
